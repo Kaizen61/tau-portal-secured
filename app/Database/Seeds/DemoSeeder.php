@@ -1,0 +1,197 @@
+<?php
+
+namespace App\Database\Seeds;
+
+use CodeIgniter\Database\Seeder;
+
+class DemoSeeder extends Seeder
+{
+    public function run()
+    {
+        // Passwords below are bcrypt hashes of the demo passwords used
+        // throughout the presentation. Plaintext values, for reference only:
+        // admin1/teacher1/teacher2: "admin123"/"teach123"/"teach123"
+        // student1/student2/student3: "stud123"
+        // backup_admin (HONEYTOKEN - never used for real login): "HoneyToken#2026!"
+
+        $users = [
+            ['id'=>1,'username'=>'admin1','student_number'=>null,'password'=>'$2b$10$DZP./je7lU8vwd3BjnRVOOhXthxVSOhiU3oHu.42q5UOZ.oewnSv6','role'=>'admin','full_name'=>'Portal Administrator','college'=>'Office of the Registrar','year_level'=>null],
+            ['id'=>2,'username'=>'teacher1','student_number'=>null,'password'=>'$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa','role'=>'teacher','full_name'=>'Prof. Ramon Dela Cruz','college'=>'College of Information Technology','year_level'=>null],
+            ['id'=>3,'username'=>'teacher2','student_number'=>null,'password'=>'$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa','role'=>'teacher','full_name'=>'Dr. Liza Fernandez','college'=>'College of Agriculture','year_level'=>null],
+            ['id'=>4,'username'=>null,'student_number'=>'2024100100','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Juan Santos','college'=>'College of Information Technology','year_level'=>'3rd Year'],
+            ['id'=>5,'username'=>null,'student_number'=>'2024100101','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Maria Reyes','college'=>'College of Information Technology','year_level'=>'3rd Year'],
+            ['id'=>6,'username'=>null,'student_number'=>'2025100102','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Pedro Bautista','college'=>'College of Information Technology','year_level'=>'2nd Year'],
+            // HONEYTOKEN: no legitimate workflow ever uses this account.
+            ['id'=>7,'username'=>'backup_admin','student_number'=>null,'password'=>'$2b$10$k.3htrBfrfdwGkbmsqFgO.dEMuayLrbZ85zGSvPaIYYvNE4OGxEOK','role'=>'admin','full_name'=>'System Backup Account','college'=>null,'year_level'=>null],
+        ];
+        foreach ($users as $u) {
+            $this->db->table('users')->insert(array_merge($u, ['created_at' => date('Y-m-d H:i:s')]));
+        }
+
+        $subjects = [
+            ['subject_code'=>'GE101','subject_name'=>'Understanding the Self','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'GE102','subject_name'=>'Readings in Philippine History','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'MATH101','subject_name'=>'College Algebra','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'ENG101','subject_name'=>'Purposive Communication','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'FIL101','subject_name'=>'Kontekstwalisadong Komunikasyon','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'PE101','subject_name'=>'Physical Fitness and Wellness 1','units'=>2,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'NSTP101','subject_name'=>'National Service Training Program 1','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT101','subject_name'=>'Introduction to Computing','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'GE103','subject_name'=>'Mathematics in the Modern World','units'=>3,'year_level'=>1,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'GE104','subject_name'=>'Art Appreciation','units'=>3,'year_level'=>1,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'MATH102','subject_name'=>'Plane and Spherical Trigonometry','units'=>3,'year_level'=>1,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'AGRI101','subject_name'=>'Introduction to Agriculture','units'=>3,'year_level'=>1,'semester'=>'2nd','teacher_id'=>3],
+            ['subject_code'=>'PE102','subject_name'=>'Physical Fitness and Wellness 2','units'=>2,'year_level'=>1,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'NSTP102','subject_name'=>'National Service Training Program 2','units'=>3,'year_level'=>1,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT102','subject_name'=>'Computer Programming 1','units'=>3,'year_level'=>1,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT103','subject_name'=>'Discrete Structures 1','units'=>3,'year_level'=>1,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'GE105','subject_name'=>'Ethics','units'=>3,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'GE106','subject_name'=>'Science, Technology and Society','units'=>3,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'PE201','subject_name'=>'Physical Fitness and Wellness 3','units'=>2,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT201','subject_name'=>'Computer Programming 2','units'=>3,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT202','subject_name'=>'Data Structures and Algorithms','units'=>3,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT203','subject_name'=>'Discrete Structures 2','units'=>3,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT204','subject_name'=>'Networking 1','units'=>3,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT205','subject_name'=>'Human Computer Interaction','units'=>3,'year_level'=>2,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'GE107','subject_name'=>'The Contemporary World','units'=>3,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'GE108','subject_name'=>'Life and Works of Rizal','units'=>3,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'PE202','subject_name'=>'Physical Fitness and Wellness 4','units'=>2,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT206','subject_name'=>'Object-Oriented Programming','units'=>3,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT207','subject_name'=>'Networking 2','units'=>3,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT208','subject_name'=>'Information Management','units'=>3,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT209','subject_name'=>'Quantitative Methods','units'=>3,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT210','subject_name'=>'Platform Technologies','units'=>3,'year_level'=>2,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'WST301','subject_name'=>'Web Systems and Technologies','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT302','subject_name'=>'Systems Integration and Architecture 1','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT303','subject_name'=>'Systems Analysis and Design','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT304','subject_name'=>'Information Assurance and Security 1','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT305','subject_name'=>'Advanced Database Systems','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT306','subject_name'=>'Applications Development and Emerging Technologies','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT307','subject_name'=>'Technopreneurship','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'ELEC301','subject_name'=>'Free Elective 1','units'=>3,'year_level'=>3,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IM201','subject_name'=>'Information Management 2','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT308','subject_name'=>'Systems Integration and Architecture 2','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT309','subject_name'=>'Information Assurance and Security 2','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT310','subject_name'=>'Integrative Programming and Technologies','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT311','subject_name'=>'Social and Professional Issues','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT312','subject_name'=>'Capstone Project 1 - Proposal','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'ELEC302','subject_name'=>'Free Elective 2','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT313','subject_name'=>'IT Elective 1','units'=>3,'year_level'=>3,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT401','subject_name'=>'Capstone Project 2','units'=>3,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT402','subject_name'=>'Systems Administration and Maintenance','units'=>3,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT403','subject_name'=>'Advanced Elective 1','units'=>3,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT404','subject_name'=>'Advanced Elective 2','units'=>3,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT405','subject_name'=>'Advanced Elective 3','units'=>3,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'OJT401','subject_name'=>'Practicum 1','units'=>6,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT406','subject_name'=>'Emerging Trends in IT','units'=>3,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT407','subject_name'=>'Professional Elective','units'=>3,'year_level'=>4,'semester'=>'1st','teacher_id'=>2],
+            ['subject_code'=>'IT408','subject_name'=>'Capstone Project 3','units'=>3,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'OJT402','subject_name'=>'Practicum 2','units'=>3,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT409','subject_name'=>'IT Elective 2','units'=>3,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT410','subject_name'=>'IT Elective 3','units'=>3,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT411','subject_name'=>'IT Elective 4','units'=>3,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT412','subject_name'=>'Seminars and Fieldtrips','units'=>1,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT413','subject_name'=>'Comprehensive Examination Review','units'=>3,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+            ['subject_code'=>'IT414','subject_name'=>'Special Topics in IT','units'=>3,'year_level'=>4,'semester'=>'2nd','teacher_id'=>2],
+        ];
+
+        $grades = [
+            ['student_id'=>4,'subject_id'=>1,'school_year'=>'2023-2024','grade'=>96.0],
+            ['student_id'=>4,'subject_id'=>2,'school_year'=>'2023-2024','grade'=>87.2],
+            ['student_id'=>4,'subject_id'=>3,'school_year'=>'2023-2024','grade'=>91.3],
+            ['student_id'=>4,'subject_id'=>4,'school_year'=>'2023-2024','grade'=>96.8],
+            ['student_id'=>4,'subject_id'=>5,'school_year'=>'2023-2024','grade'=>85.9],
+            ['student_id'=>4,'subject_id'=>6,'school_year'=>'2023-2024','grade'=>82.2],
+            ['student_id'=>4,'subject_id'=>7,'school_year'=>'2023-2024','grade'=>83.8],
+            ['student_id'=>4,'subject_id'=>8,'school_year'=>'2023-2024','grade'=>85.7],
+            ['student_id'=>4,'subject_id'=>9,'school_year'=>'2023-2024','grade'=>92.1],
+            ['student_id'=>4,'subject_id'=>10,'school_year'=>'2023-2024','grade'=>83.8],
+            ['student_id'=>4,'subject_id'=>11,'school_year'=>'2023-2024','grade'=>87.7],
+            ['student_id'=>4,'subject_id'=>12,'school_year'=>'2023-2024','grade'=>89.2],
+            ['student_id'=>4,'subject_id'=>13,'school_year'=>'2023-2024','grade'=>82.6],
+            ['student_id'=>4,'subject_id'=>14,'school_year'=>'2023-2024','grade'=>87.3],
+            ['student_id'=>4,'subject_id'=>15,'school_year'=>'2023-2024','grade'=>94.1],
+            ['student_id'=>4,'subject_id'=>16,'school_year'=>'2023-2024','grade'=>86.4],
+            ['student_id'=>4,'subject_id'=>17,'school_year'=>'2024-2025','grade'=>82.7],
+            ['student_id'=>4,'subject_id'=>18,'school_year'=>'2024-2025','grade'=>91.8],
+            ['student_id'=>4,'subject_id'=>19,'school_year'=>'2024-2025','grade'=>88.5],
+            ['student_id'=>4,'subject_id'=>20,'school_year'=>'2024-2025','grade'=>87.2],
+            ['student_id'=>4,'subject_id'=>21,'school_year'=>'2024-2025','grade'=>83.9],
+            ['student_id'=>4,'subject_id'=>22,'school_year'=>'2024-2025','grade'=>88.4],
+            ['student_id'=>4,'subject_id'=>23,'school_year'=>'2024-2025','grade'=>83.9],
+            ['student_id'=>4,'subject_id'=>24,'school_year'=>'2024-2025','grade'=>91.8],
+            ['student_id'=>4,'subject_id'=>25,'school_year'=>'2024-2025','grade'=>96.1],
+            ['student_id'=>4,'subject_id'=>26,'school_year'=>'2024-2025','grade'=>90.1],
+            ['student_id'=>4,'subject_id'=>27,'school_year'=>'2024-2025','grade'=>91.1],
+            ['student_id'=>4,'subject_id'=>28,'school_year'=>'2024-2025','grade'=>89.8],
+            ['student_id'=>4,'subject_id'=>29,'school_year'=>'2024-2025','grade'=>96.0],
+            ['student_id'=>4,'subject_id'=>30,'school_year'=>'2024-2025','grade'=>95.6],
+            ['student_id'=>4,'subject_id'=>31,'school_year'=>'2024-2025','grade'=>94.7],
+            ['student_id'=>4,'subject_id'=>32,'school_year'=>'2024-2025','grade'=>91.7],
+            ['student_id'=>4,'subject_id'=>33,'school_year'=>'2025-2026','grade'=>87.5],
+            ['student_id'=>4,'subject_id'=>34,'school_year'=>'2025-2026','grade'=>93.1],
+            ['student_id'=>4,'subject_id'=>35,'school_year'=>'2025-2026','grade'=>91.1],
+            ['student_id'=>4,'subject_id'=>36,'school_year'=>'2025-2026','grade'=>87.5],
+            ['student_id'=>4,'subject_id'=>37,'school_year'=>'2025-2026','grade'=>82.0],
+            ['student_id'=>4,'subject_id'=>38,'school_year'=>'2025-2026','grade'=>93.6],
+            ['student_id'=>4,'subject_id'=>39,'school_year'=>'2025-2026','grade'=>84.5],
+            ['student_id'=>4,'subject_id'=>40,'school_year'=>'2025-2026','grade'=>90.4],
+            ['student_id'=>4,'subject_id'=>41,'school_year'=>'2025-2026','grade'=>85.2],
+            ['student_id'=>4,'subject_id'=>42,'school_year'=>'2025-2026','grade'=>95.4],
+            ['student_id'=>4,'subject_id'=>43,'school_year'=>'2025-2026','grade'=>92.4],
+            ['student_id'=>4,'subject_id'=>44,'school_year'=>'2025-2026','grade'=>93.5],
+            ['student_id'=>4,'subject_id'=>45,'school_year'=>'2025-2026','grade'=>86.5],
+            ['student_id'=>4,'subject_id'=>46,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>4,'subject_id'=>47,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>4,'subject_id'=>48,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>5,'subject_id'=>33,'school_year'=>'2025-2026','grade'=>84.5],
+            ['student_id'=>5,'subject_id'=>34,'school_year'=>'2025-2026','grade'=>82.8],
+            ['student_id'=>5,'subject_id'=>35,'school_year'=>'2025-2026','grade'=>92.6],
+            ['student_id'=>5,'subject_id'=>36,'school_year'=>'2025-2026','grade'=>93.0],
+            ['student_id'=>5,'subject_id'=>37,'school_year'=>'2025-2026','grade'=>85.0],
+            ['student_id'=>5,'subject_id'=>38,'school_year'=>'2025-2026','grade'=>84.6],
+            ['student_id'=>5,'subject_id'=>39,'school_year'=>'2025-2026','grade'=>82.0],
+            ['student_id'=>5,'subject_id'=>40,'school_year'=>'2025-2026','grade'=>92.6],
+            ['student_id'=>5,'subject_id'=>41,'school_year'=>'2025-2026','grade'=>87.5],
+            ['student_id'=>5,'subject_id'=>42,'school_year'=>'2025-2026','grade'=>90.6],
+            ['student_id'=>5,'subject_id'=>43,'school_year'=>'2025-2026','grade'=>94.0],
+            ['student_id'=>5,'subject_id'=>44,'school_year'=>'2025-2026','grade'=>90.5],
+            ['student_id'=>5,'subject_id'=>45,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>5,'subject_id'=>46,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>5,'subject_id'=>47,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>5,'subject_id'=>48,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>6,'subject_id'=>1,'school_year'=>'2024-2025','grade'=>92.5],
+            ['student_id'=>6,'subject_id'=>2,'school_year'=>'2024-2025','grade'=>82.5],
+            ['student_id'=>6,'subject_id'=>3,'school_year'=>'2024-2025','grade'=>88.6],
+            ['student_id'=>6,'subject_id'=>4,'school_year'=>'2024-2025','grade'=>89.5],
+            ['student_id'=>6,'subject_id'=>5,'school_year'=>'2024-2025','grade'=>92.6],
+            ['student_id'=>6,'subject_id'=>6,'school_year'=>'2024-2025','grade'=>88.5],
+            ['student_id'=>6,'subject_id'=>7,'school_year'=>'2024-2025','grade'=>95.1],
+            ['student_id'=>6,'subject_id'=>8,'school_year'=>'2024-2025','grade'=>94.0],
+            ['student_id'=>6,'subject_id'=>9,'school_year'=>'2024-2025','grade'=>84.0],
+            ['student_id'=>6,'subject_id'=>10,'school_year'=>'2024-2025','grade'=>94.2],
+            ['student_id'=>6,'subject_id'=>11,'school_year'=>'2024-2025','grade'=>84.2],
+            ['student_id'=>6,'subject_id'=>12,'school_year'=>'2024-2025','grade'=>82.9],
+            ['student_id'=>6,'subject_id'=>13,'school_year'=>'2024-2025','grade'=>96.0],
+            ['student_id'=>6,'subject_id'=>14,'school_year'=>'2024-2025','grade'=>82.0],
+            ['student_id'=>6,'subject_id'=>15,'school_year'=>'2024-2025','grade'=>89.4],
+            ['student_id'=>6,'subject_id'=>16,'school_year'=>'2024-2025','grade'=>94.0],
+            ['student_id'=>6,'subject_id'=>17,'school_year'=>'2025-2026','grade'=>82.9],
+            ['student_id'=>6,'subject_id'=>18,'school_year'=>'2025-2026','grade'=>89.1],
+            ['student_id'=>6,'subject_id'=>19,'school_year'=>'2025-2026','grade'=>84.8],
+            ['student_id'=>6,'subject_id'=>20,'school_year'=>'2025-2026','grade'=>88.8],
+            ['student_id'=>6,'subject_id'=>21,'school_year'=>'2025-2026','grade'=>86.1],
+            ['student_id'=>6,'subject_id'=>22,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>6,'subject_id'=>23,'school_year'=>'2025-2026','grade'=>null],
+            ['student_id'=>6,'subject_id'=>24,'school_year'=>'2025-2026','grade'=>null],
+        ];
+
+        foreach ($subjects as $s) {
+            $this->db->table('subjects')->insert($s);
+        }
+
+        foreach ($grades as $g) {
+            $this->db->table('grades')->insert($g);
+        }
+    }
+}
