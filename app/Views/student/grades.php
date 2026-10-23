@@ -39,6 +39,10 @@
                 <div class="stat-number" style="font-size:1.6rem;">
                     <?= $group['gwa'] !== null ? esc($group['gwa']) : '—' ?>
                 </div>
+                <a class="btn btn-sm btn-outline-university mt-2 no-print" target="_blank"
+                   href="<?= site_url('student/grades/print') ?>?school_year=<?= urlencode($group['school_year']) ?>&semester=<?= urlencode($group['semester']) ?>">
+                    Print Grade Report
+                </a>
             </div>
         </div>
         <div class="card-body p-0">

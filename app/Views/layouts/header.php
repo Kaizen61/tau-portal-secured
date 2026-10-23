@@ -35,6 +35,7 @@ $fullName = session()->get('full_name');
             <?php if ($role === 'admin'): ?>
                 <a class="<?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= site_url('admin/dashboard') ?>">Dashboard</a>
                 <a class="<?= ($activePage ?? '') === 'users' ? 'active' : '' ?>" href="<?= site_url('admin/users') ?>">Manage Users</a>
+                <a class="<?= ($activePage ?? '') === 'students' ? 'active' : '' ?>" href="<?= site_url('admin/students') ?>">Students</a>
                 <a class="<?= ($activePage ?? '') === 'subjects' ? 'active' : '' ?>" href="<?= site_url('admin/subjects') ?>">Manage Subjects</a>
                 <a class="<?= ($activePage ?? '') === 'audit' ? 'active' : '' ?>" href="<?= site_url('admin/audit-trail') ?>">Audit Trail</a>
                 <a class="<?= ($activePage ?? '') === 'announcements' ? 'active' : '' ?>" href="<?= site_url('admin/announcements') ?>">Announcements</a>

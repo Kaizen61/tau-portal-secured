@@ -1,0 +1,195 @@
+:root {
+    --uni-green: #1B4D3E;
+    --uni-green-dark: #0F332A;
+    --uni-amber: #A6883C;
+    --uni-ink: #1A1A1A;
+    --uni-muted: #5C564F;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    color: var(--uni-ink);
+    background: #e8e4dc;
+    font-family: "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+.print-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: #0F332A;
+}
+
+.print-toolbar button {
+    background: #A6883C;
+    color: #fff;
+    border: 0;
+    border-radius: 0.25rem;
+    padding: 0.4rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.print-toolbar button.secondary {
+    background: transparent;
+    border: 1px solid #D9C48F;
+    color: #FAF9F7;
+}
+
+.print-sheet {
+    width: 210mm;
+    max-width: 100%;
+    margin: 1.25rem auto 2rem;
+    background: #fff;
+    padding: 18mm 16mm 16mm;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.print-letterhead {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 3px solid var(--uni-green);
+    padding-bottom: 0.85rem;
+    margin-bottom: 1.15rem;
+}
+
+.print-letterhead .univ {
+    font-family: Merriweather, Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--uni-green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.print-letterhead .campus {
+    font-size: 0.82rem;
+    color: var(--uni-muted);
+}
+
+.print-letterhead .doc-title {
+    margin-top: 0.35rem;
+    font-family: Merriweather, Georgia, serif;
+    font-size: 1.05rem;
+    color: var(--uni-green);
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 1.5rem;
+    font-size: 0.92rem;
+    margin-bottom: 1.1rem;
+}
+
+.meta-grid dt {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--uni-muted);
+    font-weight: 700;
+    margin: 0;
+}
+
+.meta-grid dd { margin: 0 0 0.45rem; font-weight: 600; }
+
+.print-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.print-table th {
+    background: var(--uni-green-dark);
+    color: #fff;
+    text-align: left;
+    padding: 0.45rem 0.55rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.print-table td {
+    border-bottom: 1px solid #d9d4cb;
+    padding: 0.42rem 0.55rem;
+}
+
+.print-table tfoot td {
+    border-bottom: none;
+    font-weight: 700;
+    padding-top: 0.7rem;
+}
+
+.gwa-box {
+    margin-top: 1rem;
+    border: 2px solid var(--uni-green);
+    padding: 0.7rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gwa-box .label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--uni-muted);
+    font-weight: 700;
+}
+
+.gwa-box .value {
+    font-family: Merriweather, Georgia, serif;
+    font-size: 1.6rem;
+    color: var(--uni-green);
+}
+
+.note {
+    margin-top: 0.85rem;
+    font-size: 0.78rem;
+    color: var(--uni-muted);
+}
+
+.sign-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2.4rem;
+}
+
+.sign-block {
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.sign-line {
+    border-top: 1px solid var(--uni-ink);
+    margin-top: 2.4rem;
+    padding-top: 0.35rem;
+}
+
+.print-footer {
+    margin-top: 1.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid #d9d4cb;
+    font-size: 0.72rem;
+    color: var(--uni-muted);
+}
+
+@media print {
+    body { background: #fff; }
+    .no-print { display: none !important; }
+    .print-sheet {
+        margin: 0;
+        width: auto;
+        box-shadow: none;
+        padding: 0;
+    }
+    @page { size: A4 portrait; margin: 12mm; }
+}

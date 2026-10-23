@@ -21,11 +21,11 @@
             </div>
         </div>
 
-        <div class="bento-tile bento-tile-tall">
+        <a href="<?= site_url('admin/students') ?>" class="bento-tile bento-tile-tall" style="color:inherit;">
             <div class="bento-label">Students</div>
             <div class="bento-number" id="statStudents"><?= (int)$studentCount ?></div>
-            <div class="bento-desc">Enrolled across all colleges</div>
-        </div>
+            <div class="bento-desc">View the student directory</div>
+        </a>
 
         <div class="bento-tile bento-tile-tall">
             <div class="bento-label">Faculty</div>

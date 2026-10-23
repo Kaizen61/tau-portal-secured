@@ -14,7 +14,10 @@
     <div class="row justify-content-center g-3">
         <div class="col-md-6">
             <div class="card portal-card">
-                <div class="card-header bg-white"><h5 class="mb-0">Student Record</h5></div>
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Student Record</h5>
+                    <a class="btn btn-sm btn-outline-university no-print" target="_blank" href="<?= site_url('student/profile/print') ?>">Print Student Record</a>
+                </div>
                 <div class="card-body">
                     <table class="table table-borderless mb-3">
                         <tr><th style="width:160px;">Student Number</th><td><?= esc($profile['student_number'] ?? '') ?></td></tr>

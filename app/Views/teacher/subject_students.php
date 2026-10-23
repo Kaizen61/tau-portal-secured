@@ -13,7 +13,10 @@
     <?php if ($error): ?><div class="alert alert-danger py-2"><?= esc($error) ?></div><?php endif; ?>
 
     <div class="card portal-card">
-        <div class="card-header bg-white"><h5 class="mb-0">Class List</h5></div>
+        <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h5 class="mb-0">Class List</h5>
+            <a class="btn btn-sm btn-outline-university no-print" target="_blank" href="<?= site_url('teacher/subjects/' . $subject['id'] . '/print') ?>">Print Class List</a>
+        </div>
         <div class="card-body p-0">
             <table class="table table-portal table-striped mb-0 align-middle">
                 <thead><tr><th>Student</th><th>Year Level</th><th>School Year</th><th>Grade</th><th style="width:220px;">Update Grade</th></tr></thead>

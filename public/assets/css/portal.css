@@ -312,6 +312,11 @@ a:hover { color: var(--uni-green-dark); }
     margin-bottom: 0.4rem;
 }
 
+@media print {
+    .sidebar, .topbar, .site-footer, .no-print, .breadcrumb { display: none !important; }
+    .app-shell, .main-content, .content-area { display: block; padding: 0; margin: 0; }
+}
+
 @media (max-width: 860px) {
     .app-shell { flex-direction: column; }
     .sidebar { width: 100%; height: auto; position: static; }

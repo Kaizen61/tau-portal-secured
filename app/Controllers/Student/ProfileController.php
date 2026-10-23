@@ -4,6 +4,7 @@ namespace App\Controllers\Student;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Models\GradeModel;
 use App\Libraries\ActivityLogger;
 
 class ProfileController extends BaseController
@@ -21,6 +22,28 @@ class ProfileController extends BaseController
             'error' => session()->getFlashdata('error'),
         ];
         return view('student/profile', $data);
+    }
+
+    public function printRecord()
+    {
+        $studentId = (int) session()->get('user_id');
+        $records = (new GradeModel())
+            ->select('grades.school_year, grades.grade, subjects.subject_code, subjects.subject_name, subjects.units, subjects.semester')
+            ->join('subjects', 'subjects.id = grades.subject_id')
+            ->where('grades.student_id', $studentId)
+            ->orderBy('grades.school_year', 'DESC')
+            ->orderBy('subjects.semester')
+            ->orderBy('subjects.subject_code')
+            ->findAll();
+
+        return view('student/print_student_record', [
+            'printTitle' => 'Student Record - TAU Student Portal',
+            'documentTitle' => 'Student Record',
+            'printedAt' => date('F j, Y g:i A'),
+            'autoPrint' => false,
+            'profile' => (new UserModel())->find($studentId),
+            'records' => $records,
+        ]);
     }
 
     public function update()

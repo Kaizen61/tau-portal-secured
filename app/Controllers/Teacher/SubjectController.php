@@ -48,6 +48,40 @@ class SubjectController extends BaseController
         return view('teacher/subject_students', $data);
     }
 
+    public function printClassList($subjectId = null)
+    {
+        $subjects = new SubjectModel();
+        $grades = new GradeModel();
+        $teacherId = session()->get('user_id');
+
+        if (!$subjectId || !is_numeric($subjectId)) {
+            return $this->fail('No subject was specified.');
+        }
+
+        $subject = $subjects->where('id', $subjectId)->where('teacher_id', $teacherId)->first();
+        if (!$subject) {
+            (new ActivityLogger())->log($teacherId, session()->get('username'), 'ACCESS_DENIED',
+                "Attempted to print class list for subject #$subjectId, not assigned to them.", 'WARNING');
+            return $this->fail('That subject was not found, or is not assigned to you.', 404);
+        }
+
+        $students = $grades->select('users.full_name, users.student_number, users.year_level, grades.school_year, grades.grade')
+            ->join('users', 'users.id = grades.student_id')
+            ->where('subject_id', $subjectId)
+            ->orderBy('users.full_name')
+            ->findAll();
+
+        return view('teacher/print_class_list', [
+            'printTitle' => 'Class List - ' . $subject['subject_code'],
+            'documentTitle' => 'Class List / Grade Sheet',
+            'printedAt' => date('F j, Y g:i A'),
+            'autoPrint' => false,
+            'subject' => $subject,
+            'students' => $students,
+            'facultyName' => session()->get('full_name'),
+        ]);
+    }
+
     public function updateGrade($subjectId = null)
     {
         $subjects = new SubjectModel();

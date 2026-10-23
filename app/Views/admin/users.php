@@ -1,7 +1,7 @@
 <?= view('layouts/header', get_defined_vars()) ?>
 
 <div>
-    <p class="text-muted">Create and review admin, teacher, and student accounts.</p>
+    <p class="text-muted">Create and review admin, teacher, and student accounts. The full student directory is on the <a href="<?= site_url('admin/students') ?>">Students</a> page.</p>
 
     <?php if ($saved): ?><div class="alert alert-success py-2"><?= esc($saved) ?></div><?php endif; ?>
     <?php if ($error): ?><div class="alert alert-danger py-2"><?= esc($error) ?></div><?php endif; ?>
