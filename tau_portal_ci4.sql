@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2026 at 03:01 PM
+-- Generation Time: Oct 24, 2026 at 04:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1294,7 +1294,14 @@ INSERT INTO `activity_logs` (`id`, `user_id`, `username`, `action`, `details`, `
 (1239, 1, 'admin1', 'DATABASE_EXPORTED', 'Downloaded SQL backup containing 8 tables', 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', '41f4615ef37a1e45d43a4c089cad835b7060d89da182691aed1c88e2f4b491f9', 'b0ffe3449ad17e60b49bf9826a688e45fcdafa3056ac8c710d351da644717efc', '2026-10-24 11:10:22'),
 (1240, 1, 'admin1', 'ACCOUNT_UPDATED', 'Updated student account (user #4)', 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', 'b0ffe3449ad17e60b49bf9826a688e45fcdafa3056ac8c710d351da644717efc', 'a222826e81ae09eb9ef57a9d3100dddeb17eb491cde018ac8a8131365315e05a', '2026-10-24 11:19:45'),
 (1241, 2, 'teacher1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', 'a222826e81ae09eb9ef57a9d3100dddeb17eb491cde018ac8a8131365315e05a', 'd1c11e125441783d176561c06a7341deb8355b3ba280b738224278d4dfeec99c', '2026-10-24 11:24:32'),
-(1242, 1, 'admin1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', 'd1c11e125441783d176561c06a7341deb8355b3ba280b738224278d4dfeec99c', '4db0be46bf1015e63f2e48d6675ce30ef5abff550baecc23c755a1af90464ead', '2026-10-24 13:00:47');
+(1242, 1, 'admin1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36', 'd1c11e125441783d176561c06a7341deb8355b3ba280b738224278d4dfeec99c', '4db0be46bf1015e63f2e48d6675ce30ef5abff550baecc23c755a1af90464ead', '2026-10-24 13:00:47'),
+(1243, 4, '2023100220', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', '4db0be46bf1015e63f2e48d6675ce30ef5abff550baecc23c755a1af90464ead', 'c3308d75bd4b1052b080019326052bdeff59a9afa0240828bc56ae829b59ca03', '2026-10-24 21:05:31'),
+(1244, 4, '2023100220', 'LOGOUT', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'c3308d75bd4b1052b080019326052bdeff59a9afa0240828bc56ae829b59ca03', 'a950b2356f482eded1af1fd7eb42dbac35531c3f18cef623f255e06bd3a45ead', '2026-10-24 22:11:26'),
+(1245, 1, 'admin1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'a950b2356f482eded1af1fd7eb42dbac35531c3f18cef623f255e06bd3a45ead', '6c4379efc03e225a421028ae7e4883fdbe2450e4bf0ccbb5999cb18eace50c8d', '2026-10-24 22:11:34'),
+(1246, 1, 'admin1', 'LOGOUT', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', '6c4379efc03e225a421028ae7e4883fdbe2450e4bf0ccbb5999cb18eace50c8d', 'c93eca16edc9567020f95efc2d0884ecbbc15496e9847c1f95f2ee84fb4c9a9d', '2026-10-24 22:12:50'),
+(1247, 4, '2023100220', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'c93eca16edc9567020f95efc2d0884ecbbc15496e9847c1f95f2ee84fb4c9a9d', 'e348946c14a8a6e8c91b9c58c4ee28ff13e8ba316f247ba90cda246357ef0584', '2026-10-24 22:12:55'),
+(1248, 4, '2023100220', 'LOGOUT', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'e348946c14a8a6e8c91b9c58c4ee28ff13e8ba316f247ba90cda246357ef0584', 'adb9d7eec158e6c82bbc35cff46bc4414b12ed30b4051f90c68de500efd1ef73', '2026-10-24 22:14:28'),
+(1249, 1, 'admin1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'adb9d7eec158e6c82bbc35cff46bc4414b12ed30b4051f90c68de500efd1ef73', '2c32fce4904e941b156eb3970f0e0d575d6b090b79e0ea43e1de608c07a7ae94', '2026-10-24 22:14:36');
 
 -- --------------------------------------------------------
 
@@ -1640,7 +1647,11 @@ INSERT INTO `migrations` (`id`, `version`, `class`, `group`, `namespace`, `time`
 (11, '2026-10-24-000005', 'App\\Database\\Migrations\\AddEmployeeNumbers', 'default', 'App', 1792784792, 6),
 (12, '2026-10-24-000006', 'App\\Database\\Migrations\\ChangeAccountNumberYearTo2023', 'default', 'App', 1792785154, 7),
 (13, '2026-10-24-000007', 'App\\Database\\Migrations\\AddProgramToUsers', 'default', 'App', 1792809877, 8),
-(14, '2026-10-24-000008', 'App\\Database\\Migrations\\StandardizeCETCollegeName', 'default', 'App', 1792814138, 9);
+(14, '2026-10-24-000008', 'App\\Database\\Migrations\\StandardizeCETCollegeName', 'default', 'App', 1792814138, 9),
+(15, '2026-10-24-000009', 'App\\Database\\Migrations\\CreateTeacherEvaluations', 'default', 'App', 1792847048, 10),
+(16, '2026-10-24-000010', 'App\\Database\\Migrations\\AddTeacherEvaluationComments', 'default', 'App', 1792847317, 11),
+(17, '2026-10-24-000011', 'App\\Database\\Migrations\\ScopeTeacherEvaluationsToSchoolYear', 'default', 'App', 1792847914, 12),
+(18, '2026-10-24-000012', 'App\\Database\\Migrations\\ScopeTeacherEvaluationsToSemester', 'default', 'App', 1792848445, 13);
 
 -- --------------------------------------------------------
 
@@ -1745,6 +1756,72 @@ INSERT INTO `subjects` (`id`, `subject_code`, `subject_name`, `units`, `year_lev
 (62, 'IT412', 'Seminars and Fieldtrips', 1, 4, '2nd', 13),
 (63, 'IT413', 'Comprehensive Examination Review', 3, 4, '2nd', 14),
 (64, 'IT414', 'Special Topics in IT', 3, 4, '2nd', 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teacher_evaluations`
+--
+
+CREATE TABLE `teacher_evaluations` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `student_id` int(11) UNSIGNED NOT NULL,
+  `teacher_id` int(11) UNSIGNED NOT NULL,
+  `school_year` varchar(9) NOT NULL,
+  `semester` varchar(3) NOT NULL DEFAULT '1st',
+  `submitted_at` datetime NOT NULL,
+  `strengths` text DEFAULT NULL COMMENT 'What are the teacher strengths?',
+  `improvements` text DEFAULT NULL COMMENT 'What improvements would you recommend?',
+  `additional_comments` text DEFAULT NULL COMMENT 'Additional comments or suggestions'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `teacher_evaluations`
+--
+
+INSERT INTO `teacher_evaluations` (`id`, `student_id`, `teacher_id`, `school_year`, `semester`, `submitted_at`, `strengths`, `improvements`, `additional_comments`) VALUES
+(1, 4, 15, '2026-2027', '1st', '2026-10-24 22:14:00', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teacher_evaluation_scores`
+--
+
+CREATE TABLE `teacher_evaluation_scores` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `evaluation_id` int(11) UNSIGNED NOT NULL,
+  `criterion` varchar(50) NOT NULL,
+  `score` tinyint(1) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `teacher_evaluation_scores`
+--
+
+INSERT INTO `teacher_evaluation_scores` (`id`, `evaluation_id`, `criterion`, `score`) VALUES
+(1, 1, 'clear_explanations', 5),
+(2, 1, 'subject_mastery', 5),
+(3, 1, 'logical_organization', 5),
+(4, 1, 'teaching_strategies', 5),
+(5, 1, 'practical_applications', 5),
+(6, 1, 'class_timing', 5),
+(7, 1, 'class_time', 5),
+(8, 1, 'learning_environment', 5),
+(9, 1, 'student_participation', 5),
+(10, 1, 'class_expectations', 5),
+(11, 1, 'assessment_alignment', 5),
+(12, 1, 'grading_criteria', 5),
+(13, 1, 'constructive_feedback', 5),
+(14, 1, 'fair_grading', 5),
+(15, 1, 'improvement_opportunities', 5),
+(16, 1, 'respect_and_fairness', 5),
+(17, 1, 'professional_conduct', 5),
+(18, 1, 'academic_assistance', 5),
+(19, 1, 'student_responses', 5),
+(20, 1, 'student_development', 5),
+(21, 1, 'learning_facilitation', 5),
+(22, 1, 'instruction_satisfaction', 5);
 
 -- --------------------------------------------------------
 
@@ -1864,6 +1941,22 @@ ALTER TABLE `subjects`
   ADD KEY `teacher_id` (`teacher_id`);
 
 --
+-- Indexes for table `teacher_evaluations`
+--
+ALTER TABLE `teacher_evaluations`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_teacher_eval_student_teacher_term` (`student_id`,`teacher_id`,`school_year`,`semester`),
+  ADD KEY `teacher_id` (`teacher_id`),
+  ADD KEY `idx_teacher_evaluations_student_id` (`student_id`);
+
+--
+-- Indexes for table `teacher_evaluation_scores`
+--
+ALTER TABLE `teacher_evaluation_scores`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_teacher_eval_criterion` (`evaluation_id`,`criterion`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1880,7 +1973,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1243;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1250;
 
 --
 -- AUTO_INCREMENT for table `announcements`
@@ -1898,13 +1991,25 @@ ALTER TABLE `grades`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+
+--
+-- AUTO_INCREMENT for table `teacher_evaluations`
+--
+ALTER TABLE `teacher_evaluations`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `teacher_evaluation_scores`
+--
+ALTER TABLE `teacher_evaluation_scores`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1934,6 +2039,19 @@ ALTER TABLE `grades`
 --
 ALTER TABLE `subjects`
   ADD CONSTRAINT `subjects_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `teacher_evaluations`
+--
+ALTER TABLE `teacher_evaluations`
+  ADD CONSTRAINT `fk_teacher_eval_student` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_teacher_eval_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `teacher_evaluation_scores`
+--
+ALTER TABLE `teacher_evaluation_scores`
+  ADD CONSTRAINT `fk_teacher_eval_score_evaluation` FOREIGN KEY (`evaluation_id`) REFERENCES `teacher_evaluations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
