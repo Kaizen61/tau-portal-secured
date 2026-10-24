@@ -39,6 +39,7 @@ $fullName = session()->get('full_name');
                 <a class="<?= ($activePage ?? '') === 'subjects' ? 'active' : '' ?>" href="<?= site_url('admin/subjects') ?>">Manage Subjects</a>
                 <a class="<?= ($activePage ?? '') === 'add-account' ? 'active' : '' ?>" href="<?= site_url('admin/add-account') ?>">Add Account</a>
                 <a class="<?= ($activePage ?? '') === 'announcements' ? 'active' : '' ?>" href="<?= site_url('admin/announcements') ?>">Announcements</a>
+                <a class="<?= ($activePage ?? '') === 'evaluations' ? 'active' : '' ?>" href="<?= site_url('admin/teacher-evaluations') ?>">Teacher Evaluations</a>
                 <a class="<?= ($activePage ?? '') === 'audit' ? 'active' : '' ?>" href="<?= site_url('admin/audit-trail') ?>">System Activity Logs</a>
                 <a class="<?= ($activePage ?? '') === 'admins' ? 'active' : '' ?>" href="<?= site_url('admin/admins') ?>">Admin Profiles</a>
                 <a class="<?= ($activePage ?? '') === 'profile' ? 'active' : '' ?>" href="<?= site_url('admin/profile') ?>">My Profile</a>
@@ -51,6 +52,7 @@ $fullName = session()->get('full_name');
                 <a class="<?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= site_url('student/dashboard') ?>">Dashboard</a>
                 <a class="<?= ($activePage ?? '') === 'courses' ? 'active' : '' ?>" href="<?= site_url('student/courses') ?>">Courses</a>
                 <a class="<?= ($activePage ?? '') === 'grades' ? 'active' : '' ?>" href="<?= site_url('student/grades') ?>">Grades</a>
+                <a class="<?= ($activePage ?? '') === 'teacher-evaluations' ? 'active' : '' ?>" href="<?= site_url('student/teacher-evaluations') ?>">Teacher Evaluations</a>
                 <a class="<?= ($activePage ?? '') === 'announcements' ? 'active' : '' ?>" href="<?= site_url('student/announcements') ?>">Announcements</a>
                 <a class="<?= ($activePage ?? '') === 'profile' ? 'active' : '' ?>" href="<?= site_url('student/profile') ?>">My Profile</a>
             <?php endif; ?>

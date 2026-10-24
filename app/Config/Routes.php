@@ -41,6 +41,7 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('audit-trail/download-database', 'Admin\AuditController::downloadDatabase');
     $routes->get('audit-trail/poll', 'Admin\AuditController::poll');
     $routes->get('audit-trail/export', 'Admin\AuditController::export');
+    $routes->get('teacher-evaluations', 'Admin\TeacherEvaluationController::index');
     $routes->get('dashboard/poll', 'Admin\DashboardController::poll');
     $routes->get('announcements', 'Admin\AnnouncementController::index');
     $routes->post('announcements', 'Admin\AnnouncementController::create');
@@ -74,6 +75,8 @@ $routes->group('student', ['filter' => 'role:student'], function ($routes) {
     $routes->get('profile/print', 'Student\ProfileController::printRecord');
     $routes->post('profile', 'Student\ProfileController::update');
     $routes->post('profile/password', 'Student\ProfileController::changePassword');
+    $routes->get('teacher-evaluations', 'Student\TeacherEvaluationController::index');
+    $routes->post('teacher-evaluations', 'Student\TeacherEvaluationController::submit');
     $routes->get('announcements', 'Student\StaticController::announcements');
 });
 

@@ -15,6 +15,7 @@ CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) DEFAULT NULL,
     student_number VARCHAR(10) DEFAULT NULL,
+    employee_id VARCHAR(10) DEFAULT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('student', 'teacher', 'admin') NOT NULL,
     full_name VARCHAR(100) NOT NULL,
@@ -24,7 +25,8 @@ CREATE TABLE users (
     locked_until DATETIME DEFAULT NULL,
     created_at DATETIME DEFAULT NULL,
     UNIQUE KEY uniq_username (username),
-    UNIQUE KEY uniq_student_number (student_number)
+    UNIQUE KEY uniq_student_number (student_number),
+    UNIQUE KEY uniq_employee_id (employee_id)
 );
 
 -- ------------------------------------------------------------
@@ -52,6 +54,30 @@ CREATE TABLE grades (
     grade DECIMAL(4,2) DEFAULT NULL,
     FOREIGN KEY (student_id) REFERENCES users(id),
     FOREIGN KEY (subject_id) REFERENCES subjects(id)
+);
+
+-- ------------------------------------------------------------
+-- teacher evaluations
+-- One immutable evaluation per enrolled student/teacher pair.
+-- ------------------------------------------------------------
+CREATE TABLE teacher_evaluations (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    student_id INT UNSIGNED NOT NULL,
+    teacher_id INT UNSIGNED NOT NULL,
+    submitted_at DATETIME NOT NULL,
+    UNIQUE KEY uq_teacher_eval_student_teacher (student_id, teacher_id),
+    KEY idx_teacher_eval_teacher (teacher_id),
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE teacher_evaluation_scores (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    evaluation_id INT UNSIGNED NOT NULL,
+    criterion VARCHAR(50) NOT NULL,
+    score TINYINT UNSIGNED NOT NULL,
+    UNIQUE KEY uq_teacher_eval_criterion (evaluation_id, criterion),
+    FOREIGN KEY (evaluation_id) REFERENCES teacher_evaluations(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- ------------------------------------------------------------
