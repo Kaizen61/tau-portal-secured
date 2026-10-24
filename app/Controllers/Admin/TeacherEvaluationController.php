@@ -49,6 +49,7 @@ class TeacherEvaluationController extends BaseController
             'pageHeading' => 'Teacher Evaluations',
             'schoolYear' => SchoolYear::current(),
             'criteria' => TeacherEvaluationCriteria::CRITERIA,
+            'criteriaSections' => TeacherEvaluationCriteria::SECTIONS,
             'commentFields' => TeacherEvaluationCriteria::COMMENT_FIELDS,
             'teachers' => $model->adminReport($filters),
             'colleges' => $colleges,

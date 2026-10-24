@@ -35,38 +35,59 @@
     <?php if (empty($teacher['evaluations'])): ?>
         <p>No evaluations submitted for this teacher under the selected filters.</p>
     <?php else: ?>
-        <table class="print-table teacher-evaluation-print-table">
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    <th>Student No.</th>
-                    <th>Semester</th>
-                    <?php foreach ($criteria as $label): ?><th><?= esc($label) ?></th><?php endforeach; ?>
-                    <th>Total / Average</th>
-                    <th>Submitted</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($teacher['evaluations'] as $evaluation): ?>
-                <?php $total = array_sum($evaluation['scores']); ?>
-                <tr>
-                    <td><?= esc($evaluation['student_name']) ?></td>
-                    <td><?= esc($evaluation['student_number'] ?? '—') ?></td>
-                    <td><?= esc($evaluation['semester']) ?></td>
-                    <?php foreach ($criteria as $key => $label): ?><td><?= esc($evaluation['scores'][$key] ?? '—') ?></td><?php endforeach; ?>
-                    <td><?= count($evaluation['scores']) ?>/<?= count($criteria) ?> rated<br><?= $total ?>/<?= count($criteria) * 5 ?> points<br><?= number_format($total / count($criteria), 2) ?>/5</td>
-                    <td><?= esc(date('M j, Y g:i A', strtotime($evaluation['submitted_at']))) ?></td>
-                </tr>
-                <?php foreach ($commentFields as $field => $label): ?>
-                    <?php if (!empty($evaluation[$field])): ?>
-                        <tr>
-                            <td colspan="<?= count($criteria) + 5 ?>"><strong><?= esc($evaluation['student_name']) ?> — <?= esc($label) ?></strong><br><?= nl2br(esc($evaluation[$field])) ?></td>
-                        </tr>
-                    <?php endif; ?>
+        <?php
+        $semestersToPrint = in_array($filters['semester'], ['1st', '2nd'], true)
+            ? [$filters['semester']]
+            : ['1st', '2nd'];
+        ?>
+        <?php foreach ($semestersToPrint as $semester): ?>
+            <?php
+            $semesterEvaluations = array_values(array_filter(
+                $teacher['evaluations'],
+                static fn (array $evaluation): bool => $evaluation['semester'] === $semester
+            ));
+            if ($semesterEvaluations === []) {
+                continue;
+            }
+
+            $aspectTotals = [];
+            $aspectRatingCounts = [];
+            $overallTotal = 0;
+            $overallRatingCount = 0;
+            foreach ($criteriaSections as $aspect => $aspectCriteria) {
+                $aspectTotals[$aspect] = 0;
+                $aspectRatingCounts[$aspect] = 0;
+                foreach ($aspectCriteria as $criterion => $label) {
+                    foreach ($semesterEvaluations as $evaluation) {
+                        if (isset($evaluation['scores'][$criterion])) {
+                            $aspectTotals[$aspect] += $evaluation['scores'][$criterion];
+                            $aspectRatingCounts[$aspect]++;
+                        }
+                    }
+                }
+                $overallTotal += $aspectTotals[$aspect];
+                $overallRatingCount += $aspectRatingCounts[$aspect];
+            }
+            ?>
+            <h3><?= esc($semester) ?> Semester</h3>
+            <p>Based on <?= count($semesterEvaluations) ?> student evaluation<?= count($semesterEvaluations) === 1 ? '' : 's' ?>.</p>
+            <table class="print-table teacher-evaluation-summary-table">
+                <thead><tr><th>Evaluation Aspect</th><th>Average Score / 5</th></tr></thead>
+                <tbody>
+                <?php foreach ($criteriaSections as $aspect => $aspectCriteria): ?>
+                    <?php $ratingCount = $aspectRatingCounts[$aspect]; ?>
+                    <tr>
+                        <td><?= esc($aspect) ?></td>
+                        <td><?= $ratingCount > 0 ? number_format($aspectTotals[$aspect] / $ratingCount, 2) : '—' ?></td>
+                    </tr>
                 <?php endforeach; ?>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+                <tr>
+                    <th>Total Average</th>
+                    <th><?= $overallRatingCount > 0 ? number_format($overallTotal / $overallRatingCount, 2) : '—' ?> / 5</th>
+                </tr>
+                </tbody>
+            </table>
+        <?php endforeach; ?>
     <?php endif; ?>
 <?php endforeach; ?>
 <?php endif; ?>

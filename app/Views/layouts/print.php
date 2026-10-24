@@ -7,7 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="<?= base_url('assets/css/print.css') ?>" rel="stylesheet">
     <style>
-        @page { size: A4 <?= esc($printOrientation ?? 'portrait') ?>; margin: 0; }
+        @page {
+            size: A4 <?= esc($printOrientation ?? 'portrait') ?>;
+            margin: 12mm;
+            @top-left { content: ""; }
+            @top-center { content: ""; }
+            @top-right { content: ""; }
+            @bottom-left { content: ""; }
+            @bottom-center { content: ""; }
+            @bottom-right { content: ""; }
+        }
     </style>
     <style>
         @media print {
