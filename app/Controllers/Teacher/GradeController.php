@@ -7,6 +7,7 @@ use App\Models\SubjectModel;
 use App\Models\UserModel;
 use App\Models\GradeModel;
 use App\Libraries\ActivityLogger;
+use App\Libraries\SchoolYear;
 
 class GradeController extends BaseController
 {
@@ -22,9 +23,11 @@ class GradeController extends BaseController
             'eyebrow' => 'Faculty',
             'pageHeading' => 'Input a Grade Record',
             'subjects' => $subjects->where('teacher_id', $teacherId)->findAll(),
-            'students' => $users->where('role', 'student')->orderBy('full_name')->findAll(),
+            'students' => $users->where('role', 'student')->whereActive()->orderBy('full_name')->findAll(),
             'saved' => session()->getFlashdata('saved'),
             'error' => session()->getFlashdata('error'),
+            'schoolYears' => SchoolYear::available(),
+            'currentSchoolYear' => SchoolYear::current(),
         ];
         return view('teacher/grade_input', $data);
     }
@@ -38,7 +41,7 @@ class GradeController extends BaseController
         $rules = [
             'student_id' => 'required|is_natural_no_zero',
             'subject_id' => 'required|is_natural_no_zero',
-            'school_year' => 'required|regex_match[/^\d{4}-\d{4}$/]',
+            'school_year' => 'required',
             'grade' => 'permit_empty|decimal|greater_than_equal_to[0]|less_than_equal_to[100]',
         ];
         if (!$this->validate($rules)) {
@@ -54,13 +57,31 @@ class GradeController extends BaseController
             return redirect()->to('teacher/grade-input');
         }
 
+        $studentUsers = new UserModel();
+        if (!$studentUsers->where('id', $this->request->getPost('student_id'))
+            ->where('role', 'student')->whereActive()->first()) {
+            session()->setFlashdata('error', 'Select an active student for the grade record.');
+            return redirect()->to('teacher/grade-input');
+        }
+
+        $studentId = (int) $this->request->getPost('student_id');
+        $schoolYear = trim((string) $this->request->getPost('school_year'));
+        if (!SchoolYear::isAvailable($schoolYear)) {
+            session()->setFlashdata('error', 'Select a valid school year.');
+            return redirect()->to('teacher/grade-input');
+        }
+        if ($grades->enrollmentExists($studentId, (int) $subjectId, $schoolYear)) {
+            session()->setFlashdata('error', 'This student already has a record for that subject and school year.');
+            return redirect()->to('teacher/grade-input');
+        }
+
         $db = \Config\Database::connect();
         $db->transStart();
 
         $id = $grades->insert([
-            'student_id' => $this->request->getPost('student_id'),
+            'student_id' => $studentId,
             'subject_id' => $subjectId,
-            'school_year' => $this->request->getPost('school_year'),
+            'school_year' => $schoolYear,
             'grade' => $this->request->getPost('grade'),
         ]);
 

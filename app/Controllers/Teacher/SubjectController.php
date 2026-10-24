@@ -29,7 +29,7 @@ class SubjectController extends BaseController
             return $this->fail('That subject was not found, or is not assigned to you.', 404);
         }
 
-        $students = $grades->select('grades.id as grade_row_id, users.full_name, users.year_level, grades.school_year, grades.grade')
+        $students = $grades->select('grades.id as grade_row_id, users.full_name, users.year_level, users.section, grades.school_year, grades.grade')
             ->join('users', 'users.id = grades.student_id')
             ->where('subject_id', $subjectId)
             ->orderBy('grades.school_year', 'DESC')->orderBy('users.full_name')
@@ -53,6 +53,7 @@ class SubjectController extends BaseController
         $subjects = new SubjectModel();
         $grades = new GradeModel();
         $teacherId = session()->get('user_id');
+        $includeGrades = $this->request->getGet('include_grades') !== '0';
 
         if (!$subjectId || !is_numeric($subjectId)) {
             return $this->fail('No subject was specified.');
@@ -65,19 +66,27 @@ class SubjectController extends BaseController
             return $this->fail('That subject was not found, or is not assigned to you.', 404);
         }
 
-        $students = $grades->select('users.full_name, users.student_number, users.year_level, grades.school_year, grades.grade')
+        $columns = 'users.full_name, users.student_number, users.year_level, users.section, grades.school_year';
+        if ($includeGrades) {
+            $columns .= ', grades.grade';
+        }
+        $students = $grades->select($columns)
             ->join('users', 'users.id = grades.student_id')
             ->where('subject_id', $subjectId)
             ->orderBy('users.full_name')
             ->findAll();
+        $schoolYears = array_values(array_unique(array_filter(array_column($students, 'school_year'))));
 
         return view('teacher/print_class_list', [
             'printTitle' => 'Class List - ' . $subject['subject_code'],
             'documentTitle' => 'Class List / Grade Sheet',
+            'printDocumentClass' => 'signatory-print-sheet',
             'printedAt' => date('F j, Y g:i A'),
             'autoPrint' => false,
             'subject' => $subject,
             'students' => $students,
+            'schoolYears' => $schoolYears,
+            'includeGrades' => $includeGrades,
             'facultyName' => session()->get('full_name'),
         ]);
     }

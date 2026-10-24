@@ -51,6 +51,10 @@ body {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
 }
 
+.print-sheet-landscape {
+    width: 297mm;
+}
+
 .print-letterhead {
     display: flex;
     gap: 1rem;
@@ -119,6 +123,64 @@ body {
 .print-table td {
     border-bottom: 1px solid #d9d4cb;
     padding: 0.42rem 0.55rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    vertical-align: top;
+}
+
+.activity-print-table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 0.78rem;
+}
+
+.activity-print-table th:nth-child(1),
+.activity-print-table td:nth-child(1) { width: 13%; }
+.activity-print-table th:nth-child(2),
+.activity-print-table td:nth-child(2) { width: 11%; }
+.activity-print-table th:nth-child(3),
+.activity-print-table td:nth-child(3) { width: 13%; }
+.activity-print-table th:nth-child(4),
+.activity-print-table td:nth-child(4) { width: 8%; }
+.activity-print-table th:nth-child(5),
+.activity-print-table td:nth-child(5) { width: 25%; }
+.activity-print-table th:nth-child(6),
+.activity-print-table td:nth-child(6) { width: 10%; }
+.activity-print-table th:nth-child(7),
+.activity-print-table td:nth-child(7) { width: 20%; }
+
+.activity-print-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.class-list-print-table {
+    table-layout: fixed;
+    font-size: 0.8rem;
+}
+
+.class-list-print-table th,
+.class-list-print-table td {
+    overflow-wrap: anywhere;
+    vertical-align: top;
+    text-align: center;
+}
+
+.class-list-print-table th:first-child,
+.class-list-print-table td:first-child {
+    text-align: center;
+}
+
+.class-list-print-table.without-grades th,
+.class-list-print-table.without-grades td {
+    padding-inline: 0.7rem;
+    vertical-align: middle;
+}
+
+@media print {
+    .class-list-print-table { font-size: 8pt; }
+    .class-list-print-table th,
+    .class-list-print-table td { padding: 4pt 6pt; }
 }
 
 .print-table tfoot td {
@@ -156,11 +218,33 @@ body {
     color: var(--uni-muted);
 }
 
+.cor-validity-notice {
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .sign-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1.5rem;
     margin-top: 2.4rem;
+}
+
+.signatory-print-sheet {
+    display: flex;
+    flex-direction: column;
+    min-height: 297mm;
+}
+
+.signatory-print-sheet .sign-row {
+    margin-top: auto;
+    padding-top: 2.4rem;
+}
+
+.signatory-print-sheet .print-footer {
+    display: none;
 }
 
 .sign-block {
@@ -185,11 +269,14 @@ body {
 @media print {
     body { background: #fff; }
     .no-print { display: none !important; }
+    .activity-print-table { font-size: 7pt; }
+    .activity-print-table th,
+    .activity-print-table td { padding: 2.5pt 3pt; }
+    .activity-print-table thead { display: table-header-group; }
     .print-sheet {
         margin: 0;
         width: auto;
         box-shadow: none;
-        padding: 0;
+        padding: 12mm;
     }
-    @page { size: A4 portrait; margin: 12mm; }
 }

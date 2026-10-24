@@ -1,81 +1,67 @@
 <?= view('layouts/header', get_defined_vars()) ?>
 
 <div>
-    <p class="text-muted">Create and review admin, teacher, and student accounts. The full student directory is on the <a href="<?= site_url('admin/students') ?>">Students</a> page.</p>
+    <p class="text-muted mb-2">Manage teacher accounts. Add student, teacher, and admin accounts from Add Account.</p>
+    <div class="student-directory-toolbar mb-3">
+        <form method="GET" class="student-directory-filters">
+            <input type="text" name="q" class="form-control form-control-sm" style="min-width:220px;" placeholder="Search name, username, college, or date (e.g. Aug or August 9, 2026)" value="<?= esc($q ?? '') ?>">
+            <button type="submit" class="btn btn-sm btn-university">Search</button>
+            <a href="<?= site_url('admin/users') ?>" class="btn btn-sm btn-university clear-filter-button">Clear</a>
+        </form>
+        <div class="student-directory-actions">
+            <a href="<?= site_url('admin/add-account') ?>" class="btn btn-sm btn-university">Add Account</a>
+            <a href="<?= site_url('admin/users/print') . '?' . http_build_query(array_filter(['q' => $q], static fn ($value): bool => $value !== '')) ?>" target="_blank" class="btn btn-sm btn-university">Print Directory</a>
+        </div>
+    </div>
 
     <?php if ($saved): ?><div class="alert alert-success py-2"><?= esc($saved) ?></div><?php endif; ?>
     <?php if ($error): ?><div class="alert alert-danger py-2"><?= esc($error) ?></div><?php endif; ?>
 
-    <div class="row">
-        <div class="col-lg-7">
-            <div class="card portal-card mb-4">
-                <div class="card-header bg-white"><h5 class="mb-0">All Accounts</h5></div>
-                <div class="card-body p-0">
-                    <table class="table table-portal table-striped mb-0">
-                        <thead><tr><th>Name</th><th>Username / Student No.</th><th>Role</th><th>College</th></tr></thead>
-                        <tbody>
-                        <?php foreach ($users as $u): ?>
-                            <tr>
-                                <td><?= esc($u['full_name']) ?></td>
-                                <td><?= esc($u['username'] ?? $u['student_number'] ?? '') ?></td>
-                                <td><span class="badge badge-role-<?= esc($u['role']) ?>"><?= esc(ucfirst($u['role'])) ?></span></td>
-                                <td class="small text-muted"><?= esc($u['college'] ?? '') ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="card portal-card">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Teacher Directory</h5>
+            <span class="small text-muted"><?= count($users) ?> teacher<?= count($users) === 1 ? '' : 's' ?></span>
         </div>
-
-        <div class="col-lg-5">
-            <div class="card portal-card">
-                <div class="card-header bg-white"><h5 class="mb-0">Add New Account</h5></div>
-                <div class="card-body">
-                    <form method="POST" action="<?= site_url('admin/users') ?>">
-                        <?= csrf_field() ?>
-                        <div class="mb-3"><label class="form-label">Full Name</label>
-                            <input type="text" name="full_name" class="form-control" required></div>
-                        <div class="mb-3"><label class="form-label">Role</label>
-                            <select name="role" class="form-select" id="roleSelect" onchange="toggleRoleFields()">
-                                <option value="student">Student</option>
-                                <option value="teacher">Teacher</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        <div class="mb-3" id="usernameField">
-                            <label class="form-label">Username</label>
-                            <input type="text" name="username" class="form-control">
-                        </div>
-                        <div class="mb-3" id="studentNumberField" style="display:none;">
-                            <label class="form-label">Student Number</label>
-                            <input type="text" name="student_number" class="form-control" placeholder="e.g. 2024100100" maxlength="10">
-                            <small class="text-muted">Format: YYYYNNNNNN. Year cannot be later than the current year.</small>
-                        </div>
-                        <div class="mb-3"><label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" required minlength="6"></div>
-                        <div class="mb-3"><label class="form-label">College / Office</label>
-                            <input type="text" name="college" class="form-control"></div>
-                        <div class="mb-3" id="yearLevelField" style="display:none;">
-                            <label class="form-label">Year Level</label>
-                            <input type="text" name="year_level" class="form-control" placeholder="e.g. 3rd Year">
-                        </div>
-                        <button type="submit" class="btn btn-university w-100">Create Account</button>
-                    </form>
-                </div>
-            </div>
+        <div class="card-body p-0">
+            <table class="table table-portal table-striped mb-0">
+                <thead>
+                    <tr><th>Employee ID</th><th>Full Name</th><th>Username</th><th>College / Office</th><th>Created</th><th>Status</th><th class="directory-actions-heading">Actions</th></tr>
+                </thead>
+                <tbody>
+                <?php if (empty($users)): ?>
+                    <tr><td colspan="7" class="text-muted">No teachers found.</td></tr>
+                <?php else: ?>
+                    <?php foreach ($users as $u): ?>
+                    <?php $isActive = (int) ($u['is_active'] ?? 1) === 1; ?>
+                    <tr>
+                        <td><?= esc($u['employee_id'] ?? '—') ?></td>
+                        <td><?= esc($u['full_name']) ?></td>
+                        <td><?= esc($u['username'] ?? '') ?></td>
+                        <td><?= esc($u['college'] ?? '') ?></td>
+                        <td class="small text-muted"><?= !empty($u['created_at']) ? esc(date('M j, Y', strtotime($u['created_at']))) : '—' ?></td>
+                        <td><span class="badge <?= $isActive ? 'text-bg-success' : 'text-bg-secondary' ?>"><?= $isActive ? 'Active' : 'Inactive' ?></span></td>
+                        <td class="directory-actions-cell">
+                            <div class="directory-row-actions">
+                            <a href="<?= site_url('admin/users/' . $u['id'] . '/edit') ?>" class="btn btn-sm btn-outline-university directory-edit-button">Edit</a>
+                            <button
+                                type="button"
+                                class="btn btn-sm <?= $isActive ? 'btn-outline-danger' : 'btn-outline-success' ?> directory-status-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#accountStatusModal"
+                                data-user-name="<?= esc($u['full_name'], 'attr') ?>"
+                                data-action="<?= site_url('admin/users/' . $u['id'] . '/' . ($isActive ? 'deactivate' : 'activate')) ?>"
+                                data-next-status="<?= $isActive ? 'deactivate' : 'reactivate' ?>"
+                            ><?= $isActive ? 'Deactivate' : 'Reactivate' ?></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
-<script>
-function toggleRoleFields() {
-    const isStudent = document.getElementById('roleSelect').value === 'student';
-    document.getElementById('usernameField').style.display = isStudent ? 'none' : 'block';
-    document.getElementById('studentNumberField').style.display = isStudent ? 'block' : 'none';
-    document.getElementById('yearLevelField').style.display = isStudent ? 'block' : 'none';
-}
-toggleRoleFields();
-</script>
-
+<?= view('admin/account_status_modal') ?>
 <?= view('layouts/footer') ?>

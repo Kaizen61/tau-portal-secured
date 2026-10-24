@@ -16,6 +16,7 @@
                 <option value="1st" <?= $filterSem === '1st' ? 'selected' : '' ?>>1st Semester</option>
                 <option value="2nd" <?= $filterSem === '2nd' ? 'selected' : '' ?>>2nd Semester</option>
             </select>
+            <a href="<?= site_url('student/courses') ?>" class="btn btn-sm btn-outline-university clear-filter-button">Clear</a>
         </form>
     </div>
 
@@ -24,17 +25,18 @@
     <?php endif; ?>
 
     <?php foreach ($groups as $group): ?>
-    <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+    <section class="card portal-card course-semester-group mb-4" aria-label="<?= esc(($yearLabels[$group['year_level']] ?? '') . ' ' . $group['semester'] . ' Semester, School Year ' . $group['school_year']) ?>">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2 px-3 py-3">
             <div>
-                <h5 class="mb-0"><?= esc($yearLabels[$group['year_level']] ?? '') ?> &middot; <?= esc($group['semester']) ?> Semester</h5>
-                <span class="text-muted small">School Year <?= esc($group['school_year']) ?> &middot; <?= (int) $group['total_units'] ?> units</span>
+                <h5 class="mb-1"><?= esc($yearLabels[$group['year_level']] ?? '') ?> &middot; <?= esc($group['semester']) ?> Semester</h5>
+                <span class="text-muted small">School Year <?= esc($group['school_year']) ?> <span class="mx-1">&middot;</span> <?= (int) $group['total_units'] ?> units</span>
             </div>
             <a class="btn btn-sm btn-outline-university no-print" target="_blank"
                href="<?= site_url('student/courses/print') ?>?school_year=<?= urlencode($group['school_year']) ?>&semester=<?= urlencode($group['semester']) ?>">
                 Print Certificate of Registration
             </a>
         </div>
+        <div class="card-body p-3">
         <div class="row g-3">
             <?php foreach ($group['subjects'] as $row): ?>
             <div class="col-md-6">
@@ -43,15 +45,12 @@
                     <h5 class="card-title"><?= esc($row['subject_name']) ?></h5>
                     <p class="small text-muted mb-1"><?= esc($yearLabels[$row['year_level']] ?? '') ?> &middot; <?= esc($row['semester']) ?> Semester &middot; <?= esc($row['school_year']) ?></p>
                     <p class="small text-muted mb-2">Instructor: <?= esc($row['teacher_name'] ?? 'Unassigned') ?></p>
-                    <div class="border-top pt-2 mt-2">
-                        <span class="small text-muted">Course materials: </span>
-                        <span class="badge bg-secondary">No materials uploaded yet</span>
-                    </div>
                 </div></div>
             </div>
             <?php endforeach; ?>
         </div>
-    </div>
+        </div>
+    </section>
     <?php endforeach; ?>
 </div>
 

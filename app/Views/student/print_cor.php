@@ -4,6 +4,8 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
 <?= $this->extend('layouts/print') ?>
 <?= $this->section('content') ?>
 
+<p class="note cor-validity-notice">Not valid without a seal.</p>
+
 <dl class="meta-grid">
     <div>
         <dt>Student Name</dt>
@@ -12,6 +14,8 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
         <dd><?= esc($profile['student_number'] ?? '—') ?></dd>
         <dt>College</dt>
         <dd><?= esc($profile['college'] ?? '—') ?></dd>
+        <dt>Section</dt>
+        <dd><?= esc($profile['section'] ?? '—') ?></dd>
     </div>
     <div>
         <dt>Year Level</dt>
@@ -50,8 +54,6 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
         </tr>
     </tfoot>
 </table>
-
-<p class="note">This Certificate of Registration lists subjects in which the student is enrolled for the indicated term. It is not a report of grades.</p>
 
 <div class="sign-row">
     <div class="sign-block"><div class="sign-line">Student</div></div>

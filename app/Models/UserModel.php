@@ -11,8 +11,8 @@ class UserModel extends Model
     protected $useTimestamps = false;
     protected $skipValidation = true;
     protected $allowedFields = [
-        'username', 'student_number', 'password', 'role', 'full_name',
-        'college', 'year_level', 'failed_login_count', 'locked_until', 'created_at',
+        'username', 'student_number', 'employee_id', 'password', 'role', 'full_name',
+        'college', 'program', 'year_level', 'section', 'failed_login_count', 'locked_until', 'is_active', 'created_at',
     ];
 
     public function findByUsername(string $username)
@@ -23,6 +23,38 @@ class UserModel extends Model
     public function findByStudentNumber(string $studentNumber)
     {
         return $this->where('student_number', $studentNumber)->where('role', 'student')->first();
+    }
+
+    public function identifierExists(string $field, string $value, ?int $excludeId = null): bool
+    {
+        if (!in_array($field, ['username', 'student_number'], true)) {
+            throw new \InvalidArgumentException('Unsupported user identifier field.');
+        }
+
+        $sql = 'SELECT id FROM ' . $this->db->escapeIdentifiers($this->table)
+            . ' WHERE LOWER(TRIM(' . $this->db->escapeIdentifiers($field) . ')) = ?';
+        $params = [mb_strtolower(trim($value))];
+        if ($excludeId !== null) {
+            $sql .= ' AND id != ?';
+            $params[] = $excludeId;
+        }
+        $sql .= ' LIMIT 1';
+
+        return $this->db->query($sql, $params)->getNumRows() > 0;
+    }
+
+    public function hasActiveStatusColumn(): bool
+    {
+        return $this->db->fieldExists('is_active', $this->table);
+    }
+
+    public function whereActive()
+    {
+        if ($this->hasActiveStatusColumn()) {
+            $this->where('is_active', 1);
+        }
+
+        return $this;
     }
 
     /**

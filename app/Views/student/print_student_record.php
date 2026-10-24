@@ -8,7 +8,9 @@
         <dt>Student Number</dt>
         <dd><?= esc($profile['student_number'] ?? '—') ?></dd>
         <dt>College / Program</dt>
-        <dd><?= esc($profile['college'] ?? '—') ?></dd>
+        <dd><?= esc(($profile['college'] ?? '—') . (!empty($profile['program']) && isset($programNames[$profile['program']]) ? ' / ' . $profile['program'] . ' — ' . $programNames[$profile['program']] : '')) ?></dd>
+        <dt>Section</dt>
+        <dd><?= esc($profile['section'] ?? '—') ?></dd>
     </div>
     <div>
         <dt>Year Level</dt>

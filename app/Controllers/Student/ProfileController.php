@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\GradeModel;
 use App\Libraries\ActivityLogger;
+use App\Libraries\AcademicProgram;
 
 class ProfileController extends BaseController
 {
@@ -18,6 +19,7 @@ class ProfileController extends BaseController
             'eyebrow' => 'Student',
             'pageHeading' => 'My Profile',
             'profile' => $users->find(session()->get('user_id')),
+            'programNames' => array_merge(...array_values(AcademicProgram::PROGRAMS_BY_COLLEGE)),
             'saved' => session()->getFlashdata('saved'),
             'error' => session()->getFlashdata('error'),
         ];
@@ -39,9 +41,11 @@ class ProfileController extends BaseController
         return view('student/print_student_record', [
             'printTitle' => 'Student Record - TAU Student Portal',
             'documentTitle' => 'Student Record',
+            'printDocumentClass' => 'signatory-print-sheet',
             'printedAt' => date('F j, Y g:i A'),
             'autoPrint' => false,
             'profile' => (new UserModel())->find($studentId),
+            'programNames' => array_merge(...array_values(AcademicProgram::PROGRAMS_BY_COLLEGE)),
             'records' => $records,
         ]);
     }

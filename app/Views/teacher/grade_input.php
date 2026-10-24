@@ -19,17 +19,24 @@
                     <form method="POST" action="<?= site_url('teacher/grade-input') ?>">
                         <?= csrf_field() ?>
                         <div class="mb-3"><label class="form-label">Student</label>
-                            <select name="student_id" class="form-select">
+                            <select name="student_id" class="form-select" required>
+                                <option value="">Select student</option>
                                 <?php foreach ($students as $st): ?><option value="<?= esc($st['id']) ?>"><?= esc($st['full_name']) ?></option><?php endforeach; ?>
                             </select>
                         </div>
                         <div class="mb-3"><label class="form-label">Subject</label>
-                            <select name="subject_id" class="form-select">
+                            <select name="subject_id" class="form-select" required>
+                                <option value="">Select subject</option>
                                 <?php foreach ($subjects as $sub): ?><option value="<?= esc($sub['id']) ?>"><?= esc($sub['subject_code'] . ' - ' . $sub['subject_name']) ?></option><?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="mb-3"><label class="form-label">School Year</label>
-                            <input type="text" name="school_year" class="form-control" value="2025-2026"></div>
+                        <div class="mb-3">
+                            <label class="form-label">School Year</label>
+                            <input type="hidden" name="school_year" value="<?= esc($currentSchoolYear, 'attr') ?>" required data-school-year-input>
+                            <button type="button" class="form-select text-start" data-bs-toggle="modal" data-bs-target="#schoolYearModal" data-school-year-display>
+                                <?= esc($currentSchoolYear) ?>
+                            </button>
+                        </div>
                         <div class="mb-3"><label class="form-label">Grade</label>
                             <input type="text" name="grade" class="form-control" placeholder="1.00-5.00"></div>
                         <button type="submit" class="btn btn-university">Save Grade</button>
@@ -40,4 +47,5 @@
     </div>
 </div>
 
+<?= view('components/school_year_modal', ['schoolYears' => $schoolYears]) ?>
 <?= view('layouts/footer') ?>

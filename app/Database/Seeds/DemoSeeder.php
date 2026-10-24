@@ -15,18 +15,19 @@ class DemoSeeder extends Seeder
         // backup_admin (HONEYTOKEN - never used for real login): "HoneyToken#2026!"
 
         $users = [
-            ['id'=>1,'username'=>'admin1','student_number'=>null,'password'=>'$2b$10$DZP./je7lU8vwd3BjnRVOOhXthxVSOhiU3oHu.42q5UOZ.oewnSv6','role'=>'admin','full_name'=>'Portal Administrator','college'=>'Office of the Registrar','year_level'=>null],
-            ['id'=>2,'username'=>'teacher1','student_number'=>null,'password'=>'$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa','role'=>'teacher','full_name'=>'Prof. Ramon Dela Cruz','college'=>'College of Information Technology','year_level'=>null],
-            ['id'=>3,'username'=>'teacher2','student_number'=>null,'password'=>'$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa','role'=>'teacher','full_name'=>'Dr. Liza Fernandez','college'=>'College of Agriculture','year_level'=>null],
-            ['id'=>4,'username'=>null,'student_number'=>'2024100100','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Juan Santos','college'=>'College of Information Technology','year_level'=>'3rd Year'],
-            ['id'=>5,'username'=>null,'student_number'=>'2024100101','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Maria Reyes','college'=>'College of Information Technology','year_level'=>'3rd Year'],
-            ['id'=>6,'username'=>null,'student_number'=>'2025100102','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Pedro Bautista','college'=>'College of Information Technology','year_level'=>'2nd Year'],
+            ['id'=>1,'username'=>'admin1','student_number'=>null,'employee_id'=>'2023001100','password'=>'$2b$10$DZP./je7lU8vwd3BjnRVOOhXthxVSOhiU3oHu.42q5UOZ.oewnSv6','role'=>'admin','full_name'=>'Portal Administrator','college'=>null,'year_level'=>null],
+            ['id'=>2,'username'=>'teacher1','student_number'=>null,'employee_id'=>'2023001101','password'=>'$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa','role'=>'teacher','full_name'=>'Prof. Ramon Dela Cruz','college'=>'College of Engineering and Technology (CET)','year_level'=>null],
+            ['id'=>3,'username'=>'teacher2','student_number'=>null,'employee_id'=>'2023001102','password'=>'$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa','role'=>'teacher','full_name'=>'Dr. Liza Fernandez','college'=>'College of Agriculture','year_level'=>null],
+            ['id'=>4,'username'=>null,'student_number'=>'2023100220','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Juan Santos','college'=>'College of Engineering and Technology (CET)','program'=>'BSIT','year_level'=>'3rd Year','section'=>'A'],
+            ['id'=>5,'username'=>null,'student_number'=>'2023100221','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Maria Reyes','college'=>'College of Engineering and Technology (CET)','program'=>'BSIT','year_level'=>'3rd Year','section'=>'B'],
+            ['id'=>6,'username'=>null,'student_number'=>'2023100222','password'=>'$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK','role'=>'student','full_name'=>'Pedro Bautista','college'=>'College of Engineering and Technology (CET)','program'=>'BSIT','year_level'=>'2nd Year','section'=>'C'],
             // HONEYTOKEN: no legitimate workflow ever uses this account.
             ['id'=>7,'username'=>'backup_admin','student_number'=>null,'password'=>'$2b$10$k.3htrBfrfdwGkbmsqFgO.dEMuayLrbZ85zGSvPaIYYvNE4OGxEOK','role'=>'admin','full_name'=>'System Backup Account','college'=>null,'year_level'=>null],
         ];
         foreach ($users as $u) {
             $this->db->table('users')->insert(array_merge($u, ['created_at' => date('Y-m-d H:i:s')]));
         }
+        $this->db->query('UPDATE employee_number_sequence SET last_number = GREATEST(last_number, 2023001102) WHERE id = 1');
 
         $subjects = [
             ['subject_code'=>'GE101','subject_name'=>'Understanding the Self','units'=>3,'year_level'=>1,'semester'=>'1st','teacher_id'=>2],

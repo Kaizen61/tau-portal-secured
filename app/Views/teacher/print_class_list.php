@@ -13,6 +13,8 @@
     <div>
         <dt>Faculty</dt>
         <dd><?= esc($facultyName) ?></dd>
+        <dt><?= count($schoolYears) === 1 ? 'School Year' : 'School Years' ?></dt>
+        <dd><?= esc($schoolYears ? implode(', ', $schoolYears) : '—') ?></dd>
         <dt>Semester</dt>
         <dd><?= esc($subject['semester']) ?> Semester</dd>
         <dt>Year Level</dt>
@@ -20,20 +22,38 @@
     </div>
 </dl>
 
-<table class="print-table">
+<table class="print-table class-list-print-table <?= $includeGrades ? 'has-grades' : 'without-grades' ?>">
+    <?php if ($includeGrades): ?>
+        <colgroup>
+            <col style="width:6%">
+            <col style="width:17%">
+            <col style="width:35%">
+            <col style="width:14%">
+            <col style="width:14%">
+            <col style="width:14%">
+        </colgroup>
+    <?php else: ?>
+        <colgroup>
+            <col style="width:7%">
+            <col style="width:21%">
+            <col style="width:42%">
+            <col style="width:15%">
+            <col style="width:15%">
+        </colgroup>
+    <?php endif; ?>
     <thead>
         <tr>
-            <th style="width:40px;">#</th>
+            <th>#</th>
             <th>Student No.</th>
             <th>Student Name</th>
             <th>Year Level</th>
-            <th>School Year</th>
-            <th>Final Grade</th>
+            <th>Section</th>
+            <?php if ($includeGrades): ?><th>Final Grade</th><?php endif; ?>
         </tr>
     </thead>
     <tbody>
     <?php if (empty($students)): ?>
-        <tr><td colspan="6">No students enrolled in this subject.</td></tr>
+        <tr><td colspan="<?= $includeGrades ? 6 : 5 ?>">No students enrolled in this subject.</td></tr>
     <?php else: ?>
         <?php foreach ($students as $i => $row): ?>
         <tr>
@@ -41,15 +61,13 @@
             <td><?= esc($row['student_number'] ?? '—') ?></td>
             <td><?= esc($row['full_name']) ?></td>
             <td><?= esc($row['year_level'] ?? '') ?></td>
-            <td><?= esc($row['school_year']) ?></td>
-            <td><?= $row['grade'] === null ? '' : esc($row['grade']) ?></td>
+            <td><?= esc($row['section'] ?? '—') ?></td>
+            <?php if ($includeGrades): ?><td><?= $row['grade'] === null ? '' : esc($row['grade']) ?></td><?php endif; ?>
         </tr>
         <?php endforeach; ?>
     <?php endif; ?>
     </tbody>
 </table>
-
-<p class="note">Class list / grade sheet for submission to the Registrar. Leave the grade blank if the student is not yet graded. Total enrolled: <?= count($students) ?>.</p>
 
 <div class="sign-row">
     <div class="sign-block"><div class="sign-line">Faculty-in-Charge</div></div>

@@ -22,12 +22,14 @@
                     <table class="table table-borderless mb-3">
                         <tr><th style="width:160px;">Student Number</th><td><?= esc($profile['student_number'] ?? '') ?></td></tr>
                         <tr><th>College</th><td><?= esc($profile['college'] ?? '') ?></td></tr>
+                        <tr><th>Program</th><td><?= esc(isset($programNames[$profile['program'] ?? '']) ? ($profile['program'] . ' — ' . $programNames[$profile['program']]) : '—') ?></td></tr>
                         <tr><th>Year Level</th><td><?= esc($profile['year_level'] ?? '') ?></td></tr>
+                        <tr><th>Section</th><td><?= esc($profile['section'] ?? '—') ?></td></tr>
                     </table>
                     <form method="POST" action="<?= site_url('student/profile') ?>">
                         <?= csrf_field() ?>
                         <div class="mb-3"><label class="form-label">Full Name</label>
-                            <input type="text" name="full_name" class="form-control" value="<?= esc($profile['full_name']) ?>"></div>
+                            <input type="text" name="full_name" class="form-control" value="<?= esc($profile['full_name']) ?>" required minlength="2"></div>
                         <button type="submit" class="btn btn-university btn-sm">Save Changes</button>
                     </form>
                 </div>

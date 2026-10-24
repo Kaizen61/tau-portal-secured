@@ -77,17 +77,17 @@ CREATE TABLE activity_logs (
 -- Seed data: users
 -- Passwords are bcrypt hashes. Plaintext, for your reference only:
 --   admin1 / admin123        teacher1 / teach123      teacher2 / teach123
---   Juan (2024100100) / stud123     Maria (2024100101) / stud123
+--   Juan (2023100100) / stud123     Maria (2023100101) / stud123
 --   Pedro (2025100102) / stud123
 --   backup_admin (HONEYTOKEN — never use) / HoneyToken#2026!
 -- ------------------------------------------------------------
 INSERT INTO users (id, username, student_number, password, role, full_name, college, year_level, created_at) VALUES
 (1, 'admin1', NULL, '$2b$10$DZP./je7lU8vwd3BjnRVOOhXthxVSOhiU3oHu.42q5UOZ.oewnSv6', 'admin', 'Portal Administrator', 'Office of the Registrar', NULL, NOW()),
-(2, 'teacher1', NULL, '$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa', 'teacher', 'Prof. Ramon Dela Cruz', 'College of Information Technology', NULL, NOW()),
+(2, 'teacher1', NULL, '$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa', 'teacher', 'Prof. Ramon Dela Cruz', 'College of Engineering and Technology (CET)', NULL, NOW()),
 (3, 'teacher2', NULL, '$2b$10$NVlxWyJrvG0cbU8LoHru6eailmcnfBfsXMG53GSwdQzceURoF1qWa', 'teacher', 'Dr. Liza Fernandez', 'College of Agriculture', NULL, NOW()),
-(4, NULL, '2024100100', '$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK', 'student', 'Juan Santos', 'College of Information Technology', '3rd Year', NOW()),
-(5, NULL, '2024100101', '$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK', 'student', 'Maria Reyes', 'College of Information Technology', '3rd Year', NOW()),
-(6, NULL, '2025100102', '$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK', 'student', 'Pedro Bautista', 'College of Information Technology', '2nd Year', NOW()),
+(4, NULL, '2023100100', '$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK', 'student', 'Juan Santos', 'College of Engineering and Technology (CET)', '3rd Year', NOW()),
+(5, NULL, '2023100101', '$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK', 'student', 'Maria Reyes', 'College of Engineering and Technology (CET)', '3rd Year', NOW()),
+(6, NULL, '2025100102', '$2b$10$FXuq88F5Bd5DXFrMcHsNredDeC6DWRnszIT4CDlNsW6Dl2aUSfbNK', 'student', 'Pedro Bautista', 'College of Engineering and Technology (CET)', '2nd Year', NOW()),
 (7, 'backup_admin', NULL, '$2b$10$k.3htrBfrfdwGkbmsqFgO.dEMuayLrbZ85zGSvPaIYYvNE4OGxEOK', 'admin', 'System Backup Account', NULL, NULL, NOW());
 
 -- ------------------------------------------------------------

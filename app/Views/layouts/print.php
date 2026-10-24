@@ -6,6 +6,15 @@
     <title><?= esc($printTitle ?? 'Print') ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="<?= base_url('assets/css/print.css') ?>" rel="stylesheet">
+    <style>
+        @page { size: A4 <?= esc($printOrientation ?? 'portrait') ?>; margin: 0; }
+    </style>
+    <style>
+        @media print {
+            .print-table { font-size: 0.72rem; }
+            .print-table th, .print-table td { padding: 0.3rem 0.38rem; overflow-wrap: anywhere; }
+        }
+    </style>
 </head>
 <body>
     <div class="print-toolbar no-print">
@@ -13,7 +22,7 @@
         <button type="button" class="secondary" onclick="window.close()">Close</button>
     </div>
 
-    <div class="print-sheet">
+    <div class="print-sheet <?= esc(($printOrientation ?? 'portrait') === 'landscape' ? 'print-sheet-landscape' : 'print-sheet-portrait') ?> <?= esc($printDocumentClass ?? '') ?>">
         <header class="print-letterhead">
             <svg width="64" height="64" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <circle cx="50" cy="50" r="47" fill="#0F332A" stroke="#A6883C" stroke-width="2"/>
@@ -23,7 +32,7 @@
             </svg>
             <div>
                 <div class="univ">Tarlac Agricultural University</div>
-                <div class="campus">Camiling, Tarlac &middot; College of Information Technology</div>
+                <div class="campus">Camiling, Tarlac &middot; CET</div>
                 <div class="doc-title"><?= esc($documentTitle ?? '') ?></div>
             </div>
         </header>

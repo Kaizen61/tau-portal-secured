@@ -21,6 +21,7 @@
             <option value="1st" <?= $filterSem === '1st' ? 'selected' : '' ?>>1st Semester</option>
             <option value="2nd" <?= $filterSem === '2nd' ? 'selected' : '' ?>>2nd Semester</option>
         </select>
+        <a href="<?= site_url('student/grades') ?>" class="btn btn-sm btn-outline-university clear-filter-button">Clear</a>
     </form>
 
     <?php if (empty($groups)): ?>

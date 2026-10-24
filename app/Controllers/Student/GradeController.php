@@ -63,6 +63,7 @@ class GradeController extends BaseController
         return view('student/print_grade_report', [
             'printTitle' => 'Grade Report - TAU Student Portal',
             'documentTitle' => 'Report of Grades',
+            'printDocumentClass' => 'signatory-print-sheet grade-report-print-sheet',
             'printedAt' => date('F j, Y g:i A'),
             'autoPrint' => false,
             'profile' => (new UserModel())->find($studentId),

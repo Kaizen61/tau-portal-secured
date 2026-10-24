@@ -6,6 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Libraries\ActivityLogger;
+use App\Models\UserModel;
 
 class RoleFilter implements FilterInterface
 {
@@ -18,6 +19,14 @@ class RoleFilter implements FilterInterface
         $session = session();
         $role = $session->get('role');
         $allowedRoles = $arguments ?? [];
+
+        if ($role && $session->get('user_id')) {
+            $user = (new UserModel())->find((int) $session->get('user_id'));
+            if (!$user || !(bool) ($user['is_active'] ?? true)) {
+                $session->destroy();
+                return redirect()->to('/')->with('error', 'This account is inactive. Please contact an administrator.');
+            }
+        }
 
         if (!$role || !in_array($role, $allowedRoles, true)) {
             $logger = new ActivityLogger();

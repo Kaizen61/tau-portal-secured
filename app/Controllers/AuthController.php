@@ -87,6 +87,13 @@ class AuthController extends BaseController
             ? $this->users->findByStudentNumber($identifier)
             : $this->users->findByUsername($identifier);
 
+        if ($user && !(bool) ($user['is_active'] ?? true)) {
+            $this->activityLogger->log($user['id'], $identifier, 'LOGIN_BLOCKED_INACTIVE',
+                'Blocked - account is deactivated.', 'WARNING');
+            session()->setFlashdata('error', $mode === 'student' ? 'Invalid student number or password.' : 'Invalid username or password.');
+            return redirect()->to($failRedirect);
+        }
+
         // FIX (A09/A10): if this account is currently locked out, block
         // immediately - checked BEFORE password_verify, so a correct
         // password does not bypass an active lockout.

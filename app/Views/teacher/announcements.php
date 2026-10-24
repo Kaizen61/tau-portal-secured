@@ -1,26 +1,25 @@
 <?= view('layouts/header', get_defined_vars()) ?>
 
 <div>
-    <p class="text-muted">Post announcements to students enrolled in your subjects.</p>
-    <div class="card portal-card mb-4">
-        <div class="card-header bg-white"><h5 class="mb-0">Post New Announcement</h5></div>
-        <div class="card-body">
-            <form>
-                <div class="mb-3"><label class="form-label">Subject</label><select class="form-select" disabled><option>Select a subject</option></select></div>
-                <div class="mb-3"><label class="form-label">Message</label><textarea class="form-control" rows="3" disabled placeholder="Write an announcement"></textarea></div>
-                <button type="button" class="btn btn-university" disabled>Post</button>
-                <span class="badge bg-secondary ms-2">Coming soon</span>
-            </form>
-        </div>
-    </div>
+    <p class="text-muted">School-wide announcements from the administration.</p>
     <div class="card portal-card">
-        <div class="card-header bg-white"><h5 class="mb-0">Your Recent Posts</h5></div>
-        <div class="list-group list-group-flush">
-            <div class="list-group-item">
-                <div class="d-flex justify-content-between"><strong>WST301 — Reminder: Project Proposal Due</strong><small class="text-muted">Jul 28, 2026</small></div>
-                <p class="mb-0 small text-muted">Please submit your project proposal outline by Friday.</p>
+        <div class="card-header bg-white"><h5 class="mb-0">Announcements</h5></div>
+        <?php if (empty($announcements)): ?>
+            <div class="card-body text-muted">There are no announcements at this time.</div>
+        <?php else: ?>
+            <div class="list-group list-group-flush">
+                <?php foreach ($announcements as $item): ?>
+                    <article class="list-group-item p-3">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                            <strong><?= esc($item['title']) ?></strong>
+                            <small class="text-muted"><?= esc(date('M j, Y g:i A', strtotime($item['created_at']))) ?></small>
+                        </div>
+                        <p class="mb-1 mt-2"><?= nl2br(esc($item['message'])) ?></p>
+                        <small class="text-muted">Posted by <?= esc($item['created_by'] ?: 'Administrator') ?></small>
+                    </article>
+                <?php endforeach; ?>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
 

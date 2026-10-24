@@ -34,26 +34,24 @@ $fullName = session()->get('full_name');
         <nav class="sidebar-nav">
             <?php if ($role === 'admin'): ?>
                 <a class="<?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= site_url('admin/dashboard') ?>">Dashboard</a>
-                <a class="<?= ($activePage ?? '') === 'users' ? 'active' : '' ?>" href="<?= site_url('admin/users') ?>">Manage Users</a>
                 <a class="<?= ($activePage ?? '') === 'students' ? 'active' : '' ?>" href="<?= site_url('admin/students') ?>">Students</a>
+                <a class="<?= ($activePage ?? '') === 'users' ? 'active' : '' ?>" href="<?= site_url('admin/users') ?>">Teachers</a>
                 <a class="<?= ($activePage ?? '') === 'subjects' ? 'active' : '' ?>" href="<?= site_url('admin/subjects') ?>">Manage Subjects</a>
-                <a class="<?= ($activePage ?? '') === 'audit' ? 'active' : '' ?>" href="<?= site_url('admin/audit-trail') ?>">Audit Trail</a>
+                <a class="<?= ($activePage ?? '') === 'add-account' ? 'active' : '' ?>" href="<?= site_url('admin/add-account') ?>">Add Account</a>
                 <a class="<?= ($activePage ?? '') === 'announcements' ? 'active' : '' ?>" href="<?= site_url('admin/announcements') ?>">Announcements</a>
+                <a class="<?= ($activePage ?? '') === 'audit' ? 'active' : '' ?>" href="<?= site_url('admin/audit-trail') ?>">System Activity Logs</a>
+                <a class="<?= ($activePage ?? '') === 'admins' ? 'active' : '' ?>" href="<?= site_url('admin/admins') ?>">Admin Profiles</a>
+                <a class="<?= ($activePage ?? '') === 'profile' ? 'active' : '' ?>" href="<?= site_url('admin/profile') ?>">My Profile</a>
             <?php elseif ($role === 'teacher'): ?>
                 <a class="<?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= site_url('teacher/dashboard') ?>">Dashboard</a>
                 <a class="<?= ($activePage ?? '') === 'subjects' ? 'active' : '' ?>" href="<?= site_url('teacher/dashboard') ?>">My Subjects</a>
-                <a class="<?= ($activePage ?? '') === 'attendance' ? 'active' : '' ?>" href="<?= site_url('teacher/attendance') ?>">Attendance</a>
-                <a class="<?= ($activePage ?? '') === 'assignments' ? 'active' : '' ?>" href="<?= site_url('teacher/assignments') ?>">Assignments</a>
-                <a class="<?= ($activePage ?? '') === 'schedule' ? 'active' : '' ?>" href="<?= site_url('teacher/schedule') ?>">Class Schedule</a>
                 <a class="<?= ($activePage ?? '') === 'announcements' ? 'active' : '' ?>" href="<?= site_url('teacher/announcements') ?>">Announcements</a>
+                <a class="<?= ($activePage ?? '') === 'profile' ? 'active' : '' ?>" href="<?= site_url('teacher/profile') ?>">My Profile</a>
             <?php elseif ($role === 'student'): ?>
                 <a class="<?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= site_url('student/dashboard') ?>">Dashboard</a>
-                <a class="<?= ($activePage ?? '') === 'courses' ? 'active' : '' ?>" href="<?= site_url('student/courses') ?>">My Courses</a>
-                <a class="<?= ($activePage ?? '') === 'assignments' ? 'active' : '' ?>" href="<?= site_url('student/assignments') ?>">Assignments</a>
-                <a class="<?= ($activePage ?? '') === 'grades' ? 'active' : '' ?>" href="<?= site_url('student/grades') ?>">My Grades</a>
-                <a class="<?= ($activePage ?? '') === 'attendance' ? 'active' : '' ?>" href="<?= site_url('student/attendance') ?>">Attendance</a>
+                <a class="<?= ($activePage ?? '') === 'courses' ? 'active' : '' ?>" href="<?= site_url('student/courses') ?>">Courses</a>
+                <a class="<?= ($activePage ?? '') === 'grades' ? 'active' : '' ?>" href="<?= site_url('student/grades') ?>">Grades</a>
                 <a class="<?= ($activePage ?? '') === 'announcements' ? 'active' : '' ?>" href="<?= site_url('student/announcements') ?>">Announcements</a>
-                <a class="<?= ($activePage ?? '') === 'calendar' ? 'active' : '' ?>" href="<?= site_url('student/calendar') ?>">Calendar</a>
                 <a class="<?= ($activePage ?? '') === 'profile' ? 'active' : '' ?>" href="<?= site_url('student/profile') ?>">My Profile</a>
             <?php endif; ?>
         </nav>
@@ -63,7 +61,7 @@ $fullName = session()->get('full_name');
                 <?= esc($fullName) ?>
                 <span class="badge badge-role-<?= esc($role) ?>"><?= esc(ucfirst($role)) ?></span>
             </div>
-            <a href="<?= site_url('logout') ?>" class="btn btn-sm btn-outline-light w-100">Logout</a>
+            <button type="button" class="btn btn-sm btn-outline-light w-100" data-bs-toggle="modal" data-bs-target="#logoutConfirmationModal">Logout</button>
         </div>
     </aside>
 

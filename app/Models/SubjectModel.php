@@ -23,6 +23,31 @@ class SubjectModel extends Model
         'semester' => 'required|in_list[1st,2nd]',
     ];
 
+    public function duplicateExists(
+        string $subjectCode,
+        string $subjectName,
+        int $yearLevel,
+        string $semester,
+        ?int $excludeId = null
+    ): bool {
+        $sql = 'SELECT id FROM ' . $this->db->escapeIdentifiers($this->table)
+            . ' WHERE year_level = ? AND semester = ?'
+            . ' AND (LOWER(TRIM(subject_code)) = ? OR LOWER(TRIM(subject_name)) = ?)';
+        $params = [
+            $yearLevel,
+            $semester,
+            mb_strtolower(trim($subjectCode)),
+            mb_strtolower(trim($subjectName)),
+        ];
+        if ($excludeId !== null) {
+            $sql .= ' AND id != ?';
+            $params[] = $excludeId;
+        }
+        $sql .= ' LIMIT 1';
+
+        return $this->db->query($sql, $params)->getNumRows() > 0;
+    }
+
     public function forTeacher(int $teacherId, ?string $yearLevel = null, ?string $semester = null)
     {
         $builder = $this->where('teacher_id', $teacherId);

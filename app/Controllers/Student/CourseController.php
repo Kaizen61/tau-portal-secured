@@ -48,6 +48,7 @@ class CourseController extends BaseController
         return view('student/print_cor', [
             'printTitle' => 'Certificate of Registration - TAU Student Portal',
             'documentTitle' => 'Certificate of Registration',
+            'printDocumentClass' => 'signatory-print-sheet cor-print-sheet',
             'printedAt' => date('F j, Y g:i A'),
             'autoPrint' => false,
             'profile' => (new UserModel())->find($studentId),

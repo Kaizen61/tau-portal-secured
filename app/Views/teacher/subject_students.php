@@ -15,16 +15,20 @@
     <div class="card portal-card">
         <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h5 class="mb-0">Class List</h5>
-            <a class="btn btn-sm btn-outline-university no-print" target="_blank" href="<?= site_url('teacher/subjects/' . $subject['id'] . '/print') ?>">Print Class List</a>
+            <div class="d-flex flex-wrap gap-2 no-print">
+                <a class="btn btn-sm btn-university class-list-print-button" target="_blank" href="<?= site_url('teacher/subjects/' . $subject['id'] . '/print') ?>">Print with Grades</a>
+                <a class="btn btn-sm btn-outline-university class-list-print-button" target="_blank" href="<?= site_url('teacher/subjects/' . $subject['id'] . '/print?include_grades=0') ?>">Print without Grades</a>
+            </div>
         </div>
         <div class="card-body p-0">
             <table class="table table-portal table-striped mb-0 align-middle">
-                <thead><tr><th>Student</th><th>Year Level</th><th>School Year</th><th>Grade</th><th style="width:220px;">Update Grade</th></tr></thead>
+                <thead><tr><th>Student</th><th>Year Level</th><th>Section</th><th>School Year</th><th>Grade</th><th style="width:220px;">Update Grade</th></tr></thead>
                 <tbody>
                 <?php foreach ($students as $row): ?>
                     <tr>
                         <td><?= esc($row['full_name']) ?></td>
                         <td><?= esc($row['year_level'] ?? '') ?></td>
+                        <td><?= esc($row['section'] ?? '—') ?></td>
                         <td><?= esc($row['school_year']) ?></td>
                         <td>
                             <?php if ($row['grade'] === null): ?>

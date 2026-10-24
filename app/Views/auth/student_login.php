@@ -35,7 +35,7 @@
                 <?= csrf_field() ?>
                 <div class="mb-3">
                     <label class="form-label">Student Number</label>
-                    <input type="text" name="student_number" class="form-control" placeholder="2024100100" maxlength="10">
+                    <input type="text" name="student_number" class="form-control" placeholder="2023100220" maxlength="10">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>

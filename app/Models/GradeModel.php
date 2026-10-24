@@ -24,6 +24,14 @@ class GradeModel extends Model
         'grade' => 'permit_empty|decimal|greater_than_equal_to[0]|less_than_equal_to[100]',
     ];
 
+    public function enrollmentExists(int $studentId, int $subjectId, string $schoolYear): bool
+    {
+        return $this->where('student_id', $studentId)
+            ->where('subject_id', $subjectId)
+            ->where('school_year', $schoolYear)
+            ->first() !== null;
+    }
+
     /**
      * Returns grade rows for a student joined with subject info,
      * grouped by school_year + semester, each group tagged with its

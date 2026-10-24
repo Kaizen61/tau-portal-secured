@@ -2,8 +2,12 @@
 
 <div>
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
-        <p class="text-muted mb-0"></p>
-        <a href="<?= site_url('admin/audit-trail/export') ?>?action=<?= esc($filterAction) ?>&severity=<?= esc($filterSeverity) ?>&q_user=<?= esc($searchUser) ?>&q_ip=<?= esc($searchIp) ?>&q_ua=<?= esc($searchUa) ?>" class="btn btn-sm btn-outline-university">Export as JSON</a>
+        <p class="text-muted mb-0">Searchable, integrity-verified portal activity.</p>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <button type="button" class="btn btn-sm btn-university text-nowrap" data-bs-toggle="modal" data-bs-target="#databaseDownloadModal">Download Database (.sql)</button>
+            <a id="printLogsButton" href="<?= site_url('admin/audit-trail/print') . '?' . http_build_query(array_filter(['action' => $filterAction, 'severity' => $filterSeverity, 'q_user' => $searchUser, 'q_ip' => $searchIp, 'q_ua' => $searchUa], static fn ($value): bool => $value !== null && $value !== '')) ?>" target="_blank" class="btn btn-sm btn-university text-nowrap">Print Logs</a>
+            <a href="<?= site_url('admin/audit-trail/export') ?>?action=<?= esc($filterAction) ?>&severity=<?= esc($filterSeverity) ?>&q_user=<?= esc($searchUser) ?>&q_ip=<?= esc($searchIp) ?>&q_ua=<?= esc($searchUa) ?>" class="btn btn-sm btn-university text-nowrap">Export as JSON</a>
+        </div>
     </div>
 
     <div class="card portal-card mb-3">
@@ -21,7 +25,7 @@
     <div class="card portal-card">
         <div class="card-header bg-white">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-                <h5 class="mb-0">Full Activity History (<span id="rowCount"><?= count($logs) ?></span> entries)</h5>
+                <h5 class="mb-0">System Activity Logs (<span id="rowCount"><?= count($logs) ?></span> entries)</h5>
                 <div class="d-flex gap-2 flex-wrap">
                     <select name="action" id="filterAction" class="form-select form-select-sm" style="width:auto;">
                         <option value="">All Actions</option>
@@ -41,7 +45,7 @@
                 <input type="text" id="searchUser" class="form-control form-control-sm" style="max-width:180px;" placeholder="Search user..." value="<?= esc($searchUser) ?>">
                 <input type="text" id="searchIp" class="form-control form-control-sm" style="max-width:180px;" placeholder="Search IP..." value="<?= esc($searchIp) ?>">
                 <input type="text" id="searchUa" class="form-control form-control-sm" style="max-width:220px;" placeholder="Search User-Agent..." value="<?= esc($searchUa) ?>">
-                <button type="button" id="clearFilters" class="btn btn-sm btn-outline-secondary">Clear</button>
+                <button type="button" id="clearFilters" class="btn btn-sm btn-university clear-filter-button">Clear</button>
             </div>
         </div>
         <div class="card-body p-0 audit-scroll-area">
@@ -66,6 +70,25 @@
                 <?php endforeach; ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="databaseDownloadModal" tabindex="-1" aria-labelledby="databaseDownloadModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="databaseDownloadModalTitle">Download Database Backup?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>This SQL backup contains the full portal database, including personal records.</p>
+                <p class="mb-0"><strong>Keep the downloaded file secure</strong> and share it only with authorized personnel.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="<?= site_url('admin/audit-trail/download-database') ?>" class="btn btn-university">Download Backup</a>
+            </div>
         </div>
     </div>
 </div>
@@ -98,6 +121,21 @@ function buildPollUrl() {
     if (qUa) params.set('q_ua', qUa);
     params.set('_', Date.now());
     return '<?= site_url('admin/audit-trail/poll') ?>?' + params.toString();
+}
+
+function updatePrintLogsUrl() {
+    const params = new URLSearchParams();
+    [
+        ['action', document.getElementById('filterAction').value],
+        ['severity', document.getElementById('filterSeverity').value],
+        ['q_user', document.getElementById('searchUser').value.trim()],
+        ['q_ip', document.getElementById('searchIp').value.trim()],
+        ['q_ua', document.getElementById('searchUa').value.trim()],
+    ].forEach(([key, value]) => {
+        if (value) params.set(key, value);
+    });
+    document.getElementById('printLogsButton').href =
+        '<?= site_url('admin/audit-trail/print') ?>' + (params.size ? '?' + params.toString() : '');
 }
 
 function renderIntegrity(ok, error) {
@@ -154,15 +192,18 @@ function triggerImmediatePoll() {
 
 document.getElementById('filterAction').addEventListener('change', pollAuditTrail);
 document.getElementById('filterSeverity').addEventListener('change', pollAuditTrail);
-document.getElementById('searchUser').addEventListener('input', triggerImmediatePoll);
-document.getElementById('searchIp').addEventListener('input', triggerImmediatePoll);
-document.getElementById('searchUa').addEventListener('input', triggerImmediatePoll);
+document.getElementById('filterAction').addEventListener('change', updatePrintLogsUrl);
+document.getElementById('filterSeverity').addEventListener('change', updatePrintLogsUrl);
+document.getElementById('searchUser').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
+document.getElementById('searchIp').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
+document.getElementById('searchUa').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
 document.getElementById('clearFilters').addEventListener('click', function () {
     document.getElementById('filterAction').value = '';
     document.getElementById('filterSeverity').value = '';
     document.getElementById('searchUser').value = '';
     document.getElementById('searchIp').value = '';
     document.getElementById('searchUa').value = '';
+    updatePrintLogsUrl();
     pollAuditTrail();
 });
 

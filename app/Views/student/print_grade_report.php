@@ -12,6 +12,8 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
         <dd><?= esc($profile['student_number'] ?? '—') ?></dd>
         <dt>College</dt>
         <dd><?= esc($profile['college'] ?? '—') ?></dd>
+        <dt>Section</dt>
+        <dd><?= esc($profile['section'] ?? '—') ?></dd>
     </div>
     <div>
         <dt>Year Level</dt>
