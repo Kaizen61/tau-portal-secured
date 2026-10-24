@@ -18,7 +18,7 @@ class ActivityLogger
      * (user, action, details, IP, User-Agent, timestamp), and chained via
      * SHA-256 hash to the previous entry so tampering is detectable.
      */
-    public function log(?int $userId, ?string $username, string $action, ?string $details = null, string $severity = 'INFO'): void
+    public function log(?int $userId, ?string $username, string $action, ?string $details = null, string $severity = 'INFO'): bool
     {
         $request = service('request');
         $ip = $request->getIPAddress();
@@ -30,7 +30,7 @@ class ActivityLogger
         $payload = implode('|', [$userId, $username, $action, $details, $severity, $ip, $userAgent, $prevHash]);
         $entryHash = hash('sha256', $payload);
 
-        $this->model->insert([
+        return $this->model->insert([
             'user_id' => $userId,
             'username' => $username,
             'action' => $action,
@@ -41,7 +41,7 @@ class ActivityLogger
             'prev_hash' => $prevHash,
             'entry_hash' => $entryHash,
             'created_at' => date('Y-m-d H:i:s'),
-        ]);
+        ]) !== false;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Controllers\Student;
 
 use App\Controllers\BaseController;
+use App\Libraries\ActivityLogger;
 use App\Libraries\AcademicSemester;
 use App\Libraries\TeacherEvaluationCriteria;
 use App\Libraries\SchoolYear;
@@ -150,6 +151,24 @@ class TeacherEvaluationController extends BaseController
         if (!$db->table('teacher_evaluation_scores')->insertBatch($scoreRows) || !$db->transStatus()) {
             $db->transRollback();
             session()->setFlashdata('error', 'Could not save all evaluation ratings. Please try again.');
+            return redirect()->to($redirectUrl);
+        }
+
+        $logged = (new ActivityLogger())->log(
+            $studentId,
+            (string) session()->get('username'),
+            'TEACHER_EVALUATION_SUBMITTED',
+            sprintf(
+                'Submitted evaluation #%d for teacher account #%d, School Year %s, %s semester.',
+                (int) $evaluationId,
+                (int) $teacherId,
+                SchoolYear::current(),
+                $semester
+            )
+        );
+        if (!$logged || !$db->transStatus()) {
+            $db->transRollback();
+            session()->setFlashdata('error', 'Could not record the evaluation in System Activity Logs. The evaluation was not saved; please try again.');
             return redirect()->to($redirectUrl);
         }
 

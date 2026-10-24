@@ -3,14 +3,47 @@
 <div>
     <p class="text-muted">School Year <?= esc($schoolYear) ?> · Evaluations and totals are separated by semester. Each evaluation has 22 criteria, for a maximum of 110 points; averages are calculated across ratings submitted for that teacher in that semester.</p>
 
+    <div class="card portal-card mb-4">
+        <div class="card-body">
+            <form method="GET" action="<?= site_url('admin/teacher-evaluations') ?>" class="teacher-evaluation-admin-filters">
+                <div>
+                    <label for="evaluation-search" class="form-label">Search teacher</label>
+                    <input id="evaluation-search" type="search" name="q" class="form-control" value="<?= esc($filters['q']) ?>" placeholder="Search teacher name or employee ID">
+                </div>
+                <div>
+                    <label for="evaluation-college" class="form-label">College</label>
+                    <select id="evaluation-college" name="college" class="form-select">
+                        <option value="">All colleges</option>
+                        <?php foreach ($colleges as $college): ?>
+                            <option value="<?= esc($college) ?>" <?= $filters['college'] === $college ? 'selected' : '' ?>><?= esc($college) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div>
+                    <label for="evaluation-semester" class="form-label">Semester</label>
+                    <select id="evaluation-semester" name="semester" class="form-select">
+                        <option value="all" <?= $filters['semester'] === 'all' ? 'selected' : '' ?>>All semesters</option>
+                        <option value="1st" <?= $filters['semester'] === '1st' ? 'selected' : '' ?>>1st Semester</option>
+                        <option value="2nd" <?= $filters['semester'] === '2nd' ? 'selected' : '' ?>>2nd Semester</option>
+                    </select>
+                </div>
+                <div class="teacher-evaluation-filter-actions">
+                    <button type="submit" class="btn btn-university">Apply Filters</button>
+                    <a class="btn btn-outline-university" href="<?= site_url('admin/teacher-evaluations') ?>">Clear</a>
+                    <a class="btn btn-university" target="_blank" href="<?= site_url('admin/teacher-evaluations/print') . '?' . http_build_query(array_filter($filters, static fn ($value): bool => $value !== '' && $value !== 'all')) ?>">Print Results</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <?php if (empty($teachers)): ?>
-        <div class="card portal-card"><div class="card-body text-muted">No teacher accounts found.</div></div>
-    <?php else: ?>
+        <div class="card portal-card"><div class="card-body text-muted">No teachers match the selected filters.</div></div>
+    <?php elseif ($filters['q'] === '' && $filters['teacher_id'] === 0): ?>
         <div class="card portal-card mb-4">
             <div class="card-header bg-white"><h2 class="h5 mb-0">Summary by Teacher</h2></div>
             <div class="table-responsive">
                 <table class="table table-portal table-striped mb-0">
-                    <thead><tr><th>Teacher</th><th>Employee ID</th><th>College</th><th>Semester</th><th>Evaluations</th><th>Total Points</th><th>Average / 5</th></tr></thead>
+                    <thead><tr><th>Teacher</th><th>Employee ID</th><th>College</th><th>Semester</th><th>Evaluations</th><th>Total Points</th><th>Average / 5</th><th>Action</th></tr></thead>
                     <tbody>
                     <?php foreach ($teachers as $teacher): ?>
                         <?php foreach ($teacher['semester_summaries'] as $semester => $summary): ?>
@@ -22,6 +55,13 @@
                                 <td><?= (int) $summary['evaluation_count'] ?></td>
                                 <td><?= (int) $summary['total_points'] ?></td>
                                 <td><?= $summary['average_score'] === null ? '—' : number_format($summary['average_score'], 2) ?></td>
+                                <td>
+                                    <a class="btn btn-sm btn-outline-university" href="<?= site_url('admin/teacher-evaluations') . '?' . http_build_query([
+                                        'q' => $teacher['employee_id'] ?: $teacher['teacher_name'],
+                                        'teacher_id' => (int) $teacher['teacher_id'],
+                                        'semester' => $semester,
+                                    ]) ?>">View</a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
@@ -29,13 +69,18 @@
                 </table>
             </div>
         </div>
-
+    <?php else: ?>
         <?php foreach ($teachers as $teacher): ?>
             <section class="card portal-card mb-4">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
                         <h2 class="h5 mb-1"><?= esc($teacher['teacher_name']) ?></h2>
-                        <span class="small text-muted">Semester totals and averages are listed separately in the summary above.</span>
+                        <span class="small text-muted"><?= esc($teacher['employee_id'] ?? '—') ?> · <?= esc($teacher['college'] ?? '—') ?></span>
+                    </div>
+                    <div class="small text-muted">
+                        <?php foreach ($teacher['semester_summaries'] as $semester => $summary): ?>
+                            <span class="me-3"><?= esc($semester) ?> Semester: <?= (int) $summary['evaluation_count'] ?> evaluations · <?= (int) $summary['total_points'] ?> points · Average <?= $summary['average_score'] === null ? '—' : number_format($summary['average_score'], 2) ?></span>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <?php if (empty($teacher['evaluations'])): ?>

@@ -1077,9 +1077,12 @@ a:hover { color: var(--uni-green-dark); }
 .teacher-evaluation-report-table th,
 .teacher-evaluation-report-table td { vertical-align: middle; }
 .teacher-evaluation-report-table thead th { white-space: nowrap; }
+.teacher-evaluation-admin-filters { display: grid; grid-template-columns: minmax(220px, 1.5fr) minmax(180px, 1fr) minmax(150px, 0.75fr) auto; align-items: end; gap: 0.8rem; }
+.teacher-evaluation-filter-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 
 @media (max-width: 991.98px) {
     .teacher-dashboard-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .teacher-evaluation-admin-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 767.98px) {
@@ -1089,6 +1092,7 @@ a:hover { color: var(--uni-green-dark); }
     .teacher-dashboard-filters { width: 100%; flex-wrap: wrap; }
     .teacher-dashboard-filters select { flex: 1 1 140px; }
     .teacher-evaluation-own-scores { grid-template-columns: 1fr; }
+    .teacher-evaluation-admin-filters { grid-template-columns: 1fr; }
     .teacher-evaluation-rating-head { grid-template-columns: minmax(0, 1fr) 170px; gap: 0.6rem; }
     .teacher-evaluation-row { gap: 0.6rem; }
     .teacher-evaluation-options { flex-basis: 170px; }

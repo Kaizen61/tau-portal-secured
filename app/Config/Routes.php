@@ -42,6 +42,7 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('audit-trail/poll', 'Admin\AuditController::poll');
     $routes->get('audit-trail/export', 'Admin\AuditController::export');
     $routes->get('teacher-evaluations', 'Admin\TeacherEvaluationController::index');
+    $routes->get('teacher-evaluations/print', 'Admin\TeacherEvaluationController::print');
     $routes->get('dashboard/poll', 'Admin\DashboardController::poll');
     $routes->get('announcements', 'Admin\AnnouncementController::index');
     $routes->post('announcements', 'Admin\AnnouncementController::create');
