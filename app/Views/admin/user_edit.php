@@ -91,7 +91,7 @@
 </div>
 
 <?php if ($user['role'] === 'student'): ?>
-<script>
+<script {csp-script-nonce}>
 (() => {
     const collegeSelect = document.getElementById('college');
     const programSelect = document.getElementById('program');

@@ -213,7 +213,7 @@ $gradedPercent = $gradeTotal > 0 ? (int) round($gradedCount / $gradeTotal * 100)
 
 </div>
 
-<script>
+<script {csp-script-nonce}>
 async function pollDashboard() {
     try {
         const response = await fetch('<?= site_url('admin/dashboard/poll') ?>', {

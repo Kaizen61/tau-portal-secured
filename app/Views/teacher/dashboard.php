@@ -21,13 +21,13 @@ $gradeCompletion = $totalEnrolled > 0 ? (int) round($totalGraded / $totalEnrolle
             <p class="text-muted small mb-0">Filter the overview by year level or semester.</p>
         </div>
         <form method="GET" class="teacher-dashboard-filters">
-            <select name="year_level" class="form-select form-select-sm" aria-label="Filter by year level" onchange="this.form.submit()">
+            <select name="year_level" class="form-select form-select-sm" aria-label="Filter by year level" data-submit-on-change>
                 <option value="">All Year Levels</option>
                 <?php foreach ($yearLabels as $val => $label): ?>
                     <option value="<?= $val ?>" <?= $filterYear == $val ? 'selected' : '' ?>><?= esc($label) ?></option>
                 <?php endforeach; ?>
             </select>
-            <select name="semester" class="form-select form-select-sm" aria-label="Filter by semester" onchange="this.form.submit()">
+            <select name="semester" class="form-select form-select-sm" aria-label="Filter by semester" data-submit-on-change>
                 <option value="">All Semesters</option>
                 <option value="1st" <?= $filterSem === '1st' ? 'selected' : '' ?>>1st Semester</option>
                 <option value="2nd" <?= $filterSem === '2nd' ? 'selected' : '' ?>>2nd Semester</option>

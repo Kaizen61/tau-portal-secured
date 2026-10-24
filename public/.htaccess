@@ -46,4 +46,5 @@ Options -Indexes
 
 # Disable server signature start
 ServerSignature Off
+# Set ServerTokens Prod in the Apache server or virtual-host configuration to hide the version header.
 # Disable server signature end

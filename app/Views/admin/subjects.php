@@ -14,13 +14,13 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
             <h5 class="mb-0">All Subjects</h5>
             <form method="GET" class="d-flex gap-2">
                 <input type="search" name="q" class="form-control form-control-sm" placeholder="Search code, subject, or faculty" value="<?= esc($q ?? '') ?>">
-                <select name="year_level" class="form-select form-select-sm" onchange="this.form.submit()">
+                <select name="year_level" class="form-select form-select-sm" data-submit-on-change>
                     <option value="">All Year Levels</option>
                     <?php foreach ($yearLabels as $val => $label): ?>
                         <option value="<?= $val ?>" <?= $filterYear == $val ? 'selected' : '' ?>><?= $label ?></option>
                     <?php endforeach; ?>
                 </select>
-                <select name="semester" class="form-select form-select-sm" onchange="this.form.submit()">
+                <select name="semester" class="form-select form-select-sm" data-submit-on-change>
                     <option value="">All Semesters</option>
                     <option value="1st" <?= $filterSem === '1st' ? 'selected' : '' ?>>1st Semester</option>
                     <option value="2nd" <?= $filterSem === '2nd' ? 'selected' : '' ?>>2nd Semester</option>

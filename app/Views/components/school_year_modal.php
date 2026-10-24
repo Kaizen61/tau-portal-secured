@@ -15,7 +15,7 @@
         </div>
     </div>
 </div>
-<script>
+<script {csp-script-nonce}>
 (() => {
     const input = document.querySelector('[data-school-year-input]');
     const display = document.querySelector('[data-school-year-display]');

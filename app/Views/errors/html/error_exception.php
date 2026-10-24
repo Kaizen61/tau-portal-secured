@@ -15,11 +15,22 @@ $errorId = uniqid('error', true);
         <?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'debug.css')) ?>
     </style>
 
-    <script>
+    <script {csp-script-nonce}>
         <?= file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'debug.js') ?>
     </script>
 </head>
-<body onload="init()">
+    <body>
+        <script {csp-script-nonce}>
+            window.addEventListener('load', function () {
+                init();
+                document.querySelectorAll('[data-toggle-arguments]').forEach(function (link) {
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        toggle(link.dataset.toggleArguments);
+                    });
+                });
+            });
+        </script>
 
     <!-- Header -->
     <div class="header">
@@ -113,7 +124,7 @@ $errorId = uniqid('error', true);
                                 &nbsp;&nbsp;&mdash;&nbsp;&nbsp;<?= esc($row['class'] . $row['type'] . $row['function']) ?>
                                 <?php if (! empty($row['args'])) : ?>
                                     <?php $argsId = $errorId . 'args' . $index ?>
-                                    ( <a href="#" onclick="return toggle('<?= esc($argsId, 'attr') ?>');">arguments</a> )
+                                    ( <a href="#" data-toggle-arguments="<?= esc($argsId, 'attr') ?>">arguments</a> )
                                     <div class="args" id="<?= esc($argsId, 'attr') ?>">
                                         <table cellspacing="0">
 

@@ -27,8 +27,8 @@
 </head>
 <body>
     <div class="print-toolbar no-print">
-        <button type="button" onclick="window.print()">Print</button>
-        <button type="button" class="secondary" onclick="window.close()">Close</button>
+        <button type="button" data-print-action="print">Print</button>
+        <button type="button" class="secondary" data-print-action="close">Close</button>
     </div>
 
     <div class="print-sheet <?= esc(($printOrientation ?? 'portrait') === 'landscape' ? 'print-sheet-landscape' : 'print-sheet-portrait') ?> <?= esc($printDocumentClass ?? '') ?>">
@@ -53,8 +53,19 @@
         </footer>
     </div>
 
-    <?php if (!empty($autoPrint)): ?>
-    <script>window.addEventListener('load', function () { window.print(); });</script>
-    <?php endif; ?>
+    <script {csp-script-nonce}>
+        document.querySelectorAll('[data-print-action]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (button.dataset.printAction === 'print') {
+                    window.print();
+                } else if (button.dataset.printAction === 'close') {
+                    window.close();
+                }
+            });
+        });
+        <?php if (!empty($autoPrint)): ?>
+        window.addEventListener('load', function () { window.print(); });
+        <?php endif; ?>
+    </script>
 </body>
 </html>

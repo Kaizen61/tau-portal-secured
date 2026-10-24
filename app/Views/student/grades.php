@@ -10,13 +10,13 @@
     </nav>
 
     <form method="GET" class="d-flex gap-2 justify-content-end mb-3">
-        <select name="school_year" class="form-select form-select-sm" style="max-width:180px;" onchange="this.form.submit()">
+        <select name="school_year" class="form-select form-select-sm" style="max-width:180px;" data-submit-on-change>
             <option value="">All School Years</option>
             <?php foreach ($schoolYears as $sy): ?>
                 <option value="<?= esc($sy['school_year']) ?>" <?= $filterSy === $sy['school_year'] ? 'selected' : '' ?>><?= esc($sy['school_year']) ?></option>
             <?php endforeach; ?>
         </select>
-        <select name="semester" class="form-select form-select-sm" style="max-width:180px;" onchange="this.form.submit()">
+        <select name="semester" class="form-select form-select-sm" style="max-width:180px;" data-submit-on-change>
             <option value="">All Semesters</option>
             <option value="1st" <?= $filterSem === '1st' ? 'selected' : '' ?>>1st Semester</option>
             <option value="2nd" <?= $filterSem === '2nd' ? 'selected' : '' ?>>2nd Semester</option>

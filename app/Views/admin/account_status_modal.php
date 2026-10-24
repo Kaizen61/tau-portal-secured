@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<script>
+<script {csp-script-nonce}>
 (() => {
     const modal = document.getElementById('accountStatusModal');
     const form = document.getElementById('accountStatusForm');

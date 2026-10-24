@@ -17,7 +17,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="roleSelect">Role</label>
-                        <select name="role" class="form-select" id="roleSelect" required onchange="toggleRoleFields()">
+                        <select name="role" class="form-select" id="roleSelect" required>
                             <option value="student">Student</option>
                             <option value="teacher">Teacher</option>
                             <option value="admin">Admin</option>
@@ -84,9 +84,10 @@
     </div>
 </div>
 
-<script>
+<script {csp-script-nonce}>
 const collegeSelect = document.getElementById('college');
 const programSelect = document.getElementById('program');
+const roleSelect = document.getElementById('roleSelect');
 const programsByCollege = JSON.parse(programSelect.dataset.programs);
 
 function populatePrograms(selectedProgram = '') {
@@ -104,7 +105,7 @@ function populatePrograms(selectedProgram = '') {
 collegeSelect.addEventListener('change', () => populatePrograms());
 
 function toggleRoleFields() {
-    const role = document.getElementById('roleSelect').value;
+    const role = roleSelect.value;
     const isStudent = role === 'student';
     document.getElementById('usernameField').style.display = isStudent ? 'none' : 'block';
     document.getElementById('studentNumberField').style.display = isStudent ? 'block' : 'none';
@@ -119,6 +120,7 @@ function toggleRoleFields() {
     document.getElementById('yearLevel').required = isStudent;
     document.getElementById('section').required = isStudent;
 }
+roleSelect.addEventListener('change', toggleRoleFields);
 populatePrograms();
 toggleRoleFields();
 </script>

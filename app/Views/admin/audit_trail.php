@@ -93,7 +93,7 @@
     </div>
 </div>
 
-<script>
+<script {csp-script-nonce}>
 function escapeHtml(str) {
     if (str === null || str === undefined) return '';
     const div = document.createElement('div');

@@ -89,7 +89,7 @@
     </div>
 </div>
 
-<script>
+<script {csp-script-nonce}>
 (() => {
     const modal = document.getElementById('deleteAnnouncementModal');
     const form = document.getElementById('deleteAnnouncementForm');

@@ -184,7 +184,7 @@ $metrics = [
                             </svg>
                         </div>
                         <p class="dashboard-chart-caption mb-0">Drag the chart left or right to view every school year and semester. Hover over a dot to see its exact GWA.</p>
-                        <script>
+                        <script {csp-script-nonce}>
                         (() => {
                             const viewport = document.querySelector('[data-dotplot-viewport]');
                             const chart = viewport.querySelector('.dashboard-dotplot-canvas');
