@@ -20,6 +20,27 @@ class AuditController extends BaseController
             if (!empty($row['ip_address'])) {
                 $row['ip_address'] = '[REDACTED]';
             }
+            if (isset($row['details']) && is_string($row['details'])) {
+                $sanitizedDetails = preg_replace_callback(
+                    '/(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/',
+                    static function (array $matches): string {
+                        $ip = $matches[0];
+                        $isValidIp = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
+                        $isPublicIp = filter_var(
+                            $ip,
+                            FILTER_VALIDATE_IP,
+                            FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE
+                        ) !== false;
+
+                        return $isValidIp && !$isPublicIp ? '[REDACTED]' : $ip;
+                    },
+                    $row['details']
+                );
+                if ($sanitizedDetails === null) {
+                    throw new \RuntimeException('Unable to redact private IP addresses from audit details.');
+                }
+                $row['details'] = $sanitizedDetails;
+            }
             unset($row['prev_hash'], $row['entry_hash']);
         }
         unset($row);
