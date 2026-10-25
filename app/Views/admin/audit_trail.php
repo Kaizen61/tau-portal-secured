@@ -5,8 +5,8 @@
         <p class="text-muted mb-0">Searchable, integrity-verified portal activity.</p>
         <div class="d-flex flex-wrap align-items-center gap-2">
             <button type="button" class="btn btn-sm btn-university text-nowrap" data-bs-toggle="modal" data-bs-target="#databaseDownloadModal">Download Database (.sql)</button>
-            <a id="printLogsButton" href="<?= site_url('admin/audit-trail/print') . '?' . http_build_query(array_filter(['action' => $filterAction, 'severity' => $filterSeverity, 'q_user' => $searchUser, 'q_ip' => $searchIp, 'q_ua' => $searchUa], static fn ($value): bool => $value !== null && $value !== '')) ?>" target="_blank" class="btn btn-sm btn-university text-nowrap">Print Logs</a>
-            <a href="<?= site_url('admin/audit-trail/export') ?>?action=<?= esc($filterAction) ?>&severity=<?= esc($filterSeverity) ?>&q_user=<?= esc($searchUser) ?>&q_ip=<?= esc($searchIp) ?>&q_ua=<?= esc($searchUa) ?>" class="btn btn-sm btn-university text-nowrap">Export as JSON</a>
+            <a id="printLogsButton" href="<?= site_url('admin/audit-trail/print') ?>" target="_blank" class="btn btn-sm btn-university text-nowrap">Print Logs</a>
+            <a id="exportLogsButton" href="<?= site_url('admin/audit-trail/export') ?>" class="btn btn-sm btn-university text-nowrap">Export as JSON</a>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <input type="text" id="searchUser" class="form-control form-control-sm audit-search-user" placeholder="Search user..." value="<?= esc($searchUser) ?>">
-                <input type="text" id="searchIp" class="form-control form-control-sm audit-search-ip" placeholder="Search IP..." value="<?= esc($searchIp) ?>">
+                <input type="text" id="searchIp" class="form-control form-control-sm audit-search-ip" placeholder="<?= $searchIp !== null && $searchIp !== '' ? 'IP filter active (value hidden)' : 'Search IP...' ?>" value="">
                 <input type="text" id="searchUa" class="form-control form-control-sm audit-search-agent" placeholder="Search User-Agent..." value="<?= esc($searchUa) ?>">
                 <button type="button" id="clearFilters" class="btn btn-sm btn-university clear-filter-button">Clear</button>
             </div>
@@ -112,7 +112,7 @@ function buildPollUrl() {
     const action = document.getElementById('filterAction').value;
     const severity = document.getElementById('filterSeverity').value;
     const qUser = document.getElementById('searchUser').value.trim();
-    const qIp = document.getElementById('searchIp').value.trim();
+    const qIp = document.getElementById('searchIp').value.trim() || activeIpFilter;
     const qUa = document.getElementById('searchUa').value.trim();
     if (action) params.set('action', action);
     if (severity) params.set('severity', severity);
@@ -129,7 +129,7 @@ function updatePrintLogsUrl() {
         ['action', document.getElementById('filterAction').value],
         ['severity', document.getElementById('filterSeverity').value],
         ['q_user', document.getElementById('searchUser').value.trim()],
-        ['q_ip', document.getElementById('searchIp').value.trim()],
+        ['q_ip', document.getElementById('searchIp').value.trim() || activeIpFilter],
         ['q_ua', document.getElementById('searchUa').value.trim()],
     ].forEach(([key, value]) => {
         if (value) params.set(key, value);
@@ -137,6 +137,23 @@ function updatePrintLogsUrl() {
     document.getElementById('printLogsButton').href =
         '<?= site_url('admin/audit-trail/print') ?>' + (params.size ? '?' + params.toString() : '');
 }
+
+function updateExportLogsUrl() {
+    const params = new URLSearchParams();
+    [
+        ['action', document.getElementById('filterAction').value],
+        ['severity', document.getElementById('filterSeverity').value],
+        ['q_user', document.getElementById('searchUser').value.trim()],
+        ['q_ip', document.getElementById('searchIp').value.trim() || activeIpFilter],
+        ['q_ua', document.getElementById('searchUa').value.trim()],
+    ].forEach(([key, value]) => {
+        if (value) params.set(key, value);
+    });
+    document.getElementById('exportLogsButton').href =
+        '<?= site_url('admin/audit-trail/export') ?>' + (params.size ? '?' + params.toString() : '');
+}
+
+let activeIpFilter = new URLSearchParams(window.location.search).get('q_ip') || '';
 
 function renderIntegrity(ok, error) {
     const box = document.getElementById('integrityBox');
@@ -220,21 +237,30 @@ function triggerImmediatePoll() {
 
 document.getElementById('filterAction').addEventListener('change', pollAuditTrail);
 document.getElementById('filterSeverity').addEventListener('change', pollAuditTrail);
-document.getElementById('filterAction').addEventListener('change', updatePrintLogsUrl);
-document.getElementById('filterSeverity').addEventListener('change', updatePrintLogsUrl);
-document.getElementById('searchUser').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
-document.getElementById('searchIp').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
-document.getElementById('searchUa').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
+document.getElementById('filterAction').addEventListener('change', () => { updatePrintLogsUrl(); updateExportLogsUrl(); });
+document.getElementById('filterSeverity').addEventListener('change', () => { updatePrintLogsUrl(); updateExportLogsUrl(); });
+document.getElementById('searchUser').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); updateExportLogsUrl(); });
+document.getElementById('searchIp').addEventListener('input', function () {
+    activeIpFilter = this.value.trim();
+    triggerImmediatePoll();
+    updatePrintLogsUrl();
+    updateExportLogsUrl();
+});
+document.getElementById('searchUa').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); updateExportLogsUrl(); });
 document.getElementById('clearFilters').addEventListener('click', function () {
     document.getElementById('filterAction').value = '';
     document.getElementById('filterSeverity').value = '';
     document.getElementById('searchUser').value = '';
     document.getElementById('searchIp').value = '';
+    activeIpFilter = '';
     document.getElementById('searchUa').value = '';
     updatePrintLogsUrl();
+    updateExportLogsUrl();
     pollAuditTrail();
 });
 
+updatePrintLogsUrl();
+updateExportLogsUrl();
 setInterval(pollAuditTrail, 5000);
 </script>
 

@@ -14,6 +14,19 @@ class AuditController extends BaseController
         'LOGOUT','PROFILE_UPDATED','PASSWORD_CHANGED','DATABASE_EXPORTED'];
     protected array $allowedSeverities = ['INFO','WARNING','HIGH'];
 
+    protected function sanitizeAuditRows(array $rows): array
+    {
+        foreach ($rows as &$row) {
+            if (!empty($row['ip_address'])) {
+                $row['ip_address'] = '[REDACTED]';
+            }
+            unset($row['prev_hash'], $row['entry_hash']);
+        }
+        unset($row);
+
+        return $rows;
+    }
+
     protected function buildFilteredQuery(ActivityLogModel $logs)
     {
         $action = $this->request->getGet('action');
@@ -42,13 +55,14 @@ class AuditController extends BaseController
         $logs = new ActivityLogModel();
         $logger = new ActivityLogger();
         [$integrityOk, $integrityError] = $logger->verifyChain();
+        $rows = $this->buildFilteredQuery($logs)->findAll();
 
         $data = [
             'pageTitle' => 'System Activity Logs - TAU Student Portal',
             'activePage' => 'audit',
             'eyebrow' => 'Administration',
             'pageHeading' => 'System Activity Logs',
-            'logs' => $this->buildFilteredQuery($logs)->findAll(),
+            'logs' => $this->sanitizeAuditRows($rows),
             'filterAction' => $this->request->getGet('action'),
             'filterSeverity' => $this->request->getGet('severity'),
             'searchUser' => $this->request->getGet('q_user'),
@@ -67,7 +81,7 @@ class AuditController extends BaseController
         $logger = new ActivityLogger();
         [$integrityOk, $integrityError] = $logger->verifyChain();
 
-        $rows = $this->buildFilteredQuery($logs)->findAll();
+        $rows = $this->sanitizeAuditRows($this->buildFilteredQuery($logs)->findAll());
 
         return $this->response
             ->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
@@ -83,7 +97,7 @@ class AuditController extends BaseController
     public function export()
     {
         $logs = new ActivityLogModel();
-        $rows = $this->buildFilteredQuery($logs)->findAll();
+        $rows = $this->sanitizeAuditRows($this->buildFilteredQuery($logs)->findAll());
 
         return $this->response
             ->setHeader('Content-Type', 'application/json')
@@ -167,8 +181,9 @@ class AuditController extends BaseController
         $fileName = $databaseName . '_backup_' . date('Ymd_His') . '.sql';
 
         return $this->response
-            ->setHeader('Content-Type', 'application/sql; charset=utf-8')
+            ->setHeader('Content-Type', 'application/octet-stream')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $fileName . '"')
+            ->setHeader('X-Content-Type-Options', 'nosniff')
             ->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
             ->setHeader('Pragma', 'no-cache')
             ->setBody($dump);
@@ -176,7 +191,9 @@ class AuditController extends BaseController
 
     public function printLogs()
     {
-        $rows = $this->buildFilteredQuery(new ActivityLogModel())->findAll();
+        $rows = $this->sanitizeAuditRows(
+            $this->buildFilteredQuery(new ActivityLogModel())->findAll()
+        );
         $action = $this->request->getGet('action');
         $severity = $this->request->getGet('severity');
 
@@ -191,7 +208,7 @@ class AuditController extends BaseController
                 'Action' => in_array($action, $this->allowedActions, true) ? $action : '',
                 'Severity' => in_array($severity, $this->allowedSeverities, true) ? $severity : '',
                 'User' => trim((string) $this->request->getGet('q_user')),
-                'IP' => trim((string) $this->request->getGet('q_ip')),
+                'IP' => trim((string) $this->request->getGet('q_ip')) !== '' ? '[REDACTED]' : '',
                 'User-Agent' => trim((string) $this->request->getGet('q_ua')),
             ]),
         ]);
