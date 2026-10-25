@@ -16,11 +16,12 @@ class TeacherEvaluationController extends BaseController
         $studentId = (int) session()->get('user_id');
         $evaluations = new TeacherEvaluationModel();
         $semester = AcademicSemester::current();
-        $teacherChoices = $semester === null
+        $eligibleTeachers = $semester === null
             ? []
-            : $this->addTeacherChoiceTokens($evaluations->eligibleTeachersForStudent($studentId, $semester));
+            : $evaluations->eligibleTeachersForStudent($studentId, $semester);
         $requestedTeacher = $this->request->getGet('teacher_id');
-        $selectedTeacherId = $this->resolveTeacherId($teacherChoices, $requestedTeacher);
+        $selectedTeacherId = $this->resolveTeacherId($eligibleTeachers, $requestedTeacher);
+        $teacherChoices = $this->addTeacherChoiceTokens($eligibleTeachers);
         $selectedTeacherToken = null;
         foreach ($teacherChoices as $teacher) {
             if ((int) $teacher['teacher_id'] === $selectedTeacherId) {
@@ -62,19 +63,16 @@ class TeacherEvaluationController extends BaseController
         $studentId = (int) session()->get('user_id');
         $semester = AcademicSemester::current();
         $evaluations = new TeacherEvaluationModel();
-        $teacherChoices = $semester === null
+        $eligibleTeachers = $semester === null
             ? []
-            : $this->addTeacherChoiceTokens($evaluations->eligibleTeachersForStudent($studentId, $semester));
+            : $evaluations->eligibleTeachersForStudent($studentId, $semester);
         $postedTeacher = $this->request->getPost('teacher_id');
-        $teacherId = $this->resolveTeacherId($teacherChoices, $postedTeacher);
+        $teacherId = $this->resolveTeacherId($eligibleTeachers, $postedTeacher);
         $submittedScores = $this->request->getPost('scores');
         $criteria = TeacherEvaluationCriteria::CRITERIA;
         $redirectUrl = 'student/teacher-evaluations';
-        foreach ($teacherChoices as $choice) {
-            if ((int) $choice['teacher_id'] === $teacherId) {
-                $redirectUrl .= '?teacher_id=' . rawurlencode($choice['choice_token']);
-                break;
-            }
+        if ($teacherId !== null && (is_string($postedTeacher) || is_int($postedTeacher))) {
+            $redirectUrl .= '?teacher_id=' . rawurlencode((string) $postedTeacher);
         }
 
         if ($semester === null) {
@@ -189,10 +187,21 @@ class TeacherEvaluationController extends BaseController
 
     private function addTeacherChoiceTokens(array $choices): array
     {
-        foreach ($choices as $index => &$choice) {
-            $choice['choice_token'] = 'teacher-choice-' . ($index + 1);
+        $tokenMap = session()->get('teacher_evaluation_choice_tokens');
+        $tokenMap = is_array($tokenMap) ? $tokenMap : [];
+
+        foreach ($choices as &$choice) {
+            $token = bin2hex(random_bytes(16));
+            $tokenMap[$token] = (int) $choice['teacher_id'];
+            $choice['choice_token'] = $token;
         }
         unset($choice);
+
+        $tokenLimit = max(100, count($choices));
+        if (count($tokenMap) > $tokenLimit) {
+            $tokenMap = array_slice($tokenMap, -$tokenLimit, null, true);
+        }
+        session()->set('teacher_evaluation_choice_tokens', $tokenMap);
 
         return $choices;
     }
@@ -203,9 +212,21 @@ class TeacherEvaluationController extends BaseController
             return null;
         }
 
-        foreach ($choices as $choice) {
-            if (hash_equals($choice['choice_token'], (string) $requestedTeacher)) {
-                return (int) $choice['teacher_id'];
+        if (is_string($requestedTeacher)) {
+            $tokenMap = session()->get('teacher_evaluation_choice_tokens');
+            if (is_array($tokenMap) && isset($tokenMap[$requestedTeacher])) {
+                $mappedTeacherId = (int) $tokenMap[$requestedTeacher];
+                foreach ($choices as $choice) {
+                    if ((int) $choice['teacher_id'] === $mappedTeacherId) {
+                        return $mappedTeacherId;
+                    }
+                }
+            }
+            if (preg_match('/^teacher-choice-([1-9]\d*)$/D', $requestedTeacher, $matches) === 1) {
+                $legacyIndex = (int) $matches[1] - 1;
+                if (isset($choices[$legacyIndex])) {
+                    return (int) $choices[$legacyIndex]['teacher_id'];
+                }
             }
         }
 

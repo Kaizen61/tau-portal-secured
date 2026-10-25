@@ -58,7 +58,7 @@
         <?php foreach ($students as $i => $row): ?>
         <tr>
             <td><?= $i + 1 ?></td>
-            <td><?= esc($row['student_number'] ?? '—') ?></td>
+            <td><?= view('components/student_number', ['studentNumber' => $row['student_number'] ?? '—']) ?></td>
             <td><?= esc($row['full_name']) ?></td>
             <td><?= esc($row['year_level'] ?? '') ?></td>
             <td><?= esc($row['section'] ?? '—') ?></td>

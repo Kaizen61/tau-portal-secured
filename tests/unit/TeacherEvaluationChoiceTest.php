@@ -18,11 +18,13 @@ final class TeacherEvaluationChoiceTest extends CIUnitTestCase
             ['teacher_id' => 20],
         ]);
 
-        $this->assertSame('teacher-choice-1', $choices[0]['choice_token']);
-        $this->assertSame('teacher-choice-2', $choices[1]['choice_token']);
-        $this->assertStringNotContainsString('15', $choices[0]['choice_token']);
-        $this->assertSame(15, $resolve->invoke($controller, $choices, 'teacher-choice-1'));
+        $this->assertMatchesRegularExpression('/^[a-f0-9]{32}$/', $choices[0]['choice_token']);
+        $this->assertMatchesRegularExpression('/^[a-f0-9]{32}$/', $choices[1]['choice_token']);
+        $this->assertNotSame($choices[0]['choice_token'], $choices[1]['choice_token']);
+        $this->assertNotSame('15', $choices[0]['choice_token']);
+        $this->assertSame(15, $resolve->invoke($controller, $choices, $choices[0]['choice_token']));
         $this->assertSame(15, $resolve->invoke($controller, $choices, '15'));
+        $this->assertSame(15, $resolve->invoke($controller, $choices, 'teacher-choice-1'));
         $this->assertNull($resolve->invoke($controller, $choices, '<img src=x>'));
     }
 }

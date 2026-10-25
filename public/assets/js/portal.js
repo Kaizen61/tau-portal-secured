@@ -5,3 +5,7 @@ document.querySelectorAll('select[data-submit-on-change]').forEach((select) => {
         }
     });
 });
+
+document.querySelectorAll('input[data-numeric-identifier]').forEach((input) => {
+    input.value += input.dataset.identifierSuffix;
+});

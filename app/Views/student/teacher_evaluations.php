@@ -55,7 +55,7 @@
                             <div>
                                 <h2 class="h5 mb-1"><?= esc($teacher['teacher_name']) ?></h2>
                                 <p class="small text-muted mb-0">
-                                    <?= esc($teacher['employee_id'] ?? 'Faculty') ?>
+                                    <?= view('components/student_number', ['studentNumber' => $teacher['employee_id'] ?? 'Faculty']) ?>
                                     <?= !empty($teacher['college']) ? ' · ' . esc($teacher['college']) : '' ?>
                                 </p>
                                 <p class="small text-muted mb-0">Your subjects: <?php foreach ($teacher['subjects'] as $index => $subject): ?><?= $index > 0 ? ', ' : '' ?><?= esc($subject['subject_code']) ?> — <?= esc($subject['subject_name']) ?><?php endforeach; ?></p>

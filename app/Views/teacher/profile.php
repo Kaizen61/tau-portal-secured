@@ -21,7 +21,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="employeeId">Employee ID</label>
-                            <input type="text" id="employeeId" class="form-control" value="<?= esc($profile['employee_id'] ?? '') ?>" readonly>
+                            <?php $employeeId = (string) ($profile['employee_id'] ?? ''); ?>
+                            <input type="text" id="employeeId" class="form-control" value="<?= esc(preg_match('/^\d{10}$/D', $employeeId) === 1 ? substr($employeeId, 0, 4) : $employeeId) ?>"<?php if (preg_match('/^\d{10}$/D', $employeeId) === 1): ?> data-numeric-identifier data-identifier-suffix="<?= esc(substr($employeeId, 4), 'attr') ?>"<?php endif; ?> readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="college">College / Office</label>
