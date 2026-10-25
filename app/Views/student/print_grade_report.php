@@ -9,7 +9,7 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
         <dt>Student Name</dt>
         <dd><?= esc($profile['full_name'] ?? '') ?></dd>
         <dt>Student Number</dt>
-        <dd><?= esc($profile['student_number'] ?? '—') ?></dd>
+        <dd><?= view('components/student_number', ['studentNumber' => $profile['student_number'] ?? '—']) ?></dd>
         <dt>College</dt>
         <dd><?= esc($profile['college'] ?? '—') ?></dd>
         <dt>Section</dt>

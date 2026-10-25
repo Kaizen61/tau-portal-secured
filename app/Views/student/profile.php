@@ -19,8 +19,9 @@
                     <a class="btn btn-sm btn-outline-university no-print" target="_blank" href="<?= site_url('student/profile/print') ?>">Print Student Record</a>
                 </div>
                 <div class="card-body">
+                    <?php $studentNumber = (string) ($profile['student_number'] ?? ''); ?>
                     <table class="table table-borderless mb-3">
-                        <tr><th class="student-number-label">Student Number</th><td><?= esc($profile['student_number'] ?? '') ?></td></tr>
+                        <tr><th class="student-number-label">Student Number</th><td><?= view('components/student_number', ['studentNumber' => $studentNumber]) ?></td></tr>
                         <tr><th>College</th><td><?= esc($profile['college'] ?? '') ?></td></tr>
                         <tr><th>Program</th><td><?= esc(isset($programNames[$profile['program'] ?? '']) ? ($profile['program'] . ' — ' . $programNames[$profile['program']]) : '—') ?></td></tr>
                         <tr><th>Year Level</th><td><?= esc($profile['year_level'] ?? '') ?></td></tr>

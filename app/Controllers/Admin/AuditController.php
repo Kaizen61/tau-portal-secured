@@ -17,31 +17,27 @@ class AuditController extends BaseController
     protected function sanitizeAuditRows(array $rows): array
     {
         foreach ($rows as &$row) {
-            if (!empty($row['ip_address'])) {
-                $row['ip_address'] = '[REDACTED]';
-            }
-            if (isset($row['details']) && is_string($row['details'])) {
-                $sanitizedDetails = preg_replace_callback(
-                    '/(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/',
-                    static function (array $matches): string {
-                        $ip = $matches[0];
-                        $isValidIp = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
-                        $isPublicIp = filter_var(
-                            $ip,
-                            FILTER_VALIDATE_IP,
-                            FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE
-                        ) !== false;
-
-                        return $isValidIp && !$isPublicIp ? '[REDACTED]' : $ip;
-                    },
-                    $row['details']
-                );
-                if ($sanitizedDetails === null) {
-                    throw new \RuntimeException('Unable to redact private IP addresses from audit details.');
+            foreach ($row as $field => $value) {
+                if ($field === 'ip_address' || $field === 'prev_hash' || $field === 'entry_hash') {
+                    unset($row[$field]);
+                    continue;
                 }
-                $row['details'] = $sanitizedDetails;
+                if (is_string($value)) {
+                    $sanitizedValue = preg_replace_callback(
+                        '/(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/',
+                        static function (array $matches): string {
+                            $ip = $matches[0];
+                            $isValidIp = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
+                            return $isValidIp ? '[REDACTED]' : $ip;
+                        },
+                        $value
+                    );
+                    if ($sanitizedValue === null) {
+                        throw new \RuntimeException('Unable to redact IP addresses from audit output.');
+                    }
+                    $row[$field] = $sanitizedValue;
+                }
             }
-            unset($row['prev_hash'], $row['entry_hash']);
         }
         unset($row);
 
@@ -52,11 +48,10 @@ class AuditController extends BaseController
     {
         $action = $this->request->getGet('action');
         $severity = $this->request->getGet('severity');
-        // FIX: search filters by user, IP, and User-Agent. CI4's like()
+        // FIX: search filters by user and User-Agent. CI4's like()
         // auto-escapes the value (parameterized), safe against injection
         // even though these are free-text search boxes.
         $searchUser = trim((string) $this->request->getGet('q_user'));
-        $searchIp = trim((string) $this->request->getGet('q_ip'));
         $searchUa = trim((string) $this->request->getGet('q_ua'));
 
         // FIX per instruction: latest entry on top. Full history is still
@@ -65,7 +60,6 @@ class AuditController extends BaseController
         if (in_array($action, $this->allowedActions, true)) $builder->where('action', $action);
         if (in_array($severity, $this->allowedSeverities, true)) $builder->where('severity', $severity);
         if ($searchUser !== '') $builder->like('username', $searchUser);
-        if ($searchIp !== '') $builder->like('ip_address', $searchIp);
         if ($searchUa !== '') $builder->like('user_agent', $searchUa);
 
         return $builder;
@@ -87,7 +81,6 @@ class AuditController extends BaseController
             'filterAction' => $this->request->getGet('action'),
             'filterSeverity' => $this->request->getGet('severity'),
             'searchUser' => $this->request->getGet('q_user'),
-            'searchIp' => $this->request->getGet('q_ip'),
             'searchUa' => $this->request->getGet('q_ua'),
             'allowedActions' => $this->allowedActions,
             'integrityOk' => $integrityOk,
@@ -103,16 +96,18 @@ class AuditController extends BaseController
         [$integrityOk, $integrityError] = $logger->verifyChain();
 
         $rows = $this->sanitizeAuditRows($this->buildFilteredQuery($logs)->findAll());
+        $json = json_encode([
+            'integrityOk' => $integrityOk,
+            'integrityError' => $integrityError,
+            'count' => count($rows),
+            'logs' => $rows,
+        ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_THROW_ON_ERROR);
 
         return $this->response
             ->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
             ->setHeader('Pragma', 'no-cache')
-            ->setJSON([
-                'integrityOk' => $integrityOk,
-                'integrityError' => $integrityError,
-                'count' => count($rows),
-                'logs' => $rows,
-            ]);
+            ->setContentType('application/json')
+            ->setBody($json);
     }
 
     public function printLogs()
@@ -134,7 +129,6 @@ class AuditController extends BaseController
                 'Action' => in_array($action, $this->allowedActions, true) ? $action : '',
                 'Severity' => in_array($severity, $this->allowedSeverities, true) ? $severity : '',
                 'User' => trim((string) $this->request->getGet('q_user')),
-                'IP' => trim((string) $this->request->getGet('q_ip')) !== '' ? '[REDACTED]' : '',
                 'User-Agent' => trim((string) $this->request->getGet('q_ua')),
             ]),
         ]);

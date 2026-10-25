@@ -29,7 +29,7 @@
                     <select id="evaluation-teacher-filter" name="teacher_id" class="form-select teacher-evaluation-teacher-select">
                         <option value="">Choose one teacher</option>
                         <?php foreach ($teacherChoices as $choice): ?>
-                            <option value="<?= (int) $choice['teacher_id'] ?>" <?= $selectedTeacherId === (int) $choice['teacher_id'] ? 'selected' : '' ?>>
+                            <option value="<?= esc($choice['choice_token'], 'attr') ?>" <?= $selectedTeacherToken === $choice['choice_token'] ? 'selected' : '' ?>>
                                 <?= esc($choice['teacher_name']) ?><?= $choice['submitted'] ? ' — Evaluation submitted' : '' ?>
                             </option>
                         <?php endforeach; ?>
@@ -106,7 +106,7 @@
                                 <p class="small text-muted">Select one rating for each statement. All 22 criteria must be rated.</p>
                                 <form method="POST" action="<?= site_url('student/teacher-evaluations') ?>">
                                     <?= csrf_field() ?>
-                                    <input type="hidden" name="teacher_id" value="<?= (int) $teacher['teacher_id'] ?>">
+                                    <input type="hidden" name="teacher_id" value="<?= esc($teacher['choice_token'], 'attr') ?>">
                                     <div class="teacher-evaluation-rating-head">
                                         <div class="teacher-evaluation-rating-scale" aria-hidden="true">
                                             <?php for ($score = 1; $score <= 5; $score++): ?><span><?= $score ?></span><?php endfor; ?>

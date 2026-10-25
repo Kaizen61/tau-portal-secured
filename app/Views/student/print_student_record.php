@@ -6,7 +6,7 @@
         <dt>Full Name</dt>
         <dd><?= esc($profile['full_name'] ?? '') ?></dd>
         <dt>Student Number</dt>
-        <dd><?= esc($profile['student_number'] ?? '—') ?></dd>
+        <dd><?= view('components/student_number', ['studentNumber' => $profile['student_number'] ?? '—']) ?></dd>
         <dt>College / Program</dt>
         <dd><?= esc(($profile['college'] ?? '—') . (!empty($profile['program']) && isset($programNames[$profile['program']]) ? ' / ' . $profile['program'] . ' — ' . $programNames[$profile['program']] : '')) ?></dd>
         <dt>Section</dt>

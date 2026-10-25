@@ -41,14 +41,13 @@
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <input type="text" id="searchUser" class="form-control form-control-sm audit-search-user" placeholder="Search user..." value="<?= esc($searchUser) ?>">
-                <input type="text" id="searchIp" class="form-control form-control-sm audit-search-ip" placeholder="<?= $searchIp !== null && $searchIp !== '' ? 'IP filter active (value hidden)' : 'Search IP...' ?>" value="">
                 <input type="text" id="searchUa" class="form-control form-control-sm audit-search-agent" placeholder="Search User-Agent..." value="<?= esc($searchUa) ?>">
                 <button type="button" id="clearFilters" class="btn btn-sm btn-university clear-filter-button">Clear</button>
             </div>
         </div>
         <div class="card-body p-0 audit-scroll-area">
             <table class="table table-portal table-striped mb-0">
-            <thead><tr><th class="audit-date-column">Date &amp; Time</th><th>User</th><th>Action</th><th>Severity</th><th>Details</th><th>IP</th><th class="audit-agent-column">User-Agent</th></tr></thead>
+            <thead><tr><th class="audit-date-column">Date &amp; Time</th><th>User</th><th>Action</th><th>Severity</th><th>Details</th><th class="audit-agent-column">User-Agent</th></tr></thead>
               <tbody id="logsTableBody">
                 <?php foreach ($logs as $row): ?>
                     <?php $sev = $row['severity']; $badgeClass = $sev === 'HIGH' ? 'bg-danger' : ($sev === 'WARNING' ? 'bg-warning text-dark' : 'bg-secondary'); ?>
@@ -62,7 +61,6 @@
                         <td class="small"><?= esc($row['action']) ?></td>
                         <td><span class="badge <?= $badgeClass ?>"><?= esc($sev) ?></span></td>
                         <td class="small"><?= esc($row['details'] ?? '') ?></td>
-                        <td class="small"><?= esc($row['ip_address'] ?? '') ?></td>
                         <td class="small audit-agent-cell"><?= esc($row['user_agent'] ?? '') ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -91,12 +89,10 @@ function buildPollUrl() {
     const action = document.getElementById('filterAction').value;
     const severity = document.getElementById('filterSeverity').value;
     const qUser = document.getElementById('searchUser').value.trim();
-    const qIp = document.getElementById('searchIp').value.trim() || activeIpFilter;
     const qUa = document.getElementById('searchUa').value.trim();
     if (action) params.set('action', action);
     if (severity) params.set('severity', severity);
     if (qUser) params.set('q_user', qUser);
-    if (qIp) params.set('q_ip', qIp);
     if (qUa) params.set('q_ua', qUa);
     params.set('_', Date.now());
     return '<?= site_url('admin/audit-trail/poll') ?>?' + params.toString();
@@ -108,7 +104,6 @@ function updatePrintLogsUrl() {
         ['action', document.getElementById('filterAction').value],
         ['severity', document.getElementById('filterSeverity').value],
         ['q_user', document.getElementById('searchUser').value.trim()],
-        ['q_ip', document.getElementById('searchIp').value.trim() || activeIpFilter],
         ['q_ua', document.getElementById('searchUa').value.trim()],
     ].forEach(([key, value]) => {
         if (value) params.set(key, value);
@@ -116,8 +111,6 @@ function updatePrintLogsUrl() {
     document.getElementById('printLogsButton').href =
         '<?= site_url('admin/audit-trail/print') ?>' + (params.size ? '?' + params.toString() : '');
 }
-
-let activeIpFilter = new URLSearchParams(window.location.search).get('q_ip') || '';
 
 function renderIntegrity(ok, error) {
     const box = document.getElementById('integrityBox');
@@ -168,7 +161,6 @@ function renderLogs(logs) {
             createTextCell(row.action),
             severityCell,
             createTextCell(row.details || ''),
-            createTextCell(row.ip_address || ''),
             createTextCell(row.user_agent || '', 'small audit-agent-cell')
         );
         rows.appendChild(tr);
@@ -204,18 +196,11 @@ document.getElementById('filterSeverity').addEventListener('change', pollAuditTr
 document.getElementById('filterAction').addEventListener('change', updatePrintLogsUrl);
 document.getElementById('filterSeverity').addEventListener('change', updatePrintLogsUrl);
 document.getElementById('searchUser').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
-document.getElementById('searchIp').addEventListener('input', function () {
-    activeIpFilter = this.value.trim();
-    triggerImmediatePoll();
-    updatePrintLogsUrl();
-});
 document.getElementById('searchUa').addEventListener('input', () => { triggerImmediatePoll(); updatePrintLogsUrl(); });
 document.getElementById('clearFilters').addEventListener('click', function () {
     document.getElementById('filterAction').value = '';
     document.getElementById('filterSeverity').value = '';
     document.getElementById('searchUser').value = '';
-    document.getElementById('searchIp').value = '';
-    activeIpFilter = '';
     document.getElementById('searchUa').value = '';
     updatePrintLogsUrl();
     pollAuditTrail();

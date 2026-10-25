@@ -18,12 +18,13 @@ class TeacherEvaluationController extends BaseController
         $semester = AcademicSemester::current();
         $teacherChoices = $semester === null
             ? []
-            : $evaluations->eligibleTeachersForStudent($studentId, $semester);
-        $requestedTeacherId = filter_var($this->request->getGet('teacher_id'), FILTER_VALIDATE_INT);
-        $selectedTeacherId = null;
+            : $this->addTeacherChoiceTokens($evaluations->eligibleTeachersForStudent($studentId, $semester));
+        $requestedTeacher = $this->request->getGet('teacher_id');
+        $selectedTeacherId = $this->resolveTeacherId($teacherChoices, $requestedTeacher);
+        $selectedTeacherToken = null;
         foreach ($teacherChoices as $teacher) {
-            if ($requestedTeacherId && (int) $teacher['teacher_id'] === (int) $requestedTeacherId) {
-                $selectedTeacherId = (int) $requestedTeacherId;
+            if ((int) $teacher['teacher_id'] === $selectedTeacherId) {
+                $selectedTeacherToken = $teacher['choice_token'];
                 break;
             }
         }
@@ -46,6 +47,7 @@ class TeacherEvaluationController extends BaseController
             'commentFields' => TeacherEvaluationCriteria::COMMENT_FIELDS,
             'teacherChoices' => $teacherChoices,
             'selectedTeacherId' => $selectedTeacherId,
+            'selectedTeacherToken' => $selectedTeacherToken,
             'teachers' => $teachers,
             'submittedEvaluations' => $semester === null
                 ? []
@@ -58,13 +60,22 @@ class TeacherEvaluationController extends BaseController
     public function submit()
     {
         $studentId = (int) session()->get('user_id');
-        $teacherId = filter_var($this->request->getPost('teacher_id'), FILTER_VALIDATE_INT);
         $semester = AcademicSemester::current();
+        $evaluations = new TeacherEvaluationModel();
+        $teacherChoices = $semester === null
+            ? []
+            : $this->addTeacherChoiceTokens($evaluations->eligibleTeachersForStudent($studentId, $semester));
+        $postedTeacher = $this->request->getPost('teacher_id');
+        $teacherId = $this->resolveTeacherId($teacherChoices, $postedTeacher);
         $submittedScores = $this->request->getPost('scores');
         $criteria = TeacherEvaluationCriteria::CRITERIA;
-        $redirectUrl = $teacherId
-            ? 'student/teacher-evaluations?teacher_id=' . (int) $teacherId
-            : 'student/teacher-evaluations';
+        $redirectUrl = 'student/teacher-evaluations';
+        foreach ($teacherChoices as $choice) {
+            if ((int) $choice['teacher_id'] === $teacherId) {
+                $redirectUrl .= '?teacher_id=' . rawurlencode($choice['choice_token']);
+                break;
+            }
+        }
 
         if ($semester === null) {
             session()->setFlashdata('error', 'Teacher evaluations are available only during the 1st semester (August–December) and 2nd semester (January–May).');
@@ -110,7 +121,6 @@ class TeacherEvaluationController extends BaseController
             $comments[$field] = $comment === '' ? null : $comment;
         }
 
-        $evaluations = new TeacherEvaluationModel();
         $eligibleTeacherIds = array_column($evaluations->eligibleTeachersForStudent($studentId, $semester), 'teacher_id');
         if (!in_array((int) $teacherId, array_map('intval', $eligibleTeacherIds), true)) {
             session()->setFlashdata('error', 'You can evaluate only teachers whose subjects you are enrolled in.');
@@ -175,5 +185,39 @@ class TeacherEvaluationController extends BaseController
         $db->transCommit();
         session()->setFlashdata('saved', 'Your teacher evaluation was submitted and cannot be changed.');
         return redirect()->to($redirectUrl);
+    }
+
+    private function addTeacherChoiceTokens(array $choices): array
+    {
+        foreach ($choices as $index => &$choice) {
+            $choice['choice_token'] = 'teacher-choice-' . ($index + 1);
+        }
+        unset($choice);
+
+        return $choices;
+    }
+
+    private function resolveTeacherId(array $choices, $requestedTeacher): ?int
+    {
+        if (!is_string($requestedTeacher) && !is_int($requestedTeacher)) {
+            return null;
+        }
+
+        foreach ($choices as $choice) {
+            if (hash_equals($choice['choice_token'], (string) $requestedTeacher)) {
+                return (int) $choice['teacher_id'];
+            }
+        }
+
+        $legacyTeacherId = filter_var($requestedTeacher, FILTER_VALIDATE_INT);
+        if ($legacyTeacherId !== false) {
+            foreach ($choices as $choice) {
+                if ((int) $choice['teacher_id'] === (int) $legacyTeacherId) {
+                    return (int) $choice['teacher_id'];
+                }
+            }
+        }
+
+        return null;
     }
 }

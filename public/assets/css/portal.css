@@ -1040,7 +1040,6 @@ a:hover { color: var(--uni-green-dark); }
 .login-heading { color: var(--uni-green-dark); }
 .audit-filter-select { width: auto; }
 .audit-search-user,
-.audit-search-ip { max-width: 180px; }
 .audit-search-agent { max-width: 220px; }
 .audit-date-column { min-width: 110px; }
 .audit-agent-column { min-width: 350px; }
