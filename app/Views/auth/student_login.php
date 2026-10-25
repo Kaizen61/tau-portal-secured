@@ -31,7 +31,7 @@
                 <div class="alert alert-danger py-2"><?= esc($error) ?></div>
             <?php endif; ?>
 
-            <form action="<?= site_url('login/student') ?>?debug=1" method="POST">
+            <form action="<?= site_url('login/student') ?>" method="POST">
                 <?= csrf_field() ?>
                 <div class="mb-3">
                     <label class="form-label">Student Number</label>
