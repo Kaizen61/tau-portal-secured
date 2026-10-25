@@ -81,14 +81,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $styleSrc = ['self', 'unsafe-inline', 'https://cdn.jsdelivr.net', 'https://fonts.googleapis.com'];
+    public array|string $styleSrc = ['self', 'https://cdn.jsdelivr.net'];
 
     /**
      * Specifies valid sources for stylesheets <link> elements.
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcElem = ['self', 'unsafe-inline', 'https://cdn.jsdelivr.net', 'https://fonts.googleapis.com'];
+    public array|string $styleSrcElem = ['self', 'https://cdn.jsdelivr.net'];
 
     /**
      * Specifies valid sources for stylesheets inline
@@ -96,7 +96,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcAttr = ['self', 'unsafe-inline'];
+    public array|string $styleSrcAttr = 'none';
 
     /**
      * Defines the origins from which images can be loaded.
@@ -134,7 +134,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string|null $fontSrc = ['self', 'https://fonts.gstatic.com', 'data:'];
+    public array|string|null $fontSrc = 'self';
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.

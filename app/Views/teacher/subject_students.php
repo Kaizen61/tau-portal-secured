@@ -22,7 +22,7 @@
         </div>
         <div class="card-body p-0">
             <table class="table table-portal table-striped mb-0 align-middle">
-                <thead><tr><th>Student</th><th>Year Level</th><th>Section</th><th>School Year</th><th>Grade</th><th style="width:220px;">Update Grade</th></tr></thead>
+                <thead><tr><th>Student</th><th>Year Level</th><th>Section</th><th>School Year</th><th>Grade</th><th class="subject-grade-action-column">Update Grade</th></tr></thead>
                 <tbody>
                 <?php foreach ($students as $row): ?>
                     <tr>

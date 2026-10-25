@@ -4,7 +4,7 @@
     <p class="text-muted mb-2">Manage teacher accounts. Add student, teacher, and admin accounts from Add Account.</p>
     <div class="student-directory-toolbar mb-3">
         <form method="GET" class="student-directory-filters">
-            <input type="text" name="q" class="form-control form-control-sm" style="min-width:220px;" placeholder="Search name, username, college, or date (e.g. Aug or August 9, 2026)" value="<?= esc($q ?? '') ?>">
+            <input type="text" name="q" class="form-control form-control-sm admin-user-search" placeholder="Search name, username, college, or date (e.g. Aug or August 9, 2026)" value="<?= esc($q ?? '') ?>">
             <button type="submit" class="btn btn-sm btn-university">Search</button>
             <a href="<?= site_url('admin/users') ?>" class="btn btn-sm btn-university clear-filter-button">Clear</a>
         </form>

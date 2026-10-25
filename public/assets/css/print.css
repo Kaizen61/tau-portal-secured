@@ -159,6 +159,27 @@ body {
     font-size: 0.8rem;
 }
 
+.class-list-print-table.has-grades col:nth-child(1) { width: 6%; }
+.class-list-print-table.has-grades col:nth-child(2) { width: 17%; }
+.class-list-print-table.has-grades col:nth-child(3) { width: 35%; }
+.class-list-print-table.has-grades col:nth-child(4),
+.class-list-print-table.has-grades col:nth-child(5),
+.class-list-print-table.has-grades col:nth-child(6) { width: 14%; }
+.class-list-print-table.without-grades col:nth-child(1) { width: 7%; }
+.class-list-print-table.without-grades col:nth-child(2) { width: 21%; }
+.class-list-print-table.without-grades col:nth-child(3) { width: 42%; }
+.class-list-print-table.without-grades col:nth-child(4),
+.class-list-print-table.without-grades col:nth-child(5) { width: 15%; }
+
+.enrollment-history-heading {
+    margin: 1.2rem 0 0.5rem;
+    color: #1B4D3E;
+    font-family: Merriweather, Georgia, serif;
+    font-size: 0.95rem;
+}
+
+.grade-report-note { margin: 0.2rem 0 0; }
+
 .class-list-print-table th,
 .class-list-print-table td {
     overflow-wrap: anywhere;

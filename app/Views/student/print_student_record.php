@@ -22,7 +22,7 @@
     </div>
 </dl>
 
-<h3 style="font-family:Merriweather,Georgia,serif;font-size:0.95rem;color:#1B4D3E;margin:1.2rem 0 0.5rem;">Enrollment History</h3>
+<h3 class="enrollment-history-heading">Enrollment History</h3>
 <table class="print-table">
     <thead>
         <tr>

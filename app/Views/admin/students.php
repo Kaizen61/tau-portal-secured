@@ -11,18 +11,18 @@
     <p class="text-muted mb-2">Manage student accounts. Create accounts from <a href="<?= site_url('admin/add-account') ?>">Add Account</a>.</p>
     <div class="student-directory-toolbar mb-3">
         <form method="GET" class="student-directory-filters">
-            <input type="text" name="q" class="form-control form-control-sm" style="width:230px;" placeholder="Search name, student no., college, year level, or date" value="<?= esc($q ?? '') ?>">
-            <select name="sort" class="form-select form-select-sm" style="width:145px;" aria-label="Sort by name">
+            <input type="text" name="q" class="form-control form-control-sm student-search-input" placeholder="Search name, student no., college, year level, or date" value="<?= esc($q ?? '') ?>">
+            <select name="sort" class="form-select form-select-sm student-sort-select" aria-label="Sort by name">
                 <option value="asc" <?= $sort === 'asc' ? 'selected' : '' ?>>Name: A to Z</option>
                 <option value="desc" <?= $sort === 'desc' ? 'selected' : '' ?>>Name: Z to A</option>
             </select>
-            <select name="college" class="form-select form-select-sm" style="width:230px;" aria-label="Filter by college">
+            <select name="college" class="form-select form-select-sm student-college-select" aria-label="Filter by college">
                 <option value="">All Colleges</option>
                 <?php foreach ($colleges as $college): ?>
                     <option value="<?= esc($college) ?>" <?= $collegeFilter === $college ? 'selected' : '' ?>><?= esc($college) ?></option>
                 <?php endforeach; ?>
             </select>
-            <select name="year_level" class="form-select form-select-sm" style="width:155px;" aria-label="Filter by year level">
+            <select name="year_level" class="form-select form-select-sm student-year-select" aria-label="Filter by year level">
                 <option value="">All Year Levels</option>
                 <?php foreach ($yearLevels as $yearLevel): ?>
                     <option value="<?= esc($yearLevel) ?>" <?= $yearLevelFilter === $yearLevel ? 'selected' : '' ?>><?= esc($yearLevel) ?></option>

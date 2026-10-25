@@ -87,15 +87,21 @@ $gradedPercent = $gradeTotal > 0 ? (int) round($gradedCount / $gradeTotal * 100)
                             ];
                         endforeach;
                         ?>
+                        <style {csp-style-nonce}>
+                            .admin-college-pie-slices { background: conic-gradient(<?= esc(implode(', ', $pieStops)) ?>); }
+                            <?php foreach (array_values($legendRows) as $index => $college): ?>
+                            .admin-college-swatch-<?= (int) $index ?> { background-color: <?= esc($college['color']) ?>; }
+                            <?php endforeach; ?>
+                        </style>
                         <div class="admin-college-pie-layout">
                             <div class="admin-college-pie" role="img" aria-label="Pie chart showing student distribution across <?= count($collegeLabels) ?> colleges and unassigned or other records">
                                 <span><?= (int) $studentTotal ?><small>students</small></span>
-                                <i style="background: conic-gradient(<?= esc(implode(', ', $pieStops)) ?>);"></i>
+                                <i class="admin-college-pie-slices"></i>
                             </div>
                             <div class="admin-college-legend" aria-label="Student counts by college">
-                                <?php foreach ($legendRows as $college): ?>
+                                <?php foreach (array_values($legendRows) as $index => $college): ?>
                                     <div class="admin-college-legend-row">
-                                        <span class="admin-college-swatch" style="--college-color: <?= esc($college['color']) ?>"></span>
+                                        <span class="admin-college-swatch admin-college-swatch-<?= (int) $index ?>"></span>
                                         <span class="admin-college-legend-name"><?= esc($college['label']) ?></span>
                                         <strong><?= $college['total'] ?> <small>(<?= number_format($college['percent'], 1) ?>%)</small></strong>
                                     </div>
@@ -122,9 +128,10 @@ $gradedPercent = $gradeTotal > 0 ? (int) round($gradedCount / $gradeTotal * 100)
                         </div>
                         <span id="gradeTotal" class="admin-grade-total"><?= $gradeTotal ?> total</span>
                     </div>
+                        <style id="gradeProgressStyle" {csp-style-nonce}>.admin-grade-progress-done { width: <?= (int) $gradedPercent ?>%; }</style>
                         <div id="gradeProgress" class="admin-grade-progress" role="img" aria-label="<?= $gradedCount ?> graded and <?= $pendingCount ?> pending grade records">
-                            <span id="gradeProgressDone" class="admin-grade-progress-done" style="width: <?= $gradedPercent ?>%"></span>
-                    </div>
+                            <span id="gradeProgressDone" class="admin-grade-progress-done"></span>
+                        </div>
                     <div class="admin-grade-legend">
                             <span><i class="admin-legend-dot admin-legend-done"></i>Graded <strong id="gradedLegend"><?= (int) $gradedCount ?></strong></span>
                         <span><i class="admin-legend-dot admin-legend-pending"></i>Pending <strong id="pendingLegend"><?= (int) $pendingCount ?></strong></span>
@@ -234,7 +241,7 @@ async function pollDashboard() {
         const gradedPercent = gradeTotal > 0 ? Math.round(data.gradedCount / gradeTotal * 100) : 0;
         document.getElementById('gradeTotal').textContent = `${gradeTotal} total`;
         document.getElementById('gradedPercent').textContent = `${gradedPercent}%`;
-        document.getElementById('gradeProgressDone').style.width = `${gradedPercent}%`;
+        document.getElementById('gradeProgressStyle').sheet.cssRules[0].style.width = `${gradedPercent}%`;
         document.getElementById('gradeProgress').setAttribute(
             'aria-label',
             `${data.gradedCount} graded and ${data.pendingCount} pending grade records`

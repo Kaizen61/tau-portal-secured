@@ -27,12 +27,12 @@
                         <label class="form-label" for="username">Username</label>
                         <input type="text" id="username" name="username" class="form-control" maxlength="50">
                     </div>
-                    <div class="mb-3" id="studentNumberField" style="display:none;">
+                    <div class="mb-3" id="studentNumberField" hidden>
                         <label class="form-label" for="studentNumber">Student Number (assigned automatically)</label>
                         <input type="text" id="studentNumber" class="form-control" value="<?= esc($studentNumberPreview) ?>" readonly>
                         <small class="text-muted">The next number is shown as a preview and is assigned when the account is created.</small>
                     </div>
-                    <div class="mb-3" id="employeeNumberField" style="display:none;">
+                    <div class="mb-3" id="employeeNumberField" hidden>
                         <label class="form-label" for="employeeNumber">Employee ID (assigned automatically)</label>
                         <input type="text" id="employeeNumber" class="form-control" value="<?= esc($employeeNumberPreview) ?>" readonly>
                         <small class="text-muted">The next number is shown as a preview and is assigned when the account is created.</small>
@@ -53,13 +53,13 @@
                             <option value="College of Agriculture and Forestry (CAF)">College of Agriculture and Forestry (CAF)</option>
                         </select>
                     </div>
-                    <div class="mb-3" id="programField" style="display:none;">
+                    <div class="mb-3" id="programField" hidden>
                         <label class="form-label" for="program">Program</label>
                         <select id="program" name="program" class="form-select" data-programs="<?= esc(json_encode($programsByCollege), 'attr') ?>">
                             <option value="">Select a college first</option>
                         </select>
                     </div>
-                    <div class="mb-3" id="yearLevelField" style="display:none;">
+                    <div class="mb-3" id="yearLevelField" hidden>
                         <label class="form-label" for="yearLevel">Year Level</label>
                         <select id="yearLevel" name="year_level" class="form-select">
                             <option value="">Select year level</option>
@@ -68,7 +68,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="mb-3" id="sectionField" style="display:none;">
+                    <div class="mb-3" id="sectionField" hidden>
                         <label class="form-label" for="section">Section</label>
                         <select id="section" name="section" class="form-select">
                             <option value="">Select section</option>
@@ -107,15 +107,15 @@ collegeSelect.addEventListener('change', () => populatePrograms());
 function toggleRoleFields() {
     const role = roleSelect.value;
     const isStudent = role === 'student';
-    document.getElementById('usernameField').style.display = isStudent ? 'none' : 'block';
-    document.getElementById('studentNumberField').style.display = isStudent ? 'block' : 'none';
-    document.getElementById('employeeNumberField').style.display = isStudent ? 'none' : 'block';
-    document.getElementById('collegeField').style.display = role === 'admin' ? 'none' : 'block';
+    document.getElementById('usernameField').hidden = isStudent;
+    document.getElementById('studentNumberField').hidden = !isStudent;
+    document.getElementById('employeeNumberField').hidden = isStudent;
+    document.getElementById('collegeField').hidden = role === 'admin';
     document.getElementById('username').required = !isStudent;
     collegeSelect.required = role !== 'admin';
-    document.getElementById('programField').style.display = isStudent ? 'block' : 'none';
-    document.getElementById('yearLevelField').style.display = isStudent ? 'block' : 'none';
-    document.getElementById('sectionField').style.display = isStudent ? 'block' : 'none';
+    document.getElementById('programField').hidden = !isStudent;
+    document.getElementById('yearLevelField').hidden = !isStudent;
+    document.getElementById('sectionField').hidden = !isStudent;
     programSelect.required = isStudent;
     document.getElementById('yearLevel').required = isStudent;
     document.getElementById('section').required = isStudent;

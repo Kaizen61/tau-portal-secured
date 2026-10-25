@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= esc($printTitle ?? 'Print') ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="<?= base_url('assets/css/fonts.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/css/print.css') ?>" rel="stylesheet">
-    <style>
+    <style {csp-style-nonce}>
         @page {
             size: A4 <?= esc($printOrientation ?? 'portrait') ?>;
             margin: 12mm;
@@ -18,7 +18,7 @@
             @bottom-right { content: ""; }
         }
     </style>
-    <style>
+    <style {csp-style-nonce}>
         @media print {
             .print-table { font-size: 0.72rem; }
             .print-table th, .print-table td { padding: 0.3rem 0.38rem; overflow-wrap: anywhere; }

@@ -25,20 +25,20 @@
 <table class="print-table class-list-print-table <?= $includeGrades ? 'has-grades' : 'without-grades' ?>">
     <?php if ($includeGrades): ?>
         <colgroup>
-            <col style="width:6%">
-            <col style="width:17%">
-            <col style="width:35%">
-            <col style="width:14%">
-            <col style="width:14%">
-            <col style="width:14%">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
         </colgroup>
     <?php else: ?>
         <colgroup>
-            <col style="width:7%">
-            <col style="width:21%">
-            <col style="width:42%">
-            <col style="width:15%">
-            <col style="width:15%">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
         </colgroup>
     <?php endif; ?>
     <thead>

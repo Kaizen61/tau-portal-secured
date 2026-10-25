@@ -73,16 +73,20 @@ $gradeCompletion = $totalEnrolled > 0 ? (int) round($totalGraded / $totalEnrolle
                             <span>Try clearing the year or semester filters.</span>
                         </div>
                     <?php else: ?>
+                        <style {csp-style-nonce}>
+                            <?php foreach (array_values($subjectList) as $barIndex => $subject): ?>
+                            .teacher-enrollment-fill-<?= (int) $barIndex ?> { width: <?= (int) round((int) $subject['student_count'] / $maxEnrollment * 100) ?>%; }
+                            <?php endforeach; ?>
+                        </style>
                         <div class="teacher-enrollment-chart" role="img" aria-label="Student enrollment counts by assigned subject">
-                            <?php foreach ($subjectList as $subject): ?>
-                                <?php $barWidth = (int) round((int) $subject['student_count'] / $maxEnrollment * 100); ?>
+                            <?php foreach (array_values($subjectList) as $barIndex => $subject): ?>
                                 <div class="teacher-enrollment-row">
                                     <div class="teacher-enrollment-label">
                                         <span><?= esc($subject['subject_code']) ?> <small><?= esc($subject['subject_name']) ?></small></span>
                                         <strong><?= (int) $subject['student_count'] ?></strong>
                                     </div>
                                     <div class="teacher-enrollment-track" aria-hidden="true">
-                                        <span style="width: <?= $barWidth ?>%"></span>
+                                        <span class="teacher-enrollment-fill-<?= $barIndex ?>"></span>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -102,8 +106,9 @@ $gradeCompletion = $totalEnrolled > 0 ? (int) round($totalGraded / $totalEnrolle
                         <strong><?= $gradeCompletion ?>%</strong>
                         <span><?= (int) $totalGraded ?> of <?= (int) $totalEnrolled ?> records completed</span>
                     </div>
+                    <style {csp-style-nonce}>.teacher-grade-progress-fill { width: <?= (int) $gradeCompletion ?>%; }</style>
                     <div class="teacher-grade-progress-track" role="img" aria-label="<?= (int) $totalGraded ?> completed and <?= (int) $totalPending ?> pending grade records">
-                        <span style="width: <?= $gradeCompletion ?>%"></span>
+                        <span class="teacher-grade-progress-fill"></span>
                     </div>
                     <div class="teacher-grade-legend">
                         <span><i class="teacher-grade-dot is-complete"></i>Graded <strong><?= (int) $totalGraded ?></strong></span>
@@ -126,6 +131,11 @@ $gradeCompletion = $totalEnrolled > 0 ? (int) round($totalGraded / $totalEnrolle
         <?php if (empty($subjectList)): ?>
             <div class="card-body text-muted">No assigned subjects match the selected filters.</div>
         <?php else: ?>
+            <style {csp-style-nonce}>
+                <?php foreach (array_values($subjectList) as $subjectProgressIndex => $subject): ?>
+                .teacher-subject-progress-fill-<?= (int) $subjectProgressIndex ?> { width: <?= (int) ((int) $subject['student_count'] > 0 ? round($subject['graded_count'] / $subject['student_count'] * 100) : 0) ?>%; }
+                <?php endforeach; ?>
+            </style>
             <div class="table-responsive">
                 <table class="table table-portal teacher-subject-table mb-0">
                     <thead>
@@ -140,7 +150,7 @@ $gradeCompletion = $totalEnrolled > 0 ? (int) round($totalGraded / $totalEnrolle
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($subjectList as $subject): ?>
+                    <?php foreach (array_values($subjectList) as $subjectProgressIndex => $subject): ?>
                         <?php $subjectProgress = (int) $subject['student_count'] > 0 ? (int) round($subject['graded_count'] / $subject['student_count'] * 100) : 0; ?>
                         <tr>
                             <td>
@@ -152,7 +162,7 @@ $gradeCompletion = $totalEnrolled > 0 ? (int) round($totalGraded / $totalEnrolle
                             <td><?= (int) $subject['student_count'] ?></td>
                             <td>
                                 <div class="teacher-table-progress" aria-label="<?= $subjectProgress ?>% graded">
-                                    <span style="width: <?= $subjectProgress ?>%"></span>
+                                    <span class="teacher-subject-progress-fill-<?= (int) $subjectProgressIndex ?>"></span>
                                 </div>
                                 <small class="text-muted"><?= $subjectProgress ?>%</small>
                             </td>

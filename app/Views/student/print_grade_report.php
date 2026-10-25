@@ -56,7 +56,7 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
 <div class="gwa-box">
     <div>
         <div class="label">General Weighted Average</div>
-        <div class="note" style="margin:0.2rem 0 0;">Units-weighted average of graded subjects only. Ungraded subjects are excluded.</div>
+        <div class="note grade-report-note">Units-weighted average of graded subjects only. Ungraded subjects are excluded.</div>
     </div>
     <div class="value"><?= $group['gwa'] !== null ? esc($group['gwa']) : '—' ?></div>
 </div>

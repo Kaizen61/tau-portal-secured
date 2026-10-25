@@ -27,13 +27,13 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
                 <h5 class="mb-0">System Activity Logs (<span id="rowCount"><?= count($logs) ?></span> entries)</h5>
                 <div class="d-flex gap-2 flex-wrap">
-                    <select name="action" id="filterAction" class="form-select form-select-sm" style="width:auto;">
+                    <select name="action" id="filterAction" class="form-select form-select-sm audit-filter-select">
                         <option value="">All Actions</option>
                         <?php foreach ($allowedActions as $a): ?>
                             <option value="<?= $a ?>" <?= $filterAction === $a ? 'selected' : '' ?>><?= $a ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <select name="severity" id="filterSeverity" class="form-select form-select-sm" style="width:auto;">
+                    <select name="severity" id="filterSeverity" class="form-select form-select-sm audit-filter-select">
                         <option value="">All Severities</option>
                         <option value="INFO" <?= $filterSeverity === 'INFO' ? 'selected' : '' ?>>Info</option>
                         <option value="WARNING" <?= $filterSeverity === 'WARNING' ? 'selected' : '' ?>>Warning</option>
@@ -42,15 +42,15 @@
                 </div>
             </div>
             <div class="d-flex gap-2 flex-wrap">
-                <input type="text" id="searchUser" class="form-control form-control-sm" style="max-width:180px;" placeholder="Search user..." value="<?= esc($searchUser) ?>">
-                <input type="text" id="searchIp" class="form-control form-control-sm" style="max-width:180px;" placeholder="Search IP..." value="<?= esc($searchIp) ?>">
-                <input type="text" id="searchUa" class="form-control form-control-sm" style="max-width:220px;" placeholder="Search User-Agent..." value="<?= esc($searchUa) ?>">
+                <input type="text" id="searchUser" class="form-control form-control-sm audit-search-user" placeholder="Search user..." value="<?= esc($searchUser) ?>">
+                <input type="text" id="searchIp" class="form-control form-control-sm audit-search-ip" placeholder="Search IP..." value="<?= esc($searchIp) ?>">
+                <input type="text" id="searchUa" class="form-control form-control-sm audit-search-agent" placeholder="Search User-Agent..." value="<?= esc($searchUa) ?>">
                 <button type="button" id="clearFilters" class="btn btn-sm btn-university clear-filter-button">Clear</button>
             </div>
         </div>
         <div class="card-body p-0 audit-scroll-area">
             <table class="table table-portal table-striped mb-0">
-            <thead><tr><th style="min-width:110px;">Date & Time</th><th>User</th><th>Action</th><th>Severity</th><th>Details</th><th>IP</th><th style="min-width:350px;">User-Agent</th></tr></thead>                
+            <thead><tr><th class="audit-date-column">Date &amp; Time</th><th>User</th><th>Action</th><th>Severity</th><th>Details</th><th>IP</th><th class="audit-agent-column">User-Agent</th></tr></thead>
               <tbody id="logsTableBody">
                 <?php foreach ($logs as $row): ?>
                     <?php $sev = $row['severity']; $badgeClass = $sev === 'HIGH' ? 'bg-danger' : ($sev === 'WARNING' ? 'bg-warning text-dark' : 'bg-secondary'); ?>
@@ -65,7 +65,7 @@
                         <td><span class="badge <?= $badgeClass ?>"><?= esc($sev) ?></span></td>
                         <td class="small"><?= esc($row['details'] ?? '') ?></td>
                         <td class="small"><?= esc($row['ip_address'] ?? '') ?></td>
-                        <td class="small" style="min-width:350px; word-break:break-word; white-space:normal;"><?= esc($row['user_agent'] ?? '') ?></td>
+                        <td class="small audit-agent-cell"><?= esc($row['user_agent'] ?? '') ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -163,7 +163,7 @@ logs.forEach(function (row) {
             '<td><span class="badge ' + severityBadgeClass(row.severity) + '">' + escapeHtml(row.severity) + '</span></td>' +
             '<td class="small">' + escapeHtml(row.details || '') + '</td>' +
             '<td class="small">' + escapeHtml(row.ip_address || '') + '</td>' +
-            '<td class="small" style="min-width:380px; word-break:break-all; white-space:normal;">' + escapeHtml(row.user_agent || '') + '</td>' +            '</tr>';
+            '<td class="small audit-agent-cell">' + escapeHtml(row.user_agent || '') + '</td>' + '</tr>';
     });
     tbody.innerHTML = html;
     document.getElementById('rowCount').textContent = logs.length;

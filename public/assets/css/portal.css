@@ -682,7 +682,7 @@ a:hover { color: var(--uni-green-dark); }
 .admin-college-pie > span small { color: var(--uni-muted); font-size: 0.62rem; font-weight: 600; }
 .admin-college-legend { display: grid; gap: 0.55rem; }
 .admin-college-legend-row { display: grid; grid-template-columns: 0.7rem minmax(0, 1fr) auto; align-items: center; gap: 0.5rem; font-size: 0.78rem; }
-.admin-college-swatch { width: 0.65rem; height: 0.65rem; border-radius: 50%; background: var(--college-color); }
+.admin-college-swatch { width: 0.65rem; height: 0.65rem; border-radius: 50%; }
 .admin-college-legend-name { color: var(--uni-ink); }
 .admin-college-legend-row strong { color: var(--uni-green-dark); white-space: nowrap; }
 .admin-college-legend-row strong small { color: var(--uni-muted); font-size: 0.68rem; font-weight: 500; }
@@ -1036,6 +1036,32 @@ a:hover { color: var(--uni-green-dark); }
 .teacher-table-progress { width: 90px; height: 0.45rem; margin-bottom: 0.2rem; }
 .teacher-pending-badge { display: inline-flex; justify-content: center; min-width: 2rem; padding: 0.2rem 0.45rem; border-radius: 999px; background: #fbefeb; color: #934b3d; font-size: 0.78rem; font-weight: 700; }
 .teacher-pending-badge.is-clear { background: #eaf3ec; color: var(--uni-green); }
+
+.login-heading { color: var(--uni-green-dark); }
+.audit-filter-select { width: auto; }
+.audit-search-user,
+.audit-search-ip { max-width: 180px; }
+.audit-search-agent { max-width: 220px; }
+.audit-date-column { min-width: 110px; }
+.audit-agent-column { min-width: 350px; }
+.audit-agent-cell { min-width: 350px; overflow-wrap: break-word; white-space: normal; }
+.student-search-input,
+.student-college-select { width: 230px; }
+.student-sort-select { width: 145px; }
+.student-year-select { width: 155px; }
+.admin-user-search { min-width: 220px; }
+.admin-subject-list { max-height: 420px; overflow-y: auto; }
+.grade-filter-select { max-width: 180px; }
+.grade-stat-number { font-size: 1.6rem; }
+.student-number-label { width: 160px; }
+.subject-grade-action-column { width: 220px; }
+
+.teacher-grade-progress-fill,
+[class^="teacher-enrollment-fill-"],
+[class^="teacher-subject-progress-fill-"] { display: block; height: 100%; border-radius: inherit; }
+.teacher-grade-progress-fill,
+[class^="teacher-enrollment-fill-"],
+[class^="teacher-subject-progress-fill-"] { background: linear-gradient(90deg, var(--uni-green), #87a88b); }
 
 .teacher-evaluation-card { overflow: hidden; }
 .teacher-evaluation-card .card-header { padding: 1rem 1.15rem; }

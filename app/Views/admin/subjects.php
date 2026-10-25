@@ -28,7 +28,7 @@ $yearLabels = [1 => '1st Year', 2 => '2nd Year', 3 => '3rd Year', 4 => '4th Year
                 <a href="<?= site_url('admin/subjects') ?>" class="btn btn-sm btn-outline-university clear-filter-button">Clear</a>
             </form>
         </div>
-        <div class="card-body p-0" style="max-height:420px; overflow-y:auto;">
+        <div class="card-body p-0 admin-subject-list">
             <table class="table table-portal table-striped mb-0">
                 <thead><tr><th>Code</th><th>Subject</th><th>Units</th><th>Year / Semester</th><th>Faculty</th><th>Action</th></tr></thead>
                 <tbody>

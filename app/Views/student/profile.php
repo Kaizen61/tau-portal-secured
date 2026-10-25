@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body">
                     <table class="table table-borderless mb-3">
-                        <tr><th style="width:160px;">Student Number</th><td><?= esc($profile['student_number'] ?? '') ?></td></tr>
+                        <tr><th class="student-number-label">Student Number</th><td><?= esc($profile['student_number'] ?? '') ?></td></tr>
                         <tr><th>College</th><td><?= esc($profile['college'] ?? '') ?></td></tr>
                         <tr><th>Program</th><td><?= esc(isset($programNames[$profile['program'] ?? '']) ? ($profile['program'] . ' — ' . $programNames[$profile['program']]) : '—') ?></td></tr>
                         <tr><th>Year Level</th><td><?= esc($profile['year_level'] ?? '') ?></td></tr>

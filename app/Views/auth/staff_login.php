@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Faculty / Admin Sign In - TAU Student Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="<?= base_url('assets/css/fonts.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/css/portal.css') ?>" rel="stylesheet">
 </head>
 <body>
@@ -25,7 +25,7 @@
     <div class="login-form-side">
         <div class="login-form-card">
             <div class="login-eyebrow">Faculty / Admin Sign In</div>
-            <h2 class="mb-4" style="color:var(--uni-green-dark);">Access the staff portal</h2>
+            <h2 class="mb-4 login-heading">Access the staff portal</h2>
 
             <?php if (!empty($error)): ?>
                 <div class="alert alert-danger py-2"><?= esc($error) ?></div>
