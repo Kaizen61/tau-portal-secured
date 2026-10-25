@@ -38,9 +38,7 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->post('subjects/enroll', 'Admin\SubjectController::enroll');
     $routes->get('audit-trail', 'Admin\AuditController::index');
     $routes->get('audit-trail/print', 'Admin\AuditController::printLogs');
-    $routes->get('audit-trail/download-database', 'Admin\AuditController::downloadDatabase');
     $routes->get('audit-trail/poll', 'Admin\AuditController::poll');
-    $routes->get('audit-trail/export', 'Admin\AuditController::export');
     $routes->get('teacher-evaluations', 'Admin\TeacherEvaluationController::index');
     $routes->get('teacher-evaluations/print', 'Admin\TeacherEvaluationController::print');
     $routes->get('dashboard/poll', 'Admin\DashboardController::poll');

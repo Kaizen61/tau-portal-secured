@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2026 at 04:46 PM
+-- Generation Time: Oct 25, 2026 at 03:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1301,7 +1301,9 @@ INSERT INTO `activity_logs` (`id`, `user_id`, `username`, `action`, `details`, `
 (1246, 1, 'admin1', 'LOGOUT', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', '6c4379efc03e225a421028ae7e4883fdbe2450e4bf0ccbb5999cb18eace50c8d', 'c93eca16edc9567020f95efc2d0884ecbbc15496e9847c1f95f2ee84fb4c9a9d', '2026-10-24 22:12:50'),
 (1247, 4, '2023100220', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'c93eca16edc9567020f95efc2d0884ecbbc15496e9847c1f95f2ee84fb4c9a9d', 'e348946c14a8a6e8c91b9c58c4ee28ff13e8ba316f247ba90cda246357ef0584', '2026-10-24 22:12:55'),
 (1248, 4, '2023100220', 'LOGOUT', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'e348946c14a8a6e8c91b9c58c4ee28ff13e8ba316f247ba90cda246357ef0584', 'adb9d7eec158e6c82bbc35cff46bc4414b12ed30b4051f90c68de500efd1ef73', '2026-10-24 22:14:28'),
-(1249, 1, 'admin1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'adb9d7eec158e6c82bbc35cff46bc4414b12ed30b4051f90c68de500efd1ef73', '2c32fce4904e941b156eb3970f0e0d575d6b090b79e0ea43e1de608c07a7ae94', '2026-10-24 22:14:36');
+(1249, 1, 'admin1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', 'adb9d7eec158e6c82bbc35cff46bc4414b12ed30b4051f90c68de500efd1ef73', '2c32fce4904e941b156eb3970f0e0d575d6b090b79e0ea43e1de608c07a7ae94', '2026-10-24 22:14:36'),
+(1250, NULL, NULL, 'ACCESS_DENIED', 'Attempted to access http://localhost:8080/index.php/admin/teacher-evaluations without the required role.', 'WARNING', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', '2c32fce4904e941b156eb3970f0e0d575d6b090b79e0ea43e1de608c07a7ae94', '1421c5258600217b58ce2b9ab9857e8f3436c9543d966c279bba577dfc950520', '2026-10-25 10:16:19'),
+(1251, 1, 'admin1', 'LOGIN_SUCCESS', NULL, 'INFO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36', '1421c5258600217b58ce2b9ab9857e8f3436c9543d966c279bba577dfc950520', '59c7456ff13ae22dc1fad66b6d9cc25178412e5693d03494e2b7693b166f9d3e', '2026-10-25 17:08:32');
 
 -- --------------------------------------------------------
 
@@ -1973,7 +1975,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1250;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1252;
 
 --
 -- AUTO_INCREMENT for table `announcements`
