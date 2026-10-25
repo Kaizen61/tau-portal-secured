@@ -78,5 +78,3 @@ $routes->group('student', ['filter' => 'role:student'], function ($routes) {
     $routes->post('teacher-evaluations', 'Student\TeacherEvaluationController::submit');
     $routes->get('announcements', 'Student\StaticController::announcements');
 });
-
-$routes->match(['get', 'post'], 'login/staff', 'Login::staff');

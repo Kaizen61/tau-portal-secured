@@ -67,7 +67,7 @@
                     <?php foreach ($students as $s): ?>
                     <?php $isActive = (int) ($s['is_active'] ?? 1) === 1; ?>
                     <tr>
-                        <td><?= esc($s['student_number'] ?? '') ?></td>
+                        <td><?= view('components/student_number', ['studentNumber' => $s['student_number'] ?? '']) ?></td>
                         <td><?= esc($s['full_name']) ?></td>
                         <td><?= esc($s['college'] ?? '') ?></td>
                         <td title="<?= esc($programNames[$s['program'] ?? ''] ?? '', 'attr') ?>"><?= esc($s['program'] ?? '—') ?></td>

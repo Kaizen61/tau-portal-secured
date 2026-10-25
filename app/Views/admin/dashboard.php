@@ -204,7 +204,7 @@ $gradedPercent = $gradeTotal > 0 ? (int) round($gradedCount / $gradeTotal * 100)
                                     <span class="admin-activity-indicator <?= $isHighSeverity ? 'is-high' : '' ?>" aria-hidden="true"></span>
                                     <div class="flex-grow-1">
                                         <strong><?= esc(str_replace('_', ' ', $activity['action'])) ?></strong>
-                                        <span><?= esc($activity['username'] ?: 'System') ?></span>
+                                        <span><?= view('components/student_number', ['studentNumber' => $activity['username'] ?: 'System']) ?></span>
                                     </div>
                                     <time><?= esc(date('M j, g:i A', strtotime($activity['created_at']))) ?></time>
                                 </div>

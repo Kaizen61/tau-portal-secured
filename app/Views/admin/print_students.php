@@ -23,7 +23,7 @@
     <?php else: ?>
         <?php foreach ($students as $student): ?>
             <tr>
-                <td><?= esc($student['student_number'] ?? '—') ?></td>
+                <td><?= view('components/student_number', ['studentNumber' => $student['student_number'] ?? '—']) ?></td>
                 <td><?= esc($student['full_name']) ?></td>
                 <td><?= esc($student['college'] ?? '—') ?></td>
                 <td><?= esc(($student['program'] ?? '—') . (isset($programNames[$student['program'] ?? '']) ? ' — ' . $programNames[$student['program']] : '')) ?></td>
