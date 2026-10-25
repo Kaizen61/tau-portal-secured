@@ -94,17 +94,17 @@
 </div>
 
 <script {csp-script-nonce}>
-function escapeHtml(str) {
-    if (str === null || str === undefined) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
-
 function severityBadgeClass(sev) {
     if (sev === 'HIGH') return 'bg-danger';
     if (sev === 'WARNING') return 'bg-warning text-dark';
     return 'bg-secondary';
+}
+
+function createTextCell(value, className = 'small') {
+    const cell = document.createElement('td');
+    cell.className = className;
+    cell.textContent = value === null || value === undefined ? '' : String(value);
+    return cell;
 }
 
 function buildPollUrl() {
@@ -140,32 +140,60 @@ function updatePrintLogsUrl() {
 
 function renderIntegrity(ok, error) {
     const box = document.getElementById('integrityBox');
+    const badge = document.createElement('span');
+    const message = document.createElement('span');
+    message.className = 'text-muted small ms-2';
+
     if (ok) {
-        box.innerHTML = '<span class="badge bg-success">Log Integrity: Verified</span>' +
-            '<span class="text-muted small ms-2">The hash chain is intact - no past entry has been altered.</span>';
+        badge.className = 'badge bg-success';
+        badge.textContent = 'Log Integrity: Verified';
+        message.textContent = 'The hash chain is intact - no past entry has been altered.';
     } else {
-        box.innerHTML = '<span class="badge bg-danger">Log Integrity: BROKEN</span>' +
-            '<span class="text-muted small ms-2">' + escapeHtml(error) + '</span>';
+        badge.className = 'badge bg-danger';
+        badge.textContent = 'Log Integrity: BROKEN';
+        message.textContent = error === null || error === undefined ? '' : String(error);
     }
+
+    box.replaceChildren(badge, message);
 }
 
 function renderLogs(logs) {
     const tbody = document.getElementById('logsTableBody');
-    let html = '';
-logs.forEach(function (row) {
-    const whenParts = (row.created_at || '').split(' ');
-    const whenDate = whenParts[0] || '';
-    const whenTime = whenParts[1] || '';
-    html += '<tr>' +
-        '<td class="small"><div>' + escapeHtml(whenDate) + '</div><div class="text-muted">' + escapeHtml(whenTime) + '</div></td>' +
-            '<td class="small">' + escapeHtml(row.username || '—') + '</td>' +
-            '<td class="small">' + escapeHtml(row.action) + '</td>' +
-            '<td><span class="badge ' + severityBadgeClass(row.severity) + '">' + escapeHtml(row.severity) + '</span></td>' +
-            '<td class="small">' + escapeHtml(row.details || '') + '</td>' +
-            '<td class="small">' + escapeHtml(row.ip_address || '') + '</td>' +
-            '<td class="small audit-agent-cell">' + escapeHtml(row.user_agent || '') + '</td>' + '</tr>';
+    const rows = document.createDocumentFragment();
+
+    logs.forEach(function (row) {
+        const whenParts = String(row.created_at || '').split(' ');
+        const dateCell = document.createElement('td');
+        const date = document.createElement('div');
+        const time = document.createElement('div');
+        dateCell.className = 'small';
+        date.textContent = whenParts[0] || '';
+        time.className = 'text-muted';
+        time.textContent = whenParts[1] || '';
+        dateCell.append(date, time);
+
+        const severityCell = document.createElement('td');
+        const severityBadge = document.createElement('span');
+        severityBadge.className = 'badge ' + severityBadgeClass(row.severity);
+        severityBadge.textContent = row.severity === null || row.severity === undefined
+            ? ''
+            : String(row.severity);
+        severityCell.appendChild(severityBadge);
+
+        const tr = document.createElement('tr');
+        tr.append(
+            dateCell,
+            createTextCell(row.username || '—'),
+            createTextCell(row.action),
+            severityCell,
+            createTextCell(row.details || ''),
+            createTextCell(row.ip_address || ''),
+            createTextCell(row.user_agent || '', 'small audit-agent-cell')
+        );
+        rows.appendChild(tr);
     });
-    tbody.innerHTML = html;
+
+    tbody.replaceChildren(rows);
     document.getElementById('rowCount').textContent = logs.length;
 }
 
