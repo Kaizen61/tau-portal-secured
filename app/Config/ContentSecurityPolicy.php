@@ -59,14 +59,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $scriptSrc = ['self', 'https://cdn.jsdelivr.net'];
+    public array|string $scriptSrc = ['self'];
 
     /**
      * Specifies valid sources for JavaScript <script> elements.
      *
      * @var list<string>|string
      */
-    public array|string $scriptSrcElem = ['self', 'https://cdn.jsdelivr.net'];
+    public array|string $scriptSrcElem = ['self'];
 
     /**
      * Specifies valid sources for JavaScript inline event
@@ -81,14 +81,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $styleSrc = ['self', 'https://cdn.jsdelivr.net'];
+    public array|string $styleSrc = ['self'];
 
     /**
      * Specifies valid sources for stylesheets <link> elements.
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcElem = ['self', 'https://cdn.jsdelivr.net'];
+    public array|string $styleSrcElem = ['self'];
 
     /**
      * Specifies valid sources for stylesheets inline
