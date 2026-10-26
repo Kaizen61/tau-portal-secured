@@ -21,13 +21,19 @@
                     <?php if ($user['role'] === 'student'): ?>
                         <div class="mb-3">
                             <label class="form-label" for="studentNumber">Student Number</label>
-                            <input type="text" id="studentNumber" class="form-control" value="<?= esc($user['student_number'] ?? '') ?>" readonly>
+                            <?= view('components/numeric_identifier_input', [
+                                'inputId' => 'studentNumber',
+                                'identifier' => $user['student_number'] ?? '',
+                            ]) ?>
                             <small class="text-muted">Student numbers are assigned automatically and cannot be changed.</small>
                         </div>
                     <?php else: ?>
                         <div class="mb-3">
                             <label class="form-label" for="employeeNumber">Employee ID</label>
-                            <input type="text" id="employeeNumber" class="form-control" value="<?= esc($user['employee_id'] ?? '') ?>" readonly>
+                            <?= view('components/numeric_identifier_input', [
+                                'inputId' => 'employeeNumber',
+                                'identifier' => $user['employee_id'] ?? '',
+                            ]) ?>
                             <small class="text-muted">Employee IDs are assigned automatically and cannot be changed.</small>
                         </div>
                         <div class="mb-3">
