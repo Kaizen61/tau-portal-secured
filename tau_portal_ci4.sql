@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2026 at 03:05 PM
+-- Generation Time: Oct 26, 2026 at 12:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1920,6 +1920,7 @@ ALTER TABLE `employee_number_sequence`
 --
 ALTER TABLE `grades`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_grade_student_subject_year` (`student_id`,`subject_id`,`school_year`),
   ADD KEY `student_id` (`student_id`),
   ADD KEY `subject_id` (`subject_id`);
 
@@ -1940,6 +1941,8 @@ ALTER TABLE `student_number_sequence`
 --
 ALTER TABLE `subjects`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_subject_year_semester_code` (`year_level`,`semester`,`subject_code`),
+  ADD UNIQUE KEY `uq_subject_year_semester_name` (`year_level`,`semester`,`subject_name`),
   ADD KEY `teacher_id` (`teacher_id`);
 
 --

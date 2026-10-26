@@ -15,7 +15,10 @@
             <div class="modal-body">Are you sure you want to log out?</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a href="<?= site_url('logout') ?>" class="btn btn-university">Log out</a>
+                <form method="POST" action="<?= site_url('logout') ?>">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn btn-university">Log out</button>
+                </form>
             </div>
         </div>
     </div>

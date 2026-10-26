@@ -84,7 +84,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="password">New Password</label>
-                        <input type="password" id="password" name="password" class="form-control" minlength="6" autocomplete="new-password">
+                        <input type="password" id="password" name="password" class="form-control" minlength="12" autocomplete="new-password">
                         <small class="text-muted">Leave blank to keep the current password.</small>
                     </div>
 

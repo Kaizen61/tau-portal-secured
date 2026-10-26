@@ -8,6 +8,7 @@ use App\Models\UserModel;
 use App\Models\GradeModel;
 use App\Libraries\ActivityLogger;
 use App\Libraries\SchoolYear;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class SubjectController extends BaseController
 {
@@ -125,14 +126,23 @@ class SubjectController extends BaseController
             return redirect()->to('admin/subjects');
         }
 
-        $id = $subjects->insert([
-            'subject_code' => $subjectData['subject_code'],
-            'subject_name' => $subjectData['subject_name'],
-            'units' => $this->request->getPost('units'),
-            'year_level' => $subjectData['year_level'],
-            'semester' => $subjectData['semester'],
-            'teacher_id' => $this->request->getPost('teacher_id'),
-        ]);
+        try {
+            $id = $subjects->insert([
+                'subject_code' => $subjectData['subject_code'],
+                'subject_name' => $subjectData['subject_name'],
+                'units' => $this->request->getPost('units'),
+                'year_level' => $subjectData['year_level'],
+                'semester' => $subjectData['semester'],
+                'teacher_id' => $this->request->getPost('teacher_id'),
+            ]);
+        } catch (DatabaseException) {
+            session()->setFlashdata('error', 'This subject already exists for the selected year and semester, or could not be saved.');
+            return redirect()->to('admin/subjects');
+        }
+        if (!$id) {
+            session()->setFlashdata('error', 'This subject already exists for the selected year and semester, or could not be saved.');
+            return redirect()->to('admin/subjects');
+        }
 
         (new ActivityLogger())->log(session()->get('user_id'), session()->get('username'), 'SUBJECT_CREATED',
             "Created subject #$id", 'INFO');
@@ -183,12 +193,23 @@ class SubjectController extends BaseController
         $db = \Config\Database::connect();
         $db->transStart();
 
-        $grades->insert([
-            'student_id' => $studentId,
-            'subject_id' => $subjectId,
-            'school_year' => $schoolYear,
-            'grade' => null,
-        ]);
+        try {
+            $inserted = $grades->insert([
+                'student_id' => $studentId,
+                'subject_id' => $subjectId,
+                'school_year' => $schoolYear,
+                'grade' => null,
+            ]);
+        } catch (DatabaseException) {
+            $db->transRollback();
+            session()->setFlashdata('error', 'This student is already enrolled in that subject for the selected school year, or the enrollment could not be saved.');
+            return redirect()->to('admin/subjects');
+        }
+        if (!$inserted) {
+            $db->transRollback();
+            session()->setFlashdata('error', 'This student is already enrolled in that subject for the selected school year, or the enrollment could not be saved.');
+            return redirect()->to('admin/subjects');
+        }
 
         (new ActivityLogger())->log(session()->get('user_id'), session()->get('username'), 'STUDENT_ENROLLED',
             "Enrolled student #$studentId into subject #$subjectId", 'INFO');

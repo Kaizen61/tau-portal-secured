@@ -39,7 +39,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="password">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" required minlength="6" autocomplete="new-password">
+                        <input type="password" id="password" name="password" class="form-control" required minlength="12" autocomplete="new-password">
                     </div>
                     <div class="mb-3" id="collegeField">
                         <label class="form-label" for="college">College</label>

@@ -28,6 +28,34 @@ to your `app` folder. The affected files can be copied or merged from
 Copy `env` to `.env` and tailor for your app, specifically the baseURL
 and any database settings.
 
+### Production database and backups
+
+The production database connection reads its hostname, database, username,
+and password from `.env`. Configure a dedicated database account with only
+the privileges the portal needs; production startup rejects an empty password
+or the MySQL `root` account, and SQL debug output is disabled in production.
+Never commit `.env` or a database export containing production user data or
+password hashes. The checked-in SQL dump is synthetic demo data only; replace
+it with schema-only SQL before adding any real database export.
+
+Use an operations-managed, scheduled backup process for production data. Store
+backups outside the web root and repository, encrypt them, restrict access, and
+keep an off-host copy. One approach on Ubuntu is a root-owned MySQL client
+defaults file such as `/root/.tau-portal-backup.cnf` (mode `0600`) with a
+`[client]` section containing the backup account's `user`, `password`, and
+`host`, then:
+
+```sh
+sudo install -d -m 0700 /var/backups/tau-portal
+sudo bash -o pipefail -c 'umask 077; mysqldump --defaults-extra-file=/root/.tau-portal-backup.cnf --single-transaction tau_portal_ci4 | gzip | gpg --encrypt --recipient BACKUP_PUBLIC_KEY_ID > /var/backups/tau-portal/tau_portal_ci4-$(date +%F).sql.gz.gpg'
+```
+
+Replace `BACKUP_PUBLIC_KEY_ID` with the approved backup recipient key and
+configure it for the scheduler account. Schedule the command using the
+server's approved scheduler and backup retention/off-host policy. Periodically
+test decryption and restoration into a separate non-production database; a
+successful dump alone does not confirm recoverability.
+
 ## Important Change with index.php
 
 `index.php` is no longer in the root of the project! It has been moved inside the *public* folder,

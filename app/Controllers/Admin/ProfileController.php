@@ -29,7 +29,8 @@ class ProfileController extends BaseController
     {
         $profile = (new UserModel())->find(session()->get('user_id'));
         if (!$profile || $profile['role'] !== 'admin') {
-            return redirect()->to('logout');
+            session()->destroy();
+            return redirect()->to('/');
         }
 
         return view('admin/profile', [
@@ -49,7 +50,8 @@ class ProfileController extends BaseController
         $users = new UserModel();
         $profile = $users->find($userId);
         if (!$profile || $profile['role'] !== 'admin') {
-            return redirect()->to('logout');
+            session()->destroy();
+            return redirect()->to('/');
         }
 
         if (!$this->validate([
@@ -82,7 +84,8 @@ class ProfileController extends BaseController
         $users = new UserModel();
         $profile = $users->find($userId);
         if (!$profile || $profile['role'] !== 'admin') {
-            return redirect()->to('logout');
+            session()->destroy();
+            return redirect()->to('/');
         }
 
         $current = (string) $this->request->getPost('current_password');
@@ -91,8 +94,8 @@ class ProfileController extends BaseController
 
         if (!password_verify($current, $profile['password'])) {
             session()->setFlashdata('error', 'Current password is incorrect.');
-        } elseif (strlen($new) < 8) {
-            session()->setFlashdata('error', 'New password must be at least 8 characters.');
+        } elseif (mb_strlen($new) < 12) {
+            session()->setFlashdata('error', 'New password must be at least 12 characters.');
         } elseif ($new !== $confirm) {
             session()->setFlashdata('error', 'New password and confirmation do not match.');
         } elseif (!$users->update($userId, ['password' => password_hash($new, PASSWORD_DEFAULT)])) {

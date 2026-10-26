@@ -12,7 +12,7 @@ $routes->get('/', 'AuthController::studentLogin');
 $routes->get('staff-login', 'AuthController::staffLogin');
 $routes->post('login/student', 'AuthController::processStudentLogin');
 $routes->post('login/staff', 'AuthController::processStaffLogin');
-$routes->get('logout', 'AuthController::logout');
+$routes->post('logout', 'AuthController::logout');
 
 // --- Admin (role filter: fail closed, only 'admin' role allowed) ---
 $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
@@ -59,7 +59,6 @@ $routes->group('teacher', ['filter' => 'role:teacher'], function ($routes) {
     $routes->post('grade-input', 'Teacher\GradeController::store');
     $routes->get('announcements', 'Teacher\StaticController::announcements');
     $routes->get('profile', 'Teacher\ProfileController::index');
-    $routes->post('profile', 'Teacher\ProfileController::update');
     $routes->post('profile/password', 'Teacher\ProfileController::changePassword');
 });
 
@@ -72,7 +71,6 @@ $routes->group('student', ['filter' => 'role:student'], function ($routes) {
     $routes->get('courses/print', 'Student\CourseController::printCor');
     $routes->get('profile', 'Student\ProfileController::index');
     $routes->get('profile/print', 'Student\ProfileController::printRecord');
-    $routes->post('profile', 'Student\ProfileController::update');
     $routes->post('profile/password', 'Student\ProfileController::changePassword');
     $routes->get('teacher-evaluations', 'Student\TeacherEvaluationController::index');
     $routes->post('teacher-evaluations', 'Student\TeacherEvaluationController::submit');

@@ -115,12 +115,23 @@ class AnnouncementController extends BaseController
 
     private function render(?array $announcement = null)
     {
+        $q = mb_substr(trim((string) $this->request->getGet('q')), 0, 100);
+        $query = (new AnnouncementModel())->orderBy('created_at', 'DESC')->orderBy('id', 'DESC');
+        if ($q !== '') {
+            $query->groupStart()
+                ->like('title', $q)
+                ->orLike('message', $q)
+                ->orLike('created_by', $q)
+                ->groupEnd();
+        }
+
         return view('admin/announcements', [
             'pageTitle' => 'Announcements - TAU Student Portal',
             'activePage' => 'announcements',
             'eyebrow' => 'Administration',
             'pageHeading' => 'School Announcements',
-            'announcements' => (new AnnouncementModel())->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->findAll(),
+            'announcements' => $query->findAll(),
+            'q' => $q,
             'announcement' => $announcement,
             'saved' => session()->getFlashdata('saved'),
             'error' => session()->getFlashdata('error'),

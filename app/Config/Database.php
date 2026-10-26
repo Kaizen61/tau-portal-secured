@@ -33,7 +33,7 @@ class Database extends Config
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
-        'DBDebug'      => true,
+        'DBDebug'      => ENVIRONMENT !== 'production',
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
@@ -193,6 +193,23 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
+
+        $this->default['hostname'] = env('database.default.hostname', $this->default['hostname']);
+        $this->default['username'] = env(
+            'database.default.username',
+            ENVIRONMENT === 'production' ? '' : $this->default['username']
+        );
+        $this->default['password'] = env('database.default.password', $this->default['password']);
+        $this->default['database'] = env('database.default.database', $this->default['database']);
+
+        if (ENVIRONMENT === 'production'
+            && (($this->default['username'] ?? '') === ''
+                || strtolower((string) $this->default['username']) === 'root'
+                || ($this->default['password'] ?? '') === '')) {
+            throw new \RuntimeException(
+                'Production database credentials must use a non-root account with a non-empty password configured in .env.'
+            );
+        }
 
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that

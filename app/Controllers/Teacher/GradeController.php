@@ -8,6 +8,7 @@ use App\Models\UserModel;
 use App\Models\GradeModel;
 use App\Libraries\ActivityLogger;
 use App\Libraries\SchoolYear;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class GradeController extends BaseController
 {
@@ -76,21 +77,32 @@ class GradeController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $db->transStart();
+        $db->transBegin();
 
-        $id = $grades->insert([
-            'student_id' => $studentId,
-            'subject_id' => $subjectId,
-            'school_year' => $schoolYear,
-            'grade' => $this->request->getPost('grade'),
-        ]);
+        try {
+            $id = $grades->insert([
+                'student_id' => $studentId,
+                'subject_id' => $subjectId,
+                'school_year' => $schoolYear,
+                'grade' => $this->request->getPost('grade'),
+            ]);
+        } catch (DatabaseException) {
+            $db->transRollback();
+            session()->setFlashdata('error', 'This student already has a record for that subject and school year, or the grade could not be saved.');
+            return redirect()->to('teacher/grade-input');
+        }
+        if (!$id || !$db->transStatus()) {
+            $db->transRollback();
+            session()->setFlashdata('error', 'This student already has a record for that subject and school year, or the grade could not be saved.');
+            return redirect()->to('teacher/grade-input');
+        }
 
         (new ActivityLogger())->log($teacherId, session()->get('username'), 'GRADE_CREATED',
             "Created grade record #$id for subject #$subjectId", 'INFO');
 
-        $db->transComplete();
+        $db->transCommit();
 
-        session()->setFlashdata('saved', $db->transStatus() ? 'Grade saved successfully.' : 'Could not save the grade (duplicate enrollment?).');
+        session()->setFlashdata('saved', 'Grade saved successfully.');
         return redirect()->to('teacher/grade-input');
     }
 }

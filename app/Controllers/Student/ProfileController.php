@@ -50,25 +50,6 @@ class ProfileController extends BaseController
         ]);
     }
 
-    public function update()
-    {
-        $users = new UserModel();
-        $studentId = session()->get('user_id');
-
-        if (!$this->validate(['full_name' => 'required|min_length[2]'])) {
-            session()->setFlashdata('error', implode(' ', $this->validator->getErrors()));
-            return redirect()->to('student/profile');
-        }
-
-        $fullName = $this->request->getPost('full_name');
-        $users->update($studentId, ['full_name' => $fullName]);
-        session()->set('full_name', $fullName);
-
-        (new ActivityLogger())->log($studentId, session()->get('username'), 'PROFILE_UPDATED', 'Updated full name', 'INFO');
-        session()->setFlashdata('saved', 'Profile updated.');
-        return redirect()->to('student/profile');
-    }
-
     public function changePassword()
     {
         $users = new UserModel();
@@ -81,8 +62,8 @@ class ProfileController extends BaseController
 
         if (!password_verify($current, $user['password'])) {
             session()->setFlashdata('error', 'Current password is incorrect.');
-        } elseif (strlen($new) < 8) {
-            session()->setFlashdata('error', 'New password must be at least 8 characters.');
+        } elseif (mb_strlen($new) < 12) {
+            session()->setFlashdata('error', 'New password must be at least 12 characters.');
         } elseif ($new !== $confirm) {
             session()->setFlashdata('error', 'New password and confirmation do not match.');
         } else {

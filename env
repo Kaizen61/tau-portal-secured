@@ -37,6 +37,10 @@
 # database.default.DBDriver = MySQLi
 # database.default.DBPrefix =
 # database.default.port = 3306
+# In production, set a dedicated, least-privilege database account and a
+# strong password in the deployed .env file (not in source control).
+# database.default.username = tau_portal_app
+# database.default.password = change-this-outside-source-control
 
 # If you use MySQLi as tests, first update the values of Config\Database::$tests.
 # database.tests.hostname = localhost

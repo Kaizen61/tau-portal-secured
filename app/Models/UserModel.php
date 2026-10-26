@@ -43,6 +43,34 @@ class UserModel extends Model
         return $this->db->query($sql, $params)->getNumRows() > 0;
     }
 
+    public function accountIdentityExists(
+        string $role,
+        string $fullName,
+        ?string $college,
+        ?int $excludeId = null
+    ): bool
+    {
+        if (!in_array($role, ['student', 'teacher', 'admin'], true)) {
+            throw new \InvalidArgumentException('Unsupported account role.');
+        }
+
+        $sql = 'SELECT id FROM ' . $this->db->escapeIdentifiers($this->table)
+            . ' WHERE role = ? AND LOWER(TRIM(full_name)) = ?'
+            . " AND LOWER(TRIM(COALESCE(college, ''))) = ?";
+        $params = [
+            $role,
+            mb_strtolower(trim($fullName)),
+            mb_strtolower(trim((string) $college)),
+        ];
+        if ($excludeId !== null) {
+            $sql .= ' AND id != ?';
+            $params[] = $excludeId;
+        }
+        $sql .= ' LIMIT 1';
+
+        return $this->db->query($sql, $params)->getNumRows() > 0;
+    }
+
     public function hasActiveStatusColumn(): bool
     {
         return $this->db->fieldExists('is_active', $this->table);

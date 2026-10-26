@@ -27,12 +27,9 @@
                         <tr><th>Year Level</th><td><?= esc($profile['year_level'] ?? '') ?></td></tr>
                         <tr><th>Section</th><td><?= esc($profile['section'] ?? '—') ?></td></tr>
                     </table>
-                    <form method="POST" action="<?= site_url('student/profile') ?>">
-                        <?= csrf_field() ?>
-                        <div class="mb-3"><label class="form-label">Full Name</label>
-                            <input type="text" name="full_name" class="form-control" value="<?= esc($profile['full_name']) ?>" required minlength="2"></div>
-                        <button type="submit" class="btn btn-university btn-sm">Save Changes</button>
-                    </form>
+                    <div class="mb-3"><label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" value="<?= esc($profile['full_name']) ?>" readonly></div>
+                    <p class="form-text mb-0">Contact an administrator to update your name.</p>
                 </div>
             </div>
         </div>
@@ -46,9 +43,9 @@
                         <div class="mb-3"><label class="form-label">Current Password</label>
                             <input type="password" name="current_password" class="form-control" required></div>
                         <div class="mb-3"><label class="form-label">New Password</label>
-                            <input type="password" name="new_password" class="form-control" required minlength="8"></div>
+                            <input type="password" name="new_password" class="form-control" required minlength="12"></div>
                         <div class="mb-3"><label class="form-label">Confirm New Password</label>
-                            <input type="password" name="confirm_password" class="form-control" required minlength="8"></div>
+                            <input type="password" name="confirm_password" class="form-control" required minlength="12"></div>
                         <button type="submit" class="btn btn-university btn-sm">Change Password</button>
                     </form>
                 </div>

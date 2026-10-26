@@ -9,27 +9,24 @@
             <div class="card portal-card h-100">
                 <div class="card-header bg-white"><h5 class="mb-0">Profile Details</h5></div>
                 <div class="card-body d-flex flex-column">
-                    <form id="teacherProfileForm" method="POST" action="<?= site_url('teacher/profile') ?>">
-                        <?= csrf_field() ?>
-                        <div class="mb-3">
-                            <label class="form-label" for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="full_name" class="form-control" value="<?= esc($profile['full_name']) ?>" minlength="2" maxlength="100" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="username">Username</label>
-                            <input type="text" id="username" class="form-control" value="<?= esc($profile['username'] ?? '') ?>" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="employeeId">Employee ID</label>
-                            <?php $employeeId = (string) ($profile['employee_id'] ?? ''); ?>
-                            <input type="text" id="employeeId" class="form-control" value="<?= esc(preg_match('/^\d{10}$/D', $employeeId) === 1 ? substr($employeeId, 0, 4) : $employeeId) ?>"<?php if (preg_match('/^\d{10}$/D', $employeeId) === 1): ?> data-numeric-identifier data-identifier-suffix="<?= esc(substr($employeeId, 4), 'attr') ?>"<?php endif; ?> readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="college">College / Office</label>
-                            <input type="text" id="college" class="form-control" value="<?= esc($profile['college'] ?? '') ?>" readonly>
-                        </div>
-                    </form>
-                    <button type="submit" form="teacherProfileForm" class="btn btn-university mt-auto">Save Profile</button>
+                    <div class="mb-3">
+                        <label class="form-label" for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="form-control" value="<?= esc($profile['full_name']) ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" id="username" class="form-control" value="<?= esc($profile['username'] ?? '') ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="employeeId">Employee ID</label>
+                        <?php $employeeId = (string) ($profile['employee_id'] ?? ''); ?>
+                        <input type="text" id="employeeId" class="form-control" value="<?= esc(preg_match('/^\d{10}$/D', $employeeId) === 1 ? substr($employeeId, 0, 4) : $employeeId) ?>"<?php if (preg_match('/^\d{10}$/D', $employeeId) === 1): ?> data-numeric-identifier data-identifier-suffix="<?= esc(substr($employeeId, 4), 'attr') ?>"<?php endif; ?> readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="college">College / Office</label>
+                        <input type="text" id="college" class="form-control" value="<?= esc($profile['college'] ?? '') ?>" readonly>
+                    </div>
+                    <p class="form-text mt-auto mb-0">Contact an administrator to update your name.</p>
                 </div>
             </div>
         </div>
@@ -46,11 +43,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" name="new_password" class="form-control" minlength="8" required autocomplete="new-password">
+                            <input type="password" id="newPassword" name="new_password" class="form-control" minlength="12" required autocomplete="new-password">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="confirmPassword">Confirm New Password</label>
-                            <input type="password" id="confirmPassword" name="confirm_password" class="form-control" minlength="8" required autocomplete="new-password">
+                            <input type="password" id="confirmPassword" name="confirm_password" class="form-control" minlength="12" required autocomplete="new-password">
                         </div>
                         <button type="submit" class="btn btn-university mt-auto align-self-start">Change Password</button>
                     </form>

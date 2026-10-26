@@ -12,7 +12,8 @@ class ProfileController extends BaseController
     {
         $profile = (new UserModel())->find(session()->get('user_id'));
         if (!$profile || $profile['role'] !== 'teacher') {
-            return redirect()->to('logout');
+            session()->destroy();
+            return redirect()->to('/');
         }
 
         return view('teacher/profile', [
@@ -26,46 +27,14 @@ class ProfileController extends BaseController
         ]);
     }
 
-    public function update()
-    {
-        $userId = (int) session()->get('user_id');
-        $users = new UserModel();
-        $profile = $users->find($userId);
-        if (!$profile || $profile['role'] !== 'teacher') {
-            return redirect()->to('logout');
-        }
-
-        if (!$this->validate([
-            'full_name' => 'required|min_length[2]|max_length[100]',
-        ])) {
-            session()->setFlashdata('error', implode(' ', $this->validator->getErrors()));
-            return redirect()->to('teacher/profile');
-        }
-
-        $fullName = trim((string) $this->request->getPost('full_name'));
-        if (mb_strlen($fullName) < 2) {
-            session()->setFlashdata('error', 'Full name must contain at least 2 non-space characters.');
-            return redirect()->to('teacher/profile');
-        }
-
-        if (!$users->update($userId, ['full_name' => $fullName])) {
-            session()->setFlashdata('error', 'Could not update your profile. Please try again.');
-            return redirect()->to('teacher/profile');
-        }
-
-        session()->set('full_name', $fullName);
-        (new ActivityLogger())->log($userId, session()->get('username'), 'PROFILE_UPDATED', 'Updated teacher profile', 'INFO');
-        session()->setFlashdata('saved', 'Profile updated.');
-        return redirect()->to('teacher/profile');
-    }
-
     public function changePassword()
     {
         $userId = (int) session()->get('user_id');
         $users = new UserModel();
         $profile = $users->find($userId);
         if (!$profile || $profile['role'] !== 'teacher') {
-            return redirect()->to('logout');
+            session()->destroy();
+            return redirect()->to('/');
         }
 
         $current = (string) $this->request->getPost('current_password');
@@ -74,8 +43,8 @@ class ProfileController extends BaseController
 
         if (!password_verify($current, $profile['password'])) {
             session()->setFlashdata('error', 'Current password is incorrect.');
-        } elseif (strlen($new) < 8) {
-            session()->setFlashdata('error', 'New password must be at least 8 characters.');
+        } elseif (mb_strlen($new) < 12) {
+            session()->setFlashdata('error', 'New password must be at least 12 characters.');
         } elseif ($new !== $confirm) {
             session()->setFlashdata('error', 'New password and confirmation do not match.');
         } elseif (!$users->update($userId, ['password' => password_hash($new, PASSWORD_DEFAULT)])) {

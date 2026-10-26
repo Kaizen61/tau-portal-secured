@@ -41,11 +41,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" name="new_password" class="form-control" minlength="8" required autocomplete="new-password">
+                            <input type="password" id="newPassword" name="new_password" class="form-control" minlength="12" required autocomplete="new-password">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="confirmPassword">Confirm New Password</label>
-                            <input type="password" id="confirmPassword" name="confirm_password" class="form-control" minlength="8" required autocomplete="new-password">
+                            <input type="password" id="confirmPassword" name="confirm_password" class="form-control" minlength="12" required autocomplete="new-password">
                         </div>
                         <button type="submit" class="btn btn-university">Change Password</button>
                     </form>

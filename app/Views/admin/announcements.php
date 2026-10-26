@@ -32,9 +32,16 @@
     </div>
 
     <div class="card portal-card">
-        <div class="card-header bg-white"><h5 class="mb-0">Published Announcements</h5></div>
+        <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h5 class="mb-0">Published Announcements</h5>
+            <form method="GET" action="<?= site_url('admin/announcements') ?>" class="d-flex gap-2">
+                <input type="search" name="q" class="form-control form-control-sm" value="<?= esc($q ?? '', 'attr') ?>" maxlength="100" placeholder="Search announcements" aria-label="Search announcements">
+                <button type="submit" class="btn btn-sm btn-outline-university">Search</button>
+                <?php if (($q ?? '') !== ''): ?><a href="<?= site_url('admin/announcements') ?>" class="btn btn-sm btn-outline-secondary">Clear</a><?php endif; ?>
+            </form>
+        </div>
         <?php if (empty($announcements)): ?>
-            <div class="card-body text-muted">There are no announcements yet.</div>
+            <div class="card-body text-muted"><?= ($q ?? '') !== '' ? 'No announcements match your search.' : 'There are no announcements yet.' ?></div>
         <?php else: ?>
             <div class="list-group list-group-flush">
                 <?php foreach ($announcements as $item): ?>

@@ -138,7 +138,7 @@ class UserController extends BaseController
 
         $rules = [
             'full_name' => 'required|min_length[2]|max_length[100]',
-            'password' => 'required|min_length[6]',
+            'password' => 'required|min_length[12]',
             'role' => 'required|in_list[student,teacher,admin]',
             'college' => 'permit_empty|in_list[College of Veterinary Medicine (CVM),College of Engineering and Technology (CET),College of Education (CEd),College of Business and Management (CBM),College of Arts and Sciences (CAS),College of Agriculture and Forestry (CAF)]',
         ];
@@ -178,6 +178,11 @@ class UserController extends BaseController
             session()->setFlashdata('error', 'That username is already assigned to another account.');
             return redirect()->to('admin/add-account');
         }
+        $college = $role === 'admin' ? null : trim((string) $this->request->getPost('college'));
+        if ($users->accountIdentityExists($role, $fullName, $college)) {
+            session()->setFlashdata('error', 'An account with the same name and college already exists for this role.');
+            return redirect()->to('admin/add-account');
+        }
 
         $newUser = [
             'username' => $isStudent ? null : $username,
@@ -186,7 +191,7 @@ class UserController extends BaseController
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'role' => $role,
             'full_name' => $fullName,
-            'college' => $role === 'admin' ? null : $this->request->getPost('college'),
+            'college' => $college,
             'program' => $isStudent ? $this->request->getPost('program') : null,
             'year_level' => $isStudent ? $this->request->getPost('year_level') : null,
             'section' => $isStudent ? $this->request->getPost('section') : null,
@@ -252,7 +257,7 @@ class UserController extends BaseController
         $rules = [
             'full_name' => 'required|min_length[2]|max_length[100]',
             'college' => 'permit_empty|in_list[College of Veterinary Medicine (CVM),College of Engineering and Technology (CET),College of Education (CEd),College of Business and Management (CBM),College of Arts and Sciences (CAS),College of Agriculture and Forestry (CAF)]',
-            'password' => 'permit_empty|min_length[6]',
+            'password' => 'permit_empty|min_length[12]',
         ];
         if ($isStudent) {
             $rules['college'] = 'required|in_list[College of Veterinary Medicine (CVM),College of Engineering and Technology (CET),College of Education (CEd),College of Business and Management (CBM),College of Arts and Sciences (CAS),College of Agriculture and Forestry (CAF)]';
@@ -291,6 +296,11 @@ class UserController extends BaseController
             }
             if ($users->identifierExists('username', $identifier, $id)) {
                 session()->setFlashdata('error', 'That username is already assigned to another account.');
+                return redirect()->to("admin/users/{$id}/edit");
+            }
+            $college = trim((string) $this->request->getPost('college'));
+            if ($users->accountIdentityExists($user['role'], $fullName, $college, $id)) {
+                session()->setFlashdata('error', 'An account with the same name and college already exists for this role.');
                 return redirect()->to("admin/users/{$id}/edit");
             }
         }
