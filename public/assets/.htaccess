@@ -1,4 +1,4 @@
 <IfModule mod_headers.c>
-    Header always set Content-Security-Policy "default-src 'none'; base-uri 'none'; frame-ancestors 'none'"
+    Header always set Content-Security-Policy "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
     Header always set X-Content-Type-Options "nosniff"
 </IfModule>
